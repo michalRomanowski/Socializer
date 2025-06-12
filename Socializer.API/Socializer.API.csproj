@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Socializer.API.Services\Socializer.API.Services.csproj" />
+    <ProjectReference Include="..\Socializer.Auth\Socializer.API.Auth.csproj" />
+    <ProjectReference Include="..\Socializer.Database\Socializer.Database.csproj" />
+  </ItemGroup>
+
+</Project>

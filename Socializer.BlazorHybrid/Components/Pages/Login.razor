@@ -1,0 +1,77 @@
+﻿@page "/login"
+
+@using Socializer.BlazorHybrid.UIModels
+@using Socializer.Client
+
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+@inject StateContainer stateContainer
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="error-message">@error</div>
+}
+
+<EditForm EditContext="@editContext" OnValidSubmit="LoginAsync" class="form-section">
+    <DataAnnotationsValidator />
+
+    <label>Username</label>
+    <InputText class="input-field" @bind-Value="model.Username" title="Provide Username" />
+    <ValidationMessage For="@(() => model.Username)" />
+
+    <label>Password</label>
+    <InputText class="input-field" type="password" @bind-Value="model.Password" title="Provide password" />
+    <ValidationMessage For="@(() => model.Password)" />
+
+    <button class="button-big" type="submit">Login</button>
+</EditForm>
+
+<button class="button-big" @onclick="SignUp">Sing Up</button>
+
+
+@code {
+    private LoginUI model = new();
+    private EditContext editContext;
+    private string error = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        layoutState.Header = "Login";
+        editContext = new EditContext(model);
+    }
+
+    private async Task LoginAsync()
+    {
+        var loginResult = await socializerClient.LoginAsync(model.Username, model.Password);
+
+        if (loginResult.IsSuccess == false)
+        {
+            error = string.Join(Environment.NewLine, loginResult.Errors) ?? "An error occurred during login.";
+            return;
+        }
+
+        // TODO: Duplicated code with Start.Razor
+        var getUserMeResult = await socializerClient.GetUserMeAsync();
+
+        if (getUserMeResult.IsSuccess == false)
+        {
+            // Clean all login info. We don't want to continue in such case. A bit harsh as we force user to restart but for now OK.
+            // Better like that for error feedback.
+            SecureStorage.RemoveAll();
+
+            layoutState.ErrorMessage = getUserMeResult.ErrorMessage;
+
+            return;
+        }
+
+        stateContainer.User = getUserMeResult.Result;
+        navigation.NavigateTo("/main");
+
+    }
+
+    private void SignUp()
+    {
+        navigation.NavigateTo("/signup");
+    }
+}

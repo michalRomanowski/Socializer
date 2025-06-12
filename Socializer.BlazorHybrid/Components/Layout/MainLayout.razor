@@ -1,0 +1,36 @@
+﻿@using Socializer.BlazorHybrid.UIModels;
+
+@inherits LayoutComponentBase
+
+@inject LayoutState layoutState
+
+<div class="page">
+	<div class="block-outer">
+		<h2 class="block-header">@layoutState.Header</h2>
+
+		<div class="block-inner">
+			@if (layoutState.HasError)
+			{
+					<div class="error-message">@layoutState.ErrorMessage</div>
+			}
+
+			<main>
+				@Body
+			</main>
+		</div>
+	</div>
+</div>
+
+@code {
+	protected override void OnInitialized()
+	{
+		layoutState.ErrorMessage = string.Empty;
+
+		layoutState.OnChange += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		layoutState.OnChange -= StateHasChanged;
+	}
+}

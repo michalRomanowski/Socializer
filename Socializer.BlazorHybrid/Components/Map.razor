@@ -1,0 +1,22 @@
+﻿@using Microsoft.Maui.Devices.Sensors
+@using Socializer.BlazorHybrid.Services;
+
+@inject IGeoLocationService geoLocationService
+@inject IJSRuntime js
+
+<div id="map" class="map"></div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await geoLocationService.GetGeoLocation();
+
+            if (result.IsSuccess)
+            {
+                await js.InvokeVoidAsync("mapInterop.initMap", result.Result.Latitude, result.Result.Longitude);
+            }
+        }
+    }
+}

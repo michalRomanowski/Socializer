@@ -1,0 +1,15 @@
+﻿@page "/main"
+
+@using Socializer.BlazorHybrid.UIModels
+
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+
+@code {
+    private string allDogs = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        layoutState.Header = $"Hello";
+    }
+}

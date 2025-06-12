@@ -1,0 +1,73 @@
+## Ignore build output
+bin/
+obj/
+[Mm]etadata/
+GeneratedFiles/
+
+## Ignore .NET user secrets
+secrets.json
+
+## Visual Studio specific
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS-specific
+.DS_Store
+Thumbs.db
+
+## Build artifacts
+*.apk
+*.apks
+*.aab
+*.ipa
+*.exe
+*.dll
+*.pdb
+*.app
+*.xcuserstate
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.assets.json
+
+## MAUI and Xcode specific
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.mode1v3
+*.mode2v3
+*.pbxuser
+*.pbxproj
+*.mobileprovision
+*.entitlements
+
+## Android specific
+*.iml
+.gradle/
+local.properties
+.idea/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/build/
+
+## iOS/macOS specific
+*.plist
+build/
+*.app
+*.dSYM/
+*.DS_Store
+
+## Rider IDE
+.idea/
+
+## Logs
+*.log

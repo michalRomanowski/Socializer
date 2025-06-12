@@ -1,0 +1,47 @@
+﻿@page "/"
+
+@using Common.Client
+@using Socializer.BlazorHybrid.UIModels
+@using Socializer.Client
+
+@inject IClient client
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+@inject StateContainer stateContainer
+
+Welcome to Socializer!
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		layoutState.Header = "Socializer Start";
+
+		// Used to simulate ap not used for long
+		//SecureStorage.RemoveAll();
+
+		var loginAttempt = await client.LoginAsync();
+
+		if (loginAttempt.IsSuccess == false)
+		{
+			navigation.NavigateTo("/login");
+			return;
+		}
+
+		var getUserMeResult = await socializerClient.GetUserMeAsync();
+
+		if (getUserMeResult.IsSuccess == false)
+		{
+			// Clean all login info. We don't want to continue in such case. A bit harsh as we force user to restart but for now OK.
+			// Better like that for error feedback.
+			SecureStorage.RemoveAll(); 
+
+			layoutState.ErrorMessage = getUserMeResult.ErrorMessage;
+
+			return;
+		}
+
+		stateContainer.User = getUserMeResult.Result;
+		navigation.NavigateTo("/main");
+	}
+}

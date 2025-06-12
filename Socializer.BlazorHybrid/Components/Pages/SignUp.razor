@@ -1,0 +1,51 @@
+﻿@page "/signup"
+
+@using Socializer.BlazorHybrid.UIModels
+@using Socializer.Client
+
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+
+<EditForm EditContext="@editContext" OnValidSubmit="CreateUserAsync" class="form-section">
+    <DataAnnotationsValidator />
+
+    <label>Name</label>
+    <InputText class="input-field" @bind-Value="createUserUI.Username" title="Choose a unique name" />
+    <ValidationMessage For="@(() => createUserUI.Username)" />
+
+    <label>Email</label>
+    <InputText class="input-field" @bind-Value="createUserUI.Email" title="Choose a unique email" />
+    <ValidationMessage For="@(() => createUserUI.Email)" />
+
+    <label>Password</label>
+    <InputText class="input-field" type="password" @bind-Value="createUserUI.Password" title="Choose strong password" />
+    <ValidationMessage For="@(() => createUserUI.Password)" />
+
+    <label>Confirm Password</label>
+    <InputText class="input-field" type="password" @bind-Value="createUserUI.ConfirmPassword" title="Confirm password" />
+    <ValidationMessage For="@(() => createUserUI.ConfirmPassword)" />
+
+    <button class="button-big" type="submit">Create</button>
+</EditForm>
+
+@code {
+    private CreateUserUI createUserUI = new();
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        layoutState.Header = "Sign up";
+        editContext = new EditContext(createUserUI);
+    }
+
+    private async Task CreateUserAsync()
+    {
+        var result = await socializerClient.CreateUserAsync(createUserUI);
+
+        if (result.IsSuccess)
+            navigation.NavigateTo("/main");
+        else
+            layoutState.ErrorMessage = result.ErrorMessage;
+    }
+}
