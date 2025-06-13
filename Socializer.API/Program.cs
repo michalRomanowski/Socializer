@@ -20,6 +20,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<RequestMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
