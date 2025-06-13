@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿//using Microsoft.AspNetCore.Authentication.JwtBearer; // UNCOMMENT FOR AUTH DEBUGGING
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -68,33 +68,33 @@ public static class ServiceCollectionExtensions
                     ValidAudience = configuration["Auth:ResourceServerName"]
                 };
 
-                // TODO: Keep this for some time, maybe add logging
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-                        return Task.CompletedTask;
-                    },
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine("Token validated successfully.");
-                        return Task.CompletedTask;
-                    },
-                    OnMessageReceived = context =>
-                    {
-                        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-                        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-                        {
-                            context.Token = authHeader.Substring("Bearer ".Length);
-                        }
+                // UNCOMMENT FOR AUTH DEBUGGING
+                //options.Events = new JwtBearerEvents
+                //{
+                //    OnAuthenticationFailed = context =>
+                //    {
+                //        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                //        return Task.CompletedTask;
+                //    },
+                //    OnTokenValidated = context =>
+                //    {
+                //        Console.WriteLine("Token validated successfully.");
+                //        return Task.CompletedTask;
+                //    },
+                //    OnMessageReceived = context =>
+                //    {
+                //        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                //        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+                //        {
+                //            context.Token = authHeader.Substring("Bearer ".Length);
+                //        }
 
-                        return Task.CompletedTask;
-                    }
-                };
+                //        return Task.CompletedTask;
+                //    }
+                //};
             });
 
-        // TODO: Keep this for some time
+        // UNCOMMENT FOR AUTH DEBUGGING
         //IdentityModelEventSource.ShowPII = true;
 
         services.AddAuthorization();
