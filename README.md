@@ -6,7 +6,8 @@ To create migration: Add-Migration -Context SocializerDbContext MigrationName
 To apply migration: Update-Database -Context SocializerDbContext
 
 # Debugging
-To debug Blazor MAUI start in emulator and go to chrome://inspect/#devices in Chrome
+To debug Blazor MAUI start in emulator and in Chrome go to 
+	chrome://inspect/#devices
 
 # HTTPS in dev
 NGROK Instruction:

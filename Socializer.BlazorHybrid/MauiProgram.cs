@@ -1,7 +1,6 @@
 ﻿using Common.Client;
 using Microsoft.Extensions.Logging;
 using Socializer.BlazorHybrid.Services;
-using Socializer.BlazorHybrid.UIModels;
 using Socializer.Client;
 
 namespace Socializer.BlazorHybrid
@@ -27,10 +26,10 @@ namespace Socializer.BlazorHybrid
             builder.Services.AddSocializerClient(mobileAppSettings);
             builder.Services.AddScoped<LayoutState>();
             builder.Services.AddScoped<StateContainer>();
-            builder.Services.AddScoped<IGeoLocationService, GeoLocationService>(); ;
+            builder.Services.AddScoped<IGeoLocationService, GeoLocationService>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 

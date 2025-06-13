@@ -1,12 +1,14 @@
-﻿@page "/main"
-
-@using Socializer.BlazorHybrid.UIModels
+﻿@page "/chat"
+@using Socializer.BlazorHybrid.ViewModels
 
 @inject LayoutState layoutState
 @inject NavigationManager navigation
 
+
+
+
 @code {
-    private string allDogs = string.Empty;
+	private ChatViewModel chatViewModel = new();
 
     protected override void OnInitialized()
     {
