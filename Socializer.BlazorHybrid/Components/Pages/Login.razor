@@ -51,7 +51,6 @@
             return;
         }
 
-        // TODO: Duplicated code with Start.Razor
         var getUserMeResult = await socializerClient.GetUserMeAsync();
 
         if (getUserMeResult.IsSuccess == false)
