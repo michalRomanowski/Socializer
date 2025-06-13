@@ -2,6 +2,7 @@
 using Common.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Socializer.Database.Models;
@@ -9,7 +10,7 @@ using Socializer.Shared.Dtos;
 
 namespace Socializer.API.Services.Services;
 
-public class UserService(SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
+public class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
 {
     public async Task<OperationResult<UserDto>> GetUserAsync(Guid userId)
     {
@@ -36,6 +37,9 @@ public class UserService(SocializerDbContext dbContext, UserManager<ApplicationU
             return OperationResult<CreateUserDto>.Failure($"User with name '{newUserDto.Username}' already exists.");
 
         // Add user to identity
+
+        logger.LogInformation("Creating new user in Identity with username: {Username} and email: {Email}", newUserDto.Username, newUserDto.Email);
+
         var applicationUser = new ApplicationUser
         {
             UserName = newUserDto.Username,
@@ -52,6 +56,9 @@ public class UserService(SocializerDbContext dbContext, UserManager<ApplicationU
 
         // Add user to Users table
         // TODO: In case of failure identity should be removed in transaction manner
+
+        logger.LogInformation("Adding new user to Users table with username: {Username} and email: {Email}", newUserDto.Username, newUserDto.Email);
+
         var newUser = mapper.Map<User>(newUserDto);
         newUser.Id = new Guid(applicationUser.Id); // Set the same ID as in Identity
 
