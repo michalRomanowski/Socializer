@@ -7,10 +7,17 @@ public class RequestMiddleware(RequestDelegate next, ILogger<RequestMiddleware> 
     {
         try
         {
+            var path = context.Request.Path;
+
+            // TODO: Tracking Id should be attached to every log. This is doable.
+             
+            logger.LogInformation(
+                    "Request: {Path} received. TrackingId {trackingId}.",
+                    path, context.TraceIdentifier);
+
             await next(context);
 
             var statusCode = context.Response.StatusCode;
-            var path = context.Request.Path;
 
             if (statusCode >= 200 && statusCode <= 299)
             {
