@@ -105,7 +105,7 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
 
             await SecureStorage.Default.SetAsync("access_token", result.AccessToken);
             await SecureStorage.Default.SetAsync("refresh_token", result.RefreshToken);
-            await SecureStorage.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
+            await SecureStorage.Default.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
 
             return OperationResult<bool>.Success(true);
         }
