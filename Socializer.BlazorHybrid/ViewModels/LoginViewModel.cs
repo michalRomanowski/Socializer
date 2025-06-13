@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Socializer.BlazorHybrid.UIModels;
 
-internal class LoginUI
+internal class LoginViewModel
 {
     [Required]
     public string Username { get; set; }

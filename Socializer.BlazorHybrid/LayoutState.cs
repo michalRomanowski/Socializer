@@ -1,4 +1,4 @@
-﻿namespace Socializer.BlazorHybrid.UIModels;
+﻿namespace Socializer.BlazorHybrid;
 
 internal class LayoutState
 {
