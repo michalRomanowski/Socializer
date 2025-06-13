@@ -12,7 +12,7 @@ public class FailureLoggingFilter(ILogger<FailureLoggingFilter> logger) : IAsync
         {
             var body = JsonSerializer.Serialize(objectResult.Value);
             logger.LogWarning(
-                "Request: {Path} FAILED. Body: {reason}", context.HttpContext.Request.Path, body);
+                "Request: {Path} FAILED. Body: {reason}. TrackingId {trackingId}.", context.HttpContext.Request.Path, body, context.HttpContext.TraceIdentifier);
         }
 
         await next();
