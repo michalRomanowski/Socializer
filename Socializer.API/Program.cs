@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Socializer.API.Auth;
+using Socializer.API.Filters;
+using Socializer.API.Middleware;
 using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
 using Socializer.API.Services.Services;
@@ -11,7 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SocializerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SocializerConnectionString")));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<FailureLoggingFilter>();
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuth(builder.Configuration);
