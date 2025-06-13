@@ -1,6 +1,6 @@
 ﻿@page "/signup"
 
-@using Socializer.BlazorHybrid.UIModels
+@using Socializer.BlazorHybrid.ViewModels
 @using Socializer.Client
 
 @inject ISocializerClient socializerClient
@@ -30,7 +30,7 @@
 </EditForm>
 
 @code {
-    private CreateUserUI createUserUI = new();
+    private CreateUserViewModel createUserUI = new();
     private EditContext editContext;
 
     protected override void OnInitialized()

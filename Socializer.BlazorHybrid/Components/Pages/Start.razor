@@ -1,7 +1,6 @@
 ﻿@page "/"
 
 @using Common.Client
-@using Socializer.BlazorHybrid.UIModels
 @using Socializer.Client
 
 @inject IClient client
@@ -42,6 +41,6 @@ Welcome to Socializer!
 		}
 
 		stateContainer.User = getUserMeResult.Result;
-		navigation.NavigateTo("/main");
+		navigation.NavigateTo("/chat");
 	}
 }

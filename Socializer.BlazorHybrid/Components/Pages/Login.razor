@@ -1,6 +1,6 @@
 ﻿@page "/login"
 
-@using Socializer.BlazorHybrid.UIModels
+@using Socializer.BlazorHybrid.ViewModels
 @using Socializer.Client
 
 @inject ISocializerClient socializerClient
@@ -31,7 +31,7 @@
 
 
 @code {
-    private LoginUI model = new();
+    private LoginViewModel model = new();
     private EditContext editContext;
     private string error = string.Empty;
 
@@ -65,7 +65,7 @@
         }
 
         stateContainer.User = getUserMeResult.Result;
-        navigation.NavigateTo("/main");
+        navigation.NavigateTo("/chat");
 
     }
 
