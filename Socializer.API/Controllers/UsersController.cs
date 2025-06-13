@@ -30,6 +30,6 @@ public class UsersController(IUserService userService) : SocializerControllerBas
 
         return result.IsSuccess ?
             Ok(result.Result) :
-            BadRequest(result.Errors); // TODO: Middleware maybe for handling different kinds of failures
+            BadRequest(result.Errors);
     }
 }

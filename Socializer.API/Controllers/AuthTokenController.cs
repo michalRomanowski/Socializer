@@ -18,20 +18,12 @@ public class AuthTokenController(UserManager<ApplicationUser> userManager, SignI
     [Consumes("application/x-www-form-urlencoded")]
     public async Task<IActionResult> Exchange([FromForm] TokenRequestDtoAspMvc tokenRequest)
     {
-        try
+        return tokenRequest.GrantType switch
         {
-            return tokenRequest.GrantType switch
-            {
-                OpenIddictConstants.GrantTypes.Password => await ExchangePassword(tokenRequest.Username, tokenRequest.Password),
-                OpenIddictConstants.GrantTypes.RefreshToken => await ExchangeRefreshToken(),
-                _ => NotFound(),
-            };
-        }
-        catch
-        {
-            // TODO: Return NotFound to fool potential attackers, applies to all auth failures, could be done by middleware better, optional, to consider, add logging here for sure
-            return NotFound();
-        }
+            OpenIddictConstants.GrantTypes.Password => await ExchangePassword(tokenRequest.Username, tokenRequest.Password),
+            OpenIddictConstants.GrantTypes.RefreshToken => await ExchangeRefreshToken(),
+            _ => NotFound(),
+        };
     }
 
     private async Task<IActionResult> ExchangePassword(string username, string password)
