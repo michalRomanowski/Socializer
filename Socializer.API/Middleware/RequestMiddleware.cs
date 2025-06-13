@@ -35,7 +35,7 @@ public class RequestMiddleware(RequestDelegate next, ILogger<RequestMiddleware> 
         catch (Exception ex)
         {
             logger.LogError(
-                ex, "Request: {Path}. TrackingId {trackingId}.", context.Request.Path, context.TraceIdentifier);
+                ex, "Request: {Path} FAILED UNHANDLED. TrackingId {trackingId}.", context.Request.Path, context.TraceIdentifier);
 
             var errorResponse = new
             {
