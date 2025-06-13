@@ -28,12 +28,12 @@ public static class ConfigClient
                 client.GetAsync(appsettingsUrl)).ConfigureAwait(false);
 
             return response.IsSuccessStatusCode ?
-                await response.Content.ReadFromJsonAsync<MobileAppSettings>() : // TODO: Should be generic, not relying on MobileAppSettings or anything Socializer related
+                await response.Content.ReadFromJsonAsync<MobileAppSettings>() :
                 throw new Exception("Unable to retrieve configuration from server");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log the exception or handle it as needed
+            // TODO: Log the exception or handle it as needed
             throw;
         }
     }

@@ -12,6 +12,6 @@ public static class ValidationExtensions
 
         return Validator.TryValidateObject(dto, context, validationResults) ?
             OperationResult<T>.Success(dto) :
-            OperationResult<T>.Failure(validationResults.Select(x => x.ErrorMessage));
+            OperationResult<T>.Failure(validationResults.Select(x => x.ErrorMessage.ToString()));
     }
 }
