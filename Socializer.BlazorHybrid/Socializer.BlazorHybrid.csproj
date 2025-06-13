@@ -20,7 +20,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
         <Nullable>enable</Nullable>
-
+        <NoWarn>CS8601;CS8602;CS8618</NoWarn>
+      
         <!-- Display name -->
         <ApplicationTitle>Socializer.BlazorHybrid</ApplicationTitle>
 
