@@ -4,8 +4,8 @@ namespace Common.Client;
 
 public interface IClient
 {
-    Task<ClientOperationResult<TDto>> GetAsync<TDto>(string urlPath);
-    Task<ClientOperationResult<TDto>> PostAsync<TDto>(string urlPath, TDto dto);
+    Task<OperationResult<TDto>> GetAsync<TDto>(string urlPath);
+    Task<OperationResult<TDto>> PostAsync<TDto>(string urlPath, TDto dto);
     Task<OperationResult<bool>> LoginAsync(string username, string password);
     /// <summary>
     /// Login from saved tokens

@@ -12,7 +12,7 @@ namespace Common.Client;
 
 public class OpenIddictClient(OpenIddictClientService clientService, IHttpClientFactory httpClientFactory, MobileAppSettings mobileAppSettings) : IClient
 {
-    public async Task<ClientOperationResult<TDto>> GetAsync<TDto>(string urlPath)
+    public async Task<OperationResult<TDto>> GetAsync<TDto>(string urlPath)
     {
         try
         {
@@ -21,15 +21,15 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
 
             var response = await httpClient.GetAsync($"{mobileAppSettings.SocializerApiUrl}/{urlPath}");
 
-            return await ClientOperationResult<TDto>.FromResponseAsync(response);
+            return await OperationResult<TDto>.FromHttpResponseAsync(response);
         }
         catch (Exception ex)
         {
-            return ClientOperationResult<TDto>.FromException(ex);
+            return OperationResult<TDto>.Failure(ex);
         }
     }
 
-    public async Task<ClientOperationResult<TDto>> PostAsync<TDto>(string urlPath, TDto dto)
+    public async Task<OperationResult<TDto>> PostAsync<TDto>(string urlPath, TDto dto)
     {
         var json = JsonSerializer.Serialize(dto);
 
@@ -41,11 +41,11 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
             await RefreshTokenAsync();
 
             var response = await httpClient.PostAsync($"{mobileAppSettings.SocializerApiUrl}/{urlPath}", content);
-            return await ClientOperationResult<TDto>.FromResponseAsync(response);
+            return await OperationResult<TDto>.FromHttpResponseAsync(response);
         }
         catch (Exception ex)
         {
-            return ClientOperationResult<TDto>.FromException(ex);
+            return OperationResult<TDto>.Failure(ex);
         }
     }
 

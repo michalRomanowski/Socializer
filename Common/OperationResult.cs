@@ -1,4 +1,7 @@
-﻿namespace Common.Utils;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+
+namespace Common.Utils;
 
 public class OperationResult<TResult>
 {
@@ -11,6 +14,11 @@ public class OperationResult<TResult>
         "Unspecified error.";
 
     public bool IsSuccess => !Errors.Any();
+
+    private readonly static JsonSerializerOptions options = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     public static OperationResult<TResult> Success(TResult result)
     {
@@ -43,5 +51,27 @@ public class OperationResult<TResult>
         {
             Errors = errors
         };
+    }
+
+    public static async Task<OperationResult<TResult>> FromHttpResponseAsync(HttpResponseMessage httpResponseMessage)
+    {
+        try
+        {
+            var statusCode = (int)httpResponseMessage.StatusCode;
+
+            if (statusCode >= 200 && statusCode <= 299)
+            {
+                var deserializedResponse = await httpResponseMessage.Content.ReadFromJsonAsync<TResult>(options);
+                return OperationResult<TResult>.Success(deserializedResponse);
+            }
+
+            return OperationResult<TResult>.Failure(await httpResponseMessage.Content.ReadAsStringAsync());
+        }
+        catch (Exception ex)
+        {
+            // TODO: log exception only, for now will expose ex.message in response to see in UI for early stage
+            return OperationResult<TResult>.Failure(
+                $"Error processing response. Message: {ex.Message} InnerMessage: {ex.InnerException?.Message ?? "NULL"}");
+        }
     }
 }

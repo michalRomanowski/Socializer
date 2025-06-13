@@ -11,12 +11,12 @@ public class SocializerClient(IClient client) : ISocializerClient
         return await client.LoginAsync(username, password);
     }
 
-    public async Task<ClientOperationResult<UserDto>> GetUserMeAsync()
+    public async Task<OperationResult<UserDto>> GetUserMeAsync()
     {
         return await client.GetAsync<UserDto>("Users/Me");
     }
 
-    public async Task<ClientOperationResult<CreateUserDto>> CreateUserAsync(CreateUserDto createUserDto)
+    public async Task<OperationResult<CreateUserDto>> CreateUserAsync(CreateUserDto createUserDto)
     {
         var createUserResult = await client.PostAsync("Users", createUserDto);
 
@@ -29,7 +29,7 @@ public class SocializerClient(IClient client) : ISocializerClient
 
         if (!loginResult.IsSuccess)
         {
-            return ClientOperationResult<CreateUserDto>.FromErrors(loginResult.Errors);
+            return OperationResult<CreateUserDto>.Failure(loginResult.Errors);
         }
 
         return createUserResult;
