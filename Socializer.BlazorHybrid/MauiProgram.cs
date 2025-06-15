@@ -19,7 +19,7 @@ namespace Socializer.BlazorHybrid
                 });
 
             // Only used in startup so no need to register MobileAppSettings yet, maybe in future if needed
-            var mobileAppSettings = ConfigClient.GetMobileAppSettings(Constants.ConfigUrl).Result;
+            var mobileAppSettings = ConfigClient.GetSharedSettings(Constants.ConfigUrl).Result;
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddScoped((services) => mobileAppSettings);

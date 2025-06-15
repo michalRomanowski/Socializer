@@ -12,9 +12,9 @@ public class ConfigController(IConfiguration configuration) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var section = configuration.GetSection("MobileAppSettings");
-        var mobileAppSettings = section.Get<MobileAppSettings>();
+        var section = configuration.GetSection("SharedSettings");
+        var sharedSettings = section.Get<SharedSettings>();
 
-        return Ok(mobileAppSettings);
+        return Ok(sharedSettings);
     }
 }

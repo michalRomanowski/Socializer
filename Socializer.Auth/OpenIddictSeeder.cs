@@ -10,7 +10,7 @@ public static class OpenIddictSeeder
     {
         var manager = serviceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        var clientId = configuration["Auth:ClientId"];
+        var clientId = configuration["SharedSettings:ClientId"];
 
         if (await manager.FindByClientIdAsync(clientId) == null)
         {

@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 namespace Common.Client;
 
 /// <summary>
-/// Client for retrieving mobile app settings from a remote configuration server.
+/// Client for retrieving settings for mobile app from a remote configuration server.
 /// Has to be like that as init before DI as it's values used in DI.
 /// </summary>
 public static class ConfigClient
@@ -18,7 +18,7 @@ public static class ConfigClient
             .WaitAndRetryAsync(6, retryAttempt =>
                 TimeSpan.FromSeconds(5 * retryAttempt));
 
-    public static async Task<MobileAppSettings> GetMobileAppSettings(string appsettingsUrl)
+    public static async Task<SharedSettings> GetSharedSettings(string appsettingsUrl)
     {
         using var client = new HttpClient();
 
@@ -28,7 +28,7 @@ public static class ConfigClient
                 client.GetAsync(appsettingsUrl)).ConfigureAwait(false);
 
             return response.IsSuccessStatusCode ?
-                await response.Content.ReadFromJsonAsync<MobileAppSettings>() :
+                await response.Content.ReadFromJsonAsync<SharedSettings>() :
                 throw new Exception("Unable to retrieve configuration from server");
         }
         catch (Exception)

@@ -10,7 +10,7 @@ namespace Socializer.Client;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSocializerClient(this IServiceCollection services, MobileAppSettings mobileAppSettings)
+    public static IServiceCollection AddSocializerClient(this IServiceCollection services, SharedSettings mobileAppSettings)
     {
         services.AddSingleton<ISocializerClient, SocializerClient>();
 

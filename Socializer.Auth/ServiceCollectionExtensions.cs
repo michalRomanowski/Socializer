@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = configuration["Auth:Issuer"];
+                options.Authority = configuration["SharedSettings:SocializerApiUrl"];
                 options.RequireHttpsMetadata = true;
 
                 options.TokenValidationParameters = new TokenValidationParameters

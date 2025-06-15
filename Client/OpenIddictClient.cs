@@ -10,7 +10,7 @@ using Common.Utils;
 
 namespace Common.Client;
 
-public class OpenIddictClient(OpenIddictClientService clientService, IHttpClientFactory httpClientFactory, MobileAppSettings mobileAppSettings) : IClient
+public class OpenIddictClient(OpenIddictClientService clientService, IHttpClientFactory httpClientFactory, SharedSettings sharedSettings) : IClient
 {
     public async Task<OperationResult<TDto>> GetAsync<TDto>(string urlPath)
     {
@@ -19,7 +19,7 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
             using var httpClient = await GetHttpClientAsync();
             await RefreshTokenAsync();
 
-            var response = await httpClient.GetAsync($"{mobileAppSettings.SocializerApiUrl}/{urlPath}");
+            var response = await httpClient.GetAsync($"{sharedSettings.SocializerApiUrl}/{urlPath}");
 
             return await OperationResult<TDto>.FromHttpResponseAsync(response);
         }
@@ -40,7 +40,7 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
             using var httpClient = await GetHttpClientAsync();
             await RefreshTokenAsync();
 
-            var response = await httpClient.PostAsync($"{mobileAppSettings.SocializerApiUrl}/{urlPath}", content);
+            var response = await httpClient.PostAsync($"{sharedSettings.SocializerApiUrl}/{urlPath}", content);
             return await OperationResult<TDto>.FromHttpResponseAsync(response);
         }
         catch (Exception ex)
