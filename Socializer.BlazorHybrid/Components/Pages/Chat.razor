@@ -1,17 +1,46 @@
 ﻿@page "/chat"
+
 @using Socializer.BlazorHybrid.ViewModels
 
+@inject IJSRuntime js
 @inject LayoutState layoutState
 @inject NavigationManager navigation
 
+<div class="chat-container">
+    <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
+        @foreach (var message in chatViewModel.Messages)
+        {
+            <div class="message @message.Author">@message.Content</div>
+        }
+    </div>
 
-
+    <div class="chat-input">
+        <InputText class="chat-input-field" @bind-Value="chatViewModel.NewMessage" title="Type message .." />
+        <button class="chat-input-button" @onclick="SendMessageAsync">Send</button>
+    </div>
+</div>
 
 @code {
+    private EditContext editContext;
+    private ElementReference chatMessagesRef;
 	private ChatViewModel chatViewModel = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        layoutState.Header = $"Hello";
+        editContext = new EditContext(chatViewModel);
+        layoutState.Header = $"Chat";
+		await Task.Delay(100);
+        await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
     }
+
+	private async Task SendMessageAsync()
+	{
+        chatViewModel.Messages.Add(new ChatMessage { Author = "user1", Content = chatViewModel.NewMessage });
+		chatViewModel.NewMessage = null;
+
+        // TODO: Send message
+
+        await Task.Delay(100);
+		await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
+	}
 }
