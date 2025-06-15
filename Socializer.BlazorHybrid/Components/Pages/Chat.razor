@@ -1,10 +1,14 @@
 ﻿@page "/chat"
 
+@using Microsoft.AspNetCore.SignalR.Client
 @using Socializer.BlazorHybrid.ViewModels
+@using Socializer.Shared
 
 @inject IJSRuntime js
 @inject LayoutState layoutState
+@inject MobileAppSettings mobileAppSettings
 @inject NavigationManager navigation
+@inject StateContainer stateContainer
 
 <div class="chat-container">
     <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
@@ -23,24 +27,52 @@
 @code {
     private EditContext editContext;
     private ElementReference chatMessagesRef;
-	private ChatViewModel chatViewModel = new();
+    private ChatViewModel chatViewModel = new();
+    private HubConnection hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
         editContext = new EditContext(chatViewModel);
         layoutState.Header = $"Chat";
-		await Task.Delay(100);
+		await StartSignalR();
+        await Task.Delay(100);
         await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
+    }
+
+    private async Task StartSignalR()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(navigation.ToAbsoluteUri(mobileAppSettings.SocializerApiUrl + "/chathub"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string, string>(
+            "ReceiveMessage", (author, content) =>
+            {
+                chatViewModel.Messages.Add(new ChatMessage() { Author = author, Content = content });
+                InvokeAsync(StateHasChanged);
+            });
+
+        await hubConnection.StartAsync();
     }
 
 	private async Task SendMessageAsync()
 	{
         chatViewModel.Messages.Add(new ChatMessage { Author = "user1", Content = chatViewModel.NewMessage });
-		chatViewModel.NewMessage = null;
 
-        // TODO: Send message
+		await SendSignalRMessage();
 
+        chatViewModel.NewMessage = string.Empty;
         await Task.Delay(100);
 		await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
 	}
+
+    private async Task SendSignalRMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(chatViewModel.NewMessage))
+        {
+            await hubConnection.SendAsync("SendMessage", stateContainer.User.Username, chatViewModel.NewMessage);
+            chatViewModel.NewMessage = string.Empty;
+        }
+    }
 }

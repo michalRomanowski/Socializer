@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Socializer.BlazorHybrid.Services;
 using Socializer.Client;
+using Socializer.Shared;
 
 namespace Socializer.BlazorHybrid
 {

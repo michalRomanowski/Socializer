@@ -5,6 +5,7 @@ using Socializer.API.Middleware;
 using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
 using Socializer.API.Services.Services;
+using Socializer.API.SignalR;
 using Socializer.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -43,6 +45,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chathub");
 
 // Seed db with single client
 using (var scope = app.Services.CreateScope())

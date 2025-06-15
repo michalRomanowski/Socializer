@@ -2,4 +2,5 @@
 
 public class UserDto : Dto
 {
+    public string Username { get; set; }
 }
