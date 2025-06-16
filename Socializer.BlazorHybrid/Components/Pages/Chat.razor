@@ -18,7 +18,7 @@
     <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
         @foreach (var message in chatViewModel.Messages)
         {
-            <div class="message @message.Author">@message.Content</div>
+            <div class="message @StyleClass(message.Author)">@message.Content</div>
         }
     </div>
 
@@ -62,8 +62,18 @@
         if (result.IsSuccess)
         {
             chatViewModel.NewMessage = string.Empty;
-
         }
+    }
+
+    private string StyleClass(string author)
+    {
+        if(stateContainer.User.Username.Equals(author, StringComparison.InvariantCultureIgnoreCase))
+			return "user-self";
+
+        if ("bot".Equals(author, StringComparison.InvariantCultureIgnoreCase))
+            return "user-bot";
+
+		return "user-other";
     }
 
     public async ValueTask DisposeAsync()

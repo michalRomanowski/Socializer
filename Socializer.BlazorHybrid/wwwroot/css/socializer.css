@@ -147,17 +147,17 @@ label {
 }
 
 /* Messages from different users */
-.user1 {
+.user-self {
     align-self: flex-start;
     background-color: bisque;
 }
 
-.user2 {
+.user-other {
     align-self: flex-end;
     background-color: cornflowerblue;
 }
 
-.user3 {
+.user-bot {
     align-self: flex-end;
     background-color: aquamarine;
 }
