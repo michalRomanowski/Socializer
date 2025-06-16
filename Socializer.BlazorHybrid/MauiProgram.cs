@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Socializer.BlazorHybrid.Services;
 using Socializer.Client;
-using Socializer.Shared;
 
 namespace Socializer.BlazorHybrid
 {
@@ -25,6 +24,7 @@ namespace Socializer.BlazorHybrid
             builder.Services.AddScoped((services) => mobileAppSettings);
             builder.Services.AddScoped<IClient, OpenIddictClient>();
             builder.Services.AddSocializerClient(mobileAppSettings);
+            builder.Services.AddChatConnectionClient(mobileAppSettings);
             builder.Services.AddScoped<LayoutState>();
             builder.Services.AddScoped<StateContainer>();
             builder.Services.AddScoped<IGeoLocationService, GeoLocationService>();

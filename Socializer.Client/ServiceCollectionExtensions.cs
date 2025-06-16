@@ -4,6 +4,7 @@ using OpenIddict.Abstractions;
 using OpenIddict.Client;
 using Polly;
 using Polly.Extensions.Http;
+using Socializer.Client.ChatClient;
 using Socializer.Shared;
 
 namespace Socializer.Client;
@@ -42,6 +43,13 @@ public static class ServiceCollectionExtensions
                         (result, delay, retryCount, context) => {
                             Console.WriteLine($"Retry {retryCount} in {delay.TotalSeconds}s due to {result.Exception?.Message ?? result.Result?.StatusCode.ToString()}");
                         }));
+
+        return services;
+    }
+
+    public static IServiceCollection AddChatConnectionClient(this IServiceCollection services, SharedSettings settings)
+    {
+        services.AddScoped<IChatConnectionClient, SignalRChatConnectionClient>();
 
         return services;
     }
