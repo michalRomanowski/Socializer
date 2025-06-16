@@ -10,7 +10,7 @@ namespace Socializer.Client;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSocializerClient(this IServiceCollection services, SharedSettings mobileAppSettings)
+    public static IServiceCollection AddSocializerClient(this IServiceCollection services, SharedSettings settings)
     {
         services.AddSingleton<ISocializerClient, SocializerClient>();
 
@@ -20,8 +20,8 @@ public static class ServiceCollectionExtensions
             {
                 options.AddRegistration(new OpenIddictClientRegistration
                 {
-                    Issuer = new Uri(mobileAppSettings.SocializerApiUrl),
-                    ClientId = mobileAppSettings.ClientId,
+                    Issuer = new Uri(settings.SocializerApiUrl),
+                    ClientId = settings.ClientId,
                     GrantTypes = { OpenIddictConstants.GrantTypes.Password, OpenIddictConstants.GrantTypes.RefreshToken },
                     Scopes = { OpenIddictConstants.Scopes.OfflineAccess }
                 });
