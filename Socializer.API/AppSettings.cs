@@ -1,4 +1,5 @@
-﻿using Socializer.Shared;
+﻿using Socializer.LLM;
+using Socializer.Shared;
 
 namespace Socializer.API;
 
@@ -7,7 +8,8 @@ public class AppSettings
     public LoggingSettings Logging { get; set; } = new();
     public ConnectionStrings ConnectionStrings { get; set; } = new();
     public AuthSettings Auth { get; set; } = new();
-    public SharedSettings MobileAppSettings { get; set; } = new();
+    public SharedSettings SharedSettings { get; set; } = new();
+    public HuggingFaceSettings LLMSettings { get; set; } = new();
 }
 
 public class LoggingSettings

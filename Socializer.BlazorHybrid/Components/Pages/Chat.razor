@@ -22,10 +22,9 @@
         }
     </div>
 
-    <div class="chat-input">
-        <InputText class="chat-input-field" @bind-Value="chatViewModel.NewMessage" title="Type message .." />
-        <button class="chat-input-button" @onclick="SendMessageAsync">Send</button>
-    </div>
+    <InputText class="input-field" @bind-Value="chatViewModel.NewMessage" title="Type message .." />
+
+    <button class="button-big" @onclick="SendMessageAsync">Send</button>
 </div>
 
 @code {

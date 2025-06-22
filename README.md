@@ -19,3 +19,6 @@ To start NGROK tunneling:
 # Running on my Mobile
 In case of problems: adb devices
 and see if it is listed at all
+
+# Huggingface
+To try chat with different models: https://huggingface.co/chat/models

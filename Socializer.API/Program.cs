@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Socializer.API.Auth;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
@@ -7,12 +9,19 @@ using Socializer.API.Services.Interfaces;
 using Socializer.API.Services.Services;
 using Socializer.API.SignalR;
 using Socializer.Database;
+using Socializer.LLM;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SocializerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SocializerConnectionString")));
+
+//builder.Services.AddSingleton(
+//    builder.Configuration.GetSection(nameof(HuggingFaceSettings)).Get<HuggingFaceSettings>());
+
+builder.Services.AddSingleton(
+    builder.Configuration.GetSection(nameof(TogetherAISettings)).Get<TogetherAISettings>());
 
 builder.Services.AddControllers(options =>
 {
@@ -25,6 +34,9 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSignalR();
+//builder.Services.AddTransient<ILLMClient, HuggingFaceClient>();
+builder.Services.AddTransient<ILLMClient, TogetherAISocializerClient>();
+
 
 var app = builder.Build();
 

@@ -6,5 +6,5 @@ internal class Constants
     /// Config server url must be hardcoded one way or another
     /// TODO: Some extra security should be applied, like additional encoding
     /// </summary>
-    public const string ConfigUrl = "https://482c-46-6-119-108.ngrok-free.app" + "/Config";
+    public const string ConfigUrl = "https://09ab-5-172-255-197.ngrok-free.app" + "/Config";
 }
