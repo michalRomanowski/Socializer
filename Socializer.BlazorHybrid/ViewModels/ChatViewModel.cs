@@ -20,6 +20,10 @@
             new ChatMessage(){ Author = "Michal", Content = "Message7"},
             new ChatMessage(){ Author = "user2", Content = "Message8"},
             new ChatMessage(){ Author = "user3", Content = "Message9"},
+            new ChatMessage(){ Author = "user3", Content = "Message10"},
+            new ChatMessage(){ Author = "user3", Content = "Message11"},
+            new ChatMessage(){ Author = "user3", Content = "Message12"},
+            new ChatMessage(){ Author = "user3", Content = "Message13"}
         ];
     }
 }
