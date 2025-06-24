@@ -22,7 +22,7 @@
         }
     </div>
 
-    <InputText class="input-field" @bind-Value="chatViewModel.NewMessage" title="Type message .." />
+    <InputText class="input-field" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
 
     <button class="button-big" @onclick="SendMessageAsync">Send</button>
 </div>
@@ -41,14 +41,14 @@
         await chatConnectionClient.InitAsync(OnReceiveMessageAsync);
 
         await Task.Delay(100);
-        await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef); // TODO: Move to some service class
+        await ScrollToBottomAsync();
     }
 
     private async Task OnReceiveMessageAsync(string author, string content)
     {
         chatViewModel.Messages.Add(new ChatMessage() { Author = author, Content = content });
         await InvokeAsync(StateHasChanged);
-        await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
+        await ScrollToBottomAsync();
     }
 
     private async Task SendMessageAsync()
@@ -67,16 +67,29 @@
     private string StyleClass(string author)
     {
         if(stateContainer.User.Username.Equals(author, StringComparison.InvariantCultureIgnoreCase))
-			return "user-self";
+            return "user-self";
 
         if ("bot".Equals(author, StringComparison.InvariantCultureIgnoreCase))
             return "user-bot";
 
-		return "user-other";
+        return "user-other";
     }
 
     public async ValueTask DisposeAsync()
     {
         await chatConnectionClient.DisposeAsync();
+    }
+
+    private async Task ScrollToBottomAsync()
+    {
+        await Task.Delay(200);
+        await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
+    }
+
+    // TODO: Kill me for this func name
+    private async Task ScrollToBottomIfBottomAsync()
+    {
+        if (await js.InvokeAsync<bool>("isScrollAtBottom", chatMessagesRef))
+            await ScrollToBottomAsync();
     }
 }
