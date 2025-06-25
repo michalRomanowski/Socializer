@@ -1,12 +1,12 @@
-﻿using Microsoft.Maui.Storage;
+﻿using Common.Utils;
+using Microsoft.Maui.Storage;
+using OpenIddict.Client;
+using Socializer.Shared;
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using OpenIddict.Client;
 using static OpenIddict.Client.OpenIddictClientModels;
-using System.Globalization;
-using Socializer.Shared;
-using Common.Utils;
 
 namespace Common.Client;
 
@@ -59,13 +59,12 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
             // TODO: MAUI Storage should not be in this project
             await SecureStorage.Default.SetAsync("access_token", result.AccessToken);
             await SecureStorage.Default.SetAsync("refresh_token", result.RefreshToken);
-            await SecureStorage.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
+            await SecureStorage.Default.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
 
             return OperationResult<bool>.Success(true);
         }
         catch (Exception ex)
         {
-            // TODO: Add logging somehow
             return OperationResult<bool>.Failure(ex);
         }
     }
@@ -81,7 +80,6 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
         }
         catch (Exception ex)
         {
-            // TODO: Add logging somehow
             return OperationResult<bool>.Failure(ex);
         }
     }
@@ -111,7 +109,6 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
         }
         catch (Exception ex)
         {
-            // TODO: Add logging somehow
             return OperationResult<bool>.Failure(ex);
         }
     }

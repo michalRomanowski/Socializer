@@ -69,7 +69,6 @@ public class OperationResult<TResult>
         }
         catch (Exception ex)
         {
-            // TODO: log exception only, for now will expose ex.message in response to see in UI for early stage
             return OperationResult<TResult>.Failure(
                 $"Error processing response. Message: {ex.Message} InnerMessage: {ex.InnerException?.Message ?? "NULL"}");
         }
