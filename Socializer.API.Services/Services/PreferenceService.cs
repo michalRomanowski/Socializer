@@ -30,7 +30,7 @@ public class PreferenceService(ILLMClient llmClient, ILogger<PreferenceService> 
         var preferencesPrompt = new StringBuilder("From this text:");
         preferencesPrompt.AppendLine($"\"{prompt}\"");
         // TODO: build list of properties from EPreferenceType
-        preferencesPrompt.AppendLine($"Extract properties of types: {preferenceTypesText}, for each property link to http://dbpedia.org.");
+        preferencesPrompt.AppendLine($"Extract properties corresponding to text of types: {preferenceTypesText}, for each property add link to http://dbpedia.org.");
         preferencesPrompt.AppendLine("Return only list in form:");
         preferencesPrompt.AppendLine("type, link");
         preferencesPrompt.AppendLine("and nothing else.");
