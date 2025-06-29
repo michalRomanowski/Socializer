@@ -17,7 +17,7 @@ public class HuggingFaceClient : ILLMClient
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", settings.Token);
     }
 
-    public async Task<string> QueryAsync(string prompt)
+    public async Task<string> QueryAsync(string prompt, int maxTokens = default)
     {
         var url = $"https://api-inference.huggingface.co/models/{settings.Model}";
 
