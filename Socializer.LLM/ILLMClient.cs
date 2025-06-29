@@ -2,6 +2,6 @@
 {
     public interface ILLMClient : IDisposable
     {
-        Task<string> QueryAsync(string prompt);
+        Task<string> QueryAsync(string prompt, int maxTokens = default);
     }
 }
