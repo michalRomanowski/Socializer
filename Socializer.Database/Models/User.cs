@@ -1,8 +1,9 @@
-﻿namespace Socializer.Database.Models
+﻿namespace Socializer.Database.Models;
+
+public class User : Entity
 {
-    public class User : Entity
-    {
-        public string Email { get; set; }
-        public string Username { get; set; }
-    }
+    public List<Preference> Preferences { get; set; } = [];
+
+    public string Email { get; set; }
+    public string Username { get; set; }
 }
