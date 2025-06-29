@@ -1,6 +1,7 @@
 ﻿@page "/chat"
 
 @using Microsoft.AspNetCore.SignalR.Client
+@using Socializer.BlazorHybrid.Extensions
 @using Socializer.BlazorHybrid.ViewModels
 @using Socializer.Client.ChatClient
 @using Socializer.Shared
@@ -18,7 +19,7 @@
     <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
         @foreach (var message in chatViewModel.Messages)
         {
-            <div class="message @StyleClass(message.Author)">@message.Content</div>
+            <div class="message @StyleClass(message.Author)">@message.Content.ToHtmlBreaks()</div>
         }
     </div>
 
