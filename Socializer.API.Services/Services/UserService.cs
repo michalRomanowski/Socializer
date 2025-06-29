@@ -67,4 +67,18 @@ public class UserService(ILogger<UserService> logger, SocializerDbContext dbCont
 
         return OperationResult<CreateUserDto>.Success(newUserDto);
     }
+
+    public async Task<User> AddPreferencesAsync(string username, IEnumerable<Preference> preferences)
+    {
+        var user = await dbContext.Users
+            .Include(x => x.Preferences)
+            .SingleAsync(x => x.Username == username);
+
+        user.Preferences.AddRange(preferences);
+        user.Preferences = user.Preferences.DistinctBy(x => new { x.Url, x.PreferenceType }).ToList();
+
+        await dbContext.SaveChangesAsync();
+
+        return user;
+    }
 }
