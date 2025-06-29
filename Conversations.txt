@@ -1,0 +1,16 @@
+From this text:
+"I like playing computer games, especially Age of Empires 2 and some on PS5. I'm interested in football, especially italian, Juventus is my favorite club. Soccer is what I love. I walk my dog a lots. I speak English and Frech."
+Extract properties of types: "interest", "activity", "hobby", "knownLanguage", for each property link to http://dbpedia.org in form of .csv.
+Return only list in form:
+type, link;
+and nothing else.
+
+
+
+
+
+I like playing computer games, especially Age of Empires 2 and some on PS5. I'm interested in football, especially italian, Juventus is my favorite club. Soccer is what I love. I walk my dog a lots. I speak English and Frech.
+
+Czuję się samotna i chciałabym znaleźć koleżankę do wspólnych zakupów, najchętniej w tanich sklepach z używaną odzieżą.
+
+Chciałbym znaleźć pomoc kogoś ambitnego lub doświadczonego w sprawach lokalnej polityki. Chodzi o rozbudowę ronda, która zagrozi skomunikowaniu mojej dzielnicy.

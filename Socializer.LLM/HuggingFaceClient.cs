@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
+using Socializer.Database.Models;
 
 namespace Socializer.LLM;
 
@@ -30,6 +31,11 @@ public class HuggingFaceClient : ILLMClient
 
         var responseText = await response.Content.ReadAsStringAsync();
         return responseText;
+    }
+
+    public Task<IEnumerable<Preference>> GetPreferences(string prompt)
+    {
+        throw new NotImplementedException();
     }
 
     public void Dispose() => httpClient?.Dispose();
