@@ -13,14 +13,22 @@ namespace Socializer.LLM
             return sb;
         }
 
+        public static StringBuilder AppendSafetyCensorship(this StringBuilder sb)
+        {
+            sb.AppendLine($"Remove non Family Friendly parts.");
+            return sb;
+        }
+
         public static StringBuilder PreferencesPrompt(string prompt)
         {
             var sb = new StringBuilder("From this text:");
             sb.AppendLine($"\"{prompt}\"");
+            sb.AppendSafetyCensorship();
             sb.AppendLine($"Find http://dbpedia.org resources for up to 10 {preferenceTypesText} properties corresponding to text.");
             sb.AppendLine($"Prioritize {EPreferenceType.Activity}.");
             sb.AppendLine("Return only list in form:");
-            sb.AppendLine($"type(from: {preferenceTypesText}), resourceUri(without prefix 'http://dbpedia.org/resource/')");
+            sb.AppendLine($"type, resource");
+            sb.AppendLine($"Where type is value from list: {preferenceTypesText}. Resource is dbpedia resource uri without prefix 'http://dbpedia.org/resource/'");
             sb.AppendLine("and nothing else.");
             sb.AppendTokenLimit(100); // TODO: Configurable
 
