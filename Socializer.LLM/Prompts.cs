@@ -17,10 +17,12 @@ namespace Socializer.LLM
         {
             var sb = new StringBuilder("From this text:");
             sb.AppendLine($"\"{prompt}\"");
-            sb.AppendLine($"Extract properties corresponding to text of types: {preferenceTypesText}, for each property add link to http://dbpedia.org.");
+            sb.AppendLine($"Find http://dbpedia.org resources for up to 10 {preferenceTypesText} properties corresponding to text.");
+            sb.AppendLine($"Prioritize {EPreferenceType.Activity}.");
             sb.AppendLine("Return only list in form:");
-            sb.AppendLine("type, link");
+            sb.AppendLine($"type(from: {preferenceTypesText}), resourceUri(without prefix 'http://dbpedia.org/resource/')");
             sb.AppendLine("and nothing else.");
+            sb.AppendTokenLimit(100); // TODO: Configurable
 
             return sb;
         }
