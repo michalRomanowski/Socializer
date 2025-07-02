@@ -23,5 +23,9 @@ and see if it is listed at all
 # Huggingface
 To try chat with different models: https://huggingface.co/chat/models
 
-To talk with model:
 https://huggingface.co/chat/models/meta-llama/Llama-3.3-70B-Instruct
+
+# dbpedia.org
+
+DBPedia resource link:
+http://dbpedia.org/resource/<resource>
