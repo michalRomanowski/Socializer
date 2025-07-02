@@ -55,7 +55,6 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
         {
             var result = await clientService.AuthenticateWithPasswordAsync(new PasswordAuthenticationRequest() { Username = username, Password = password });
 
-
             // TODO: MAUI Storage should not be in this project
             await SecureStorage.Default.SetAsync("access_token", result.AccessToken);
             await SecureStorage.Default.SetAsync("refresh_token", result.RefreshToken);

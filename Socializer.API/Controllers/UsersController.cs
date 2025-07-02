@@ -21,7 +21,6 @@ public class UsersController(IUserService userService) : SocializerControllerBas
             BadRequest(operationResult.Errors);
     }
 
-    [Authorize]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [HttpGet("Me")]
     public async Task<IActionResult> Get()

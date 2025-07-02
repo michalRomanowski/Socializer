@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Socializer.API.Services.Interfaces;
 using Socializer.LLM;
 using System.Text;
 
 namespace Socializer.API.SignalR;
 
+[Authorize(AuthenticationSchemes = "Bearer")]
 public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserService userService, ILogger<ChatHub> logger) : Hub
 {
     public override async Task OnConnectedAsync()
     {
-        await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage().ToString());
+        // TODO: Add some more error handling, maybe by sending message in chat and logging.
+        var userResult = await userService.GetUserAsync(new Guid(Context.UserIdentifier));
+
+        await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(userResult.Result.Username).ToString());
     }
 
     public async Task SendMessage(string username, string message)
