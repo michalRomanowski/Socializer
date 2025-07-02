@@ -7,6 +7,11 @@ namespace Socializer.API.SignalR;
 
 public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserService userService, ILogger<ChatHub> logger) : Hub
 {
+    public override async Task OnConnectedAsync()
+    {
+        await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage().ToString());
+    }
+
     public async Task SendMessage(string username, string message)
     {
         try
