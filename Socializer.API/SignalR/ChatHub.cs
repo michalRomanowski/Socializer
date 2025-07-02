@@ -33,8 +33,8 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
             var preferences = await preferenceService.GetPreferencesAsync(message);
             var updatedUser = await userService.AddPreferencesAsync(username, preferences);
 
-            var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.Url}"));
-            var allPreferencesMessage = string.Join("\r\n", updatedUser.Preferences.Select(x => $"{x.PreferenceType} {x.Url}"));
+            var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
+            var allPreferencesMessage = string.Join("\r\n", updatedUser.Preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
 
             // TODO: for debug purposes, add config feature flag
             await Clients.All.SendAsync("ReceiveMessage", "bot", newPreferencesMessage);

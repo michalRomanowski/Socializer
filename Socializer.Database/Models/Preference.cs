@@ -6,5 +6,5 @@ public class Preference : Entity
     public User User { get; set; }
 
     public EPreferenceType PreferenceType { get; set; }
-    public string Url { get; set; }
+    public string DBPediaResource { get; set; }
 }

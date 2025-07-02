@@ -75,7 +75,7 @@ public class UserService(ILogger<UserService> logger, SocializerDbContext dbCont
             .SingleAsync(x => x.Username == username);
 
         user.Preferences.AddRange(preferences);
-        user.Preferences = user.Preferences.DistinctBy(x => new { x.Url, x.PreferenceType }).ToList();
+        user.Preferences = user.Preferences.DistinctBy(x => new { x.DBPediaResource, x.PreferenceType }).ToList();
 
         await dbContext.SaveChangesAsync();
 

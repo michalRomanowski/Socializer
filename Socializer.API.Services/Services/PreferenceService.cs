@@ -45,7 +45,7 @@ public class PreferenceService(ILLMClient llmClient, ILogger<PreferenceService> 
                     new Preference()
                     {
                         PreferenceType = type,
-                        Url = link,
+                        DBPediaResource = link,
                     });
             }
             catch(Exception ex) // Log and skip failed lines
