@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Text;
 using Together.AI;
 
 namespace Socializer.LLM
@@ -20,14 +21,14 @@ namespace Socializer.LLM
             client = new TogetherAIClient(httpClient);
         }
 
-        public async Task<string> QueryAsync(string prompt, int maxTokens)
+        public async Task<string> QueryAsync(StringBuilder prompt, int tokenLimit, string? context)
         {
-            if(maxTokens != default)
-                prompt += $". Keep response within {maxTokens} tokens limit.";
+            if(tokenLimit != default)
+                prompt.AppendTokenLimit(tokenLimit);
 
             var messages = new List<TogetherAIChatMessage>
             {
-                new TogetherAIChatUserMessage(prompt)
+                new TogetherAIChatUserMessage(prompt.ToString())
             };
 
             // Setup Request Arguments
@@ -38,14 +39,14 @@ namespace Socializer.LLM
                 "</s>",
                 "[/INST]"
             ],
-                MaxTokens = maxTokens,
-                Messages = messages,
+                MaxTokens = tokenLimit,
+                Messages = messages
             };
 
             // Getting result
             var result = await client.GetChatCompletionsAsync(chatArgs);
 
-            logger.LogInformation("Received response from Together AI with CompletionTokens: {CompletionTokens} TotalTokens: {TotalTokens} MaxTokens: {}.", result.Usage.CompletionTokens, result.Usage.TotalTokens, maxTokens);
+            logger.LogInformation("Received response from Together AI with CompletionTokens: {CompletionTokens} TotalTokens: {TotalTokens} MaxTokens: {}.", result.Usage.CompletionTokens, result.Usage.TotalTokens, tokenLimit);
 
             return result?.Choices?.FirstOrDefault()?.Message?.Content ?? throw new NotImplementedException(); // TODO: Some better exception
         }

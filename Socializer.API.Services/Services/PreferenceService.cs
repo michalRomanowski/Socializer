@@ -2,17 +2,14 @@
 using Socializer.API.Services.Interfaces;
 using Socializer.Database.Models;
 using Socializer.LLM;
-using System.Text;
 
 namespace Socializer.API.Services.Services;
 
 public class PreferenceService(ILLMClient llmClient, ILogger<PreferenceService> logger) : IPreferenceService
 {
-    private static readonly string preferenceTypesText = string.Join(", ", Enum.GetNames(typeof(EPreferenceType)).Select(x => $"\"{x}\""));
-
     public async Task<IEnumerable<Preference>> GetPreferencesAsync(string prompt)
     {
-        var preferencesPrompt = FormatPreferencesPrompt(prompt);
+        var preferencesPrompt = Prompts.PreferencesPrompt(prompt);
 
         logger.LogDebug("Preferences prompt: {PreferencesPrompt}", preferencesPrompt);
 
@@ -23,19 +20,6 @@ public class PreferenceService(ILLMClient llmClient, ILogger<PreferenceService> 
         logger.LogInformation("Extracted {PreferencesCount} preferences.", preferences.Count);
 
         return preferences;
-    }
-
-    private static string FormatPreferencesPrompt(string prompt)
-    {
-        var preferencesPrompt = new StringBuilder("From this text:");
-        preferencesPrompt.AppendLine($"\"{prompt}\"");
-        // TODO: build list of properties from EPreferenceType
-        preferencesPrompt.AppendLine($"Extract properties corresponding to text of types: {preferenceTypesText}, for each property add link to http://dbpedia.org.");
-        preferencesPrompt.AppendLine("Return only list in form:");
-        preferencesPrompt.AppendLine("type, link");
-        preferencesPrompt.AppendLine("and nothing else.");
-
-        return preferencesPrompt.ToString();
     }
 
     private List<Preference> ExtractPreferences(string csv)
