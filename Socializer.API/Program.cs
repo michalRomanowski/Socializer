@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Socializer.API.Auth;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;

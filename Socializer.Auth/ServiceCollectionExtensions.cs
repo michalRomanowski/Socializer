@@ -1,5 +1,4 @@
-﻿//using Microsoft.AspNetCore.Authentication.JwtBearer; // UNCOMMENT FOR AUTH DEBUGGING
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Socializer.Database;
 using Socializer.Database.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Socializer.API.Auth;
 
@@ -39,9 +39,15 @@ public static class ServiceCollectionExtensions
                 options.AllowRefreshTokenFlow();
                 options.AcceptAnonymousClients(); // For public clients like MAUI
 
-                options.AddDevelopmentSigningCertificate();     // Sign tokens, TODO: replace with real cert for prod
-                options.DisableAccessTokenEncryption();         // Disable only for Access token
-                options.AddDevelopmentEncryptionCertificate();  // Other kinds of tokens still need encryption Cert TODO: replace with real cert for prod
+                var signInCert = new X509Certificate2("socializerSignIn.pfx", "p6urE3D3BK1kLYuIDRuf");
+                options.AddSigningCertificate(signInCert);
+                //options.AddDevelopmentSigningCertificate(); // For dev
+
+                options.DisableAccessTokenEncryption(); // Disable only for Access token
+
+                var encryptionCert = new X509Certificate2("socializerEncryption.pfx", "aXrQO9PazlrBG74hzQsw");
+                options.AddEncryptionCertificate(encryptionCert);
+                //options.AddDevelopmentEncryptionCertificate(); // For dev
 
                 options.UseAspNetCore()
                        .EnableTokenEndpointPassthrough()
