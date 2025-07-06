@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Socializer.API.Auth\Socializer.API.Auth.csproj" />
     <ProjectReference Include="..\Socializer.API.Services\Socializer.API.Services.csproj" />
-    <ProjectReference Include="..\Socializer.Auth\Socializer.API.Auth.csproj" />
     <ProjectReference Include="..\Socializer.Database\Socializer.Database.csproj" />
     <ProjectReference Include="..\Socializer.LLM\Socializer.LLM.csproj" />
   </ItemGroup>

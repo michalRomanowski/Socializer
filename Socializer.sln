@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API", "Socialize
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.Shared", "Socializer.Shared\Socializer.Shared.csproj", "{C4BE2C49-65A5-47A7-BEC4-83B256102290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API.Auth", "Socializer.Auth\Socializer.API.Auth.csproj", "{19734B0F-0BAE-47C5-90CB-E7595BEB6A85}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.Database", "Socializer.Database\Socializer.Database.csproj", "{6E75C4F9-0AAA-49F1-BDBD-45956CD3BD11}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API.Services", "Socializer.API.Services\Socializer.API.Services.csproj", "{994D56C5-02C5-4FF1-A9FF-E48483F3F487}"
@@ -22,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.BlazorHybrid", "Socializer.BlazorHybrid\Socializer.BlazorHybrid.csproj", "{CD56715F-434E-43A5-A13B-18FC327091C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.LLM", "Socializer.LLM\Socializer.LLM.csproj", "{0E8925A7-6DD7-48F7-830A-46611C8873AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API.Auth", "Socializer.API.Auth\Socializer.API.Auth.csproj", "{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{C4BE2C49-65A5-47A7-BEC4-83B256102290}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4BE2C49-65A5-47A7-BEC4-83B256102290}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4BE2C49-65A5-47A7-BEC4-83B256102290}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19734B0F-0BAE-47C5-90CB-E7595BEB6A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19734B0F-0BAE-47C5-90CB-E7595BEB6A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19734B0F-0BAE-47C5-90CB-E7595BEB6A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19734B0F-0BAE-47C5-90CB-E7595BEB6A85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6E75C4F9-0AAA-49F1-BDBD-45956CD3BD11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E75C4F9-0AAA-49F1-BDBD-45956CD3BD11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E75C4F9-0AAA-49F1-BDBD-45956CD3BD11}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,6 +67,10 @@ Global
 		{0E8925A7-6DD7-48F7-830A-46611C8873AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8925A7-6DD7-48F7-830A-46611C8873AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8925A7-6DD7-48F7-830A-46611C8873AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
