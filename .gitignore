@@ -74,3 +74,6 @@ build/
 
 ## Appsettings
 *appsettings*.json
+
+## Secret part of Readme
+/README.SECRET.md
