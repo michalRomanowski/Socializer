@@ -18,13 +18,4 @@
     <ProjectReference Include="..\Socializer.LLM\Socializer.LLM.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="socializerEncryption.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="socializerSignIn.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

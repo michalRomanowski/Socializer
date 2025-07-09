@@ -73,7 +73,10 @@ build/
 *.log
 
 ## Appsettings
-*appsettings*.json
+*appsettings.*
 
-## Secret part of Readme
-/README.SECRET.md
+## Certificates
+*.pfx
+
+## Secret nstructions
+README.SECRET.md
