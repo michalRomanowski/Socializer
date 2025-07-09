@@ -71,3 +71,6 @@ build/
 
 ## Logs
 *.log
+
+## Appsettings
+*appsettings*.json
