@@ -36,7 +36,6 @@ builder.Services.AddSignalR();
 //builder.Services.AddTransient<ILLMClient, HuggingFaceClient>();
 builder.Services.AddTransient<ILLMClient, TogetherAISocializerClient>();
 
-
 var app = builder.Build();
 
 app.UseMiddleware<RequestMiddleware>();
@@ -58,6 +57,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<ChatHub>("/chathub");
+
+app.Services.MigrateDatabase(app.Logger);
 
 // Seed db with single client
 using (var scope = app.Services.CreateScope())
