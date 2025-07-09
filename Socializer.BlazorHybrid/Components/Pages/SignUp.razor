@@ -44,7 +44,7 @@
         var result = await socializerClient.CreateUserAsync(createUserUI);
 
         if (result.IsSuccess)
-            navigation.NavigateTo("/main");
+            navigation.NavigateTo("/");
         else
             layoutState.ErrorMessage = result.ErrorMessage;
     }
