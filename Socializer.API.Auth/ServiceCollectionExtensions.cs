@@ -39,15 +39,19 @@ public static class ServiceCollectionExtensions
                 options.AllowRefreshTokenFlow();
                 options.AcceptAnonymousClients(); // For public clients like MAUI
 
-                var signInCert = new X509Certificate2("socializerSignIn.pfx", "p6urE3D3BK1kLYuIDRuf");
+                var signInCert = new X509Certificate2(
+                    "C:\\Certs\\SocializerOpenIddictSignInCert.pfx",
+                    Environment.GetEnvironmentVariable("SocializerOpenIddictSignInCert_PASSWORD"));
+
                 options.AddSigningCertificate(signInCert);
-                //options.AddDevelopmentSigningCertificate(); // For dev
 
                 options.DisableAccessTokenEncryption(); // Disable only for Access token
 
-                var encryptionCert = new X509Certificate2("socializerEncryption.pfx", "aXrQO9PazlrBG74hzQsw");
+                var encryptionCert = new X509Certificate2(
+                    "C:\\Certs\\SocializerOpenIddictEncryptionCert.pfx",
+                    Environment.GetEnvironmentVariable("SocializerOpenIddictEncryptionCert_PASSWORD"));
+
                 options.AddEncryptionCertificate(encryptionCert);
-                //options.AddDevelopmentEncryptionCertificate(); // For dev
 
                 options.UseAspNetCore()
                        .EnableTokenEndpointPassthrough()
