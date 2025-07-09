@@ -29,10 +29,6 @@ https://huggingface.co/chat/models/meta-llama/Llama-3.3-70B-Instruct
 DBPedia resource link:
 http://dbpedia.org/resource/<resource>
 
-# SmartAspNetApp
-Publish from Visual Studio Instruction:
-https://www.smarterasp.net/support/kb/a2211/core-to-core-converting-a-framework-dependent-app-to-self-contained-in-visual-studio-2022.aspx
-
 # Create cert
 dotnet dev-certs https -ep socializerEncryption.pfx -p yourpassword
 dotnet dev-certs https -ep socializerSignIn.pfx -p yourpassword
