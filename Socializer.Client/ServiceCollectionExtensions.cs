@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
                 options.AddRegistration(new OpenIddictClientRegistration
                 {
                     Issuer = new Uri(settings.SocializerApiUrl),
-                    ClientId = settings.ClientId,
+                    ClientId = "socializer-client-id",
                     GrantTypes = { OpenIddictConstants.GrantTypes.Password, OpenIddictConstants.GrantTypes.RefreshToken },
                     Scopes = { OpenIddictConstants.Scopes.OfflineAccess }
                 });

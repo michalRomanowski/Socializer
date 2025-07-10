@@ -76,7 +76,7 @@ public static class ServiceCollectionExtensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = false,
-                    ValidAudience = configuration["Auth:ResourceServerName"]
+                    ValidAudience = configuration["AuthSettings:ResourceServerName"]
                 };
 
                 options.Events = new JwtBearerEvents

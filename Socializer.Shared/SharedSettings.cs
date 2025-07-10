@@ -6,5 +6,4 @@
 public class SharedSettings
 {
     public string SocializerApiUrl { get; set; } = string.Empty;
-    public string ClientId { get; set; } = string.Empty;
 }

@@ -43,7 +43,7 @@ public class AuthTokenController(UserManager<ApplicationUser> userManager, SignI
         );
 
         principal.SetClaim(OpenIddictConstants.Claims.Subject, user.Id);
-        principal.SetResources(configuration["Auth:ResourceServerName"]);
+        principal.SetResources(configuration["AuthSettings:ResourceServerName"]);
 
         return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
     }
@@ -54,7 +54,7 @@ public class AuthTokenController(UserManager<ApplicationUser> userManager, SignI
         var refreshPrincipal = result.Principal;
 
         // Optionally regenerate or update claims here
-        refreshPrincipal.SetResources(configuration["Auth:ResourceServerName"]);
+        refreshPrincipal.SetResources(configuration["AuthSettings:ResourceServerName"]);
 
         return SignIn(refreshPrincipal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
     }
