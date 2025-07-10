@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Identity.Client;
+using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
 using Socializer.LLM;
 using System.Text;
@@ -8,7 +8,8 @@ using System.Text;
 namespace Socializer.API.SignalR;
 
 [Authorize(AuthenticationSchemes = "Bearer")]
-public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserPreferenceService userPreferenceService, IUserService userService, ILogger<ChatHub> logger) : Hub
+public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserPreferenceService userPreferenceService, 
+    IUserService userService, IUserMatchingService userMatchingService, ILogger<ChatHub> logger) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -27,9 +28,17 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
             logger.LogDebug("Received message: '{Message}' from User: '{User}'.", message, username);
 
-            if("r".Equals(message) || "report".Equals(message))
+            if("p".Equals(message) || "preferences".Equals(message))
             {
                 await UserPreferencesMessageAsync(username);
+                return;
+            }
+
+            if ("m".Equals(message) || "matches".Equals(message))
+            {
+                var matches = await userMatchingService.UserMatchesAsync(username);
+
+                await UserMatchesMessageAsync(matches);
                 return;
             }
 
@@ -68,5 +77,24 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         var userPreferencesMessage = string.Join("\r\n", userPreferences.Select(x => $"{x.Preference.DBPediaResource} {x.Preference.PreferenceType} {x.Count} {x.Weight}"));
 
         await Clients.All.SendAsync("ReceiveMessage", "bot", userPreferencesMessage);
+    }
+
+    private async Task UserMatchesMessageAsync(IEnumerable<UserMatch> matches)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var m in matches.OrderByDescending(x => x.MatchWeight))
+        {
+            sb.AppendLine($"{m.User2.Username} {m.MatchWeight}");
+
+            foreach(var pm in m.PreferenceMatches.OrderByDescending(x => x.MatchWeight))
+            {
+                sb.AppendLine($"- {pm.User1Preference.Preference.DBPediaResource} {pm.MatchWeight}");
+            }
+
+            sb.AppendLine();
+        }
+
+        await Clients.All.SendAsync("ReceiveMessage", "bot", sb.ToString());
     }
 }
