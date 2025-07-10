@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Socializer.LLM\Socializer.LLM.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
