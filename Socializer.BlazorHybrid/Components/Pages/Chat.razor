@@ -23,7 +23,7 @@
         }
     </div>
 
-    <InputText class="input-field" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
+    <InputText class="input-field" maxlength="500" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
 
     <button class="button-big" @onclick="SendMessageAsync">Send</button>
 </div>

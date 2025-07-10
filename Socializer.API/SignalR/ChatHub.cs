@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Identity.Client;
 using Socializer.API.Services.Interfaces;
 using Socializer.LLM;
 using System.Text;
@@ -21,6 +22,9 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
     {
         try
         {
+            if(message.Length > 800)
+                message = message[..800]; // TODO: Chars limit configurable
+
             logger.LogDebug("Received message: '{Message}' from User: '{User}'.", message, username);
 
             if("r".Equals(message) || "report".Equals(message))
