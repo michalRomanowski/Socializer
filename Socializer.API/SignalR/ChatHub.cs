@@ -7,7 +7,7 @@ using System.Text;
 namespace Socializer.API.SignalR;
 
 [Authorize(AuthenticationSchemes = "Bearer")]
-public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserService userService, ILogger<ChatHub> logger) : Hub
+public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserPreferenceService userPreferenceService, IUserService userService, ILogger<ChatHub> logger) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -23,6 +23,12 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         {
             logger.LogDebug("Received message: '{Message}' from User: '{User}'.", message, username);
 
+            if("r".Equals(message) || "report".Equals(message))
+            {
+                await UserPreferencesMessageAsync(username);
+                return;
+            }
+
             await Clients.All.SendAsync("ReceiveMessage", username, message);
 
             var llmResponse = await lLMClient.QueryAsync(new StringBuilder(message), 200); // TODO: Limit can be configurable
@@ -30,18 +36,28 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
             await Task.Delay(10000); // TODO: Delay added because of requests limit for free models
 
-            var preferences = await preferenceService.GetPreferencesAsync(message);
-            var updatedUser = await userService.AddPreferencesAsync(username, preferences);
+            var preferences = await preferenceService.ExtractPreferencesAsync(message);
+
+            foreach(var p in preferences)
+            {
+                await userPreferenceService.UpdateOrAddAsync(username, p);
+            }
 
             var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
-            var allPreferencesMessage = string.Join("\r\n", updatedUser.Preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
 
             // TODO: for debug purposes, add config feature flag
             await Clients.All.SendAsync("ReceiveMessage", "bot", newPreferencesMessage);
-            await Clients.All.SendAsync("ReceiveMessage", "bot", allPreferencesMessage);
         }
         catch (Exception ex){
             logger.LogError(ex, "Exception in chat.");
         }
+    }
+
+    private async Task UserPreferencesMessageAsync(string username)
+    {
+        var userPreferences = await userPreferenceService.GetAsync(username);
+        var userPreferencesMessage = string.Join("\r\n", userPreferences.Select(x => $"{x.Preference.DBPediaResource} {x.Preference.PreferenceType} {x.Count} {x.Weight}"));
+
+        await Clients.All.SendAsync("ReceiveMessage", "bot", userPreferencesMessage);
     }
 }

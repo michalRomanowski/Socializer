@@ -32,6 +32,7 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPreferenceService, PreferenceService>();
+builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 builder.Services.AddSignalR();
 //builder.Services.AddTransient<ILLMClient, HuggingFaceClient>();
 builder.Services.AddTransient<ILLMClient, TogetherAISocializerClient>();

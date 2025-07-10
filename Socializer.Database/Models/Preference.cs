@@ -1,10 +1,11 @@
-﻿namespace Socializer.Database.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace Socializer.Database.Models;
+
+[Index(nameof(DBPediaResource), IsUnique = true)]
 public class Preference : Entity
 {
-    public Guid UserId { get; set; }
-    public User User { get; set; }
-
     public EPreferenceType PreferenceType { get; set; }
     public string DBPediaResource { get; set; }
+    public List<UserPreference> UserPreferences { get; set; } = [];
 }

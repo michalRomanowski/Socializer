@@ -4,5 +4,6 @@ namespace Socializer.API.Services.Interfaces;
 
 public interface IPreferenceService
 {
-    Task<IEnumerable<Preference>> GetPreferencesAsync(string prompt);
+    Task<Preference> GetOrAddAsync(Preference preference);
+    Task<IEnumerable<Preference>> ExtractPreferencesAsync(string prompt);
 }
