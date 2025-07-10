@@ -26,6 +26,8 @@ namespace Socializer.LLM
             if(tokenLimit != default)
                 prompt.AppendTokenLimit(tokenLimit);
 
+            logger.LogInformation("Sending prompt to Together.AI: {prompt}.", prompt);
+
             var messages = new List<TogetherAIChatMessage>
             {
                 new TogetherAIChatUserMessage(prompt.ToString())

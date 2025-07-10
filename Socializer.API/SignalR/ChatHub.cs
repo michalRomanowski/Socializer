@@ -31,7 +31,12 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
             await Clients.All.SendAsync("ReceiveMessage", username, message);
 
-            var llmResponse = await lLMClient.QueryAsync(new StringBuilder(message), 200); // TODO: Limit can be configurable
+            var llmResponse = await lLMClient.QueryAsync(
+                new StringBuilder(message)
+                    .AppendHelpFindMoreInterests()
+                    .AppendSameLanguageResponse(),
+                200); // TODO: Limit can be configurable
+
             await Clients.All.SendAsync("ReceiveMessage", "bot", llmResponse);
 
             await Task.Delay(10000); // TODO: Delay added because of requests limit for free models

@@ -17,7 +17,7 @@ namespace Socializer.API.Services.Services
                 .ThenInclude(x => x.Preference)
                 .SingleAsync(x => x.Username == username);
 
-            return user.UserPreferences;
+            return user.UserPreferences.OrderByDescending(x => x.Count);
         }
 
         public async Task<UserPreference> UpdateOrAddAsync(string username, Preference preference)

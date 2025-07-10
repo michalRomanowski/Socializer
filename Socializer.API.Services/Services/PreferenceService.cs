@@ -29,7 +29,7 @@ public class PreferenceService(ILLMClient llmClient, SocializerDbContext dbConte
 
     public async Task<IEnumerable<Preference>> ExtractPreferencesAsync(string prompt)
     {
-        var preferencesPrompt = Prompts.PreferencesPrompt(prompt);
+        var preferencesPrompt = Prompts.PreferencesPrompt(prompt, 100);
 
         logger.LogDebug("Preferences prompt: {PreferencesPrompt}", preferencesPrompt);
 
