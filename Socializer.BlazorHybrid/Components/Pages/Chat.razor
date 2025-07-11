@@ -73,6 +73,9 @@
         if ("bot".Equals(author, StringComparison.InvariantCultureIgnoreCase))
             return "user-bot";
 
+        if ("error".Equals(author, StringComparison.InvariantCultureIgnoreCase))
+            return "user-error";
+
         return "user-other";
     }
 

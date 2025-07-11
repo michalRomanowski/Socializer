@@ -162,6 +162,11 @@ label {
     background-color: aquamarine;
 }
 
+.user-error {
+    align-self: flex-end;
+    background-color: red;
+}
+
 .chat-input {
     display: flex;
     border-top: 1px solid #ddd;

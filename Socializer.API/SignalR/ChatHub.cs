@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
+using Socializer.Database.Models;
 using Socializer.LLM;
 using System.Text;
 
@@ -13,51 +14,78 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 {
     public override async Task OnConnectedAsync()
     {
-        // TODO: Add some more error handling, maybe by sending message in chat and logging.
-        var userResult = await userService.GetUserAsync(new Guid(Context.UserIdentifier));
+        try
+        {
+            // TODO: Filter or other approach can be used for trackingId
+            logger.LogDebug("Chat connection init,  ConnectionId: {connectionId}.", Context.ConnectionId);
 
-        await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(userResult.Result.Username).ToString());
+            var userResult = await userService.GetUserAsync(new Guid(Context.UserIdentifier));
+
+            if(!userResult.IsSuccess)
+            {
+                throw new Exception(userResult.ErrorMessage);
+            }
+
+            await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(userResult.Result.Username).ToString());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Exception in chat connection initialization. ConnectionId: {connectionId}.", Context.ConnectionId);
+            await Clients.All.SendAsync("ReceiveMessage", "error", "Error initializing chat connection. Sorry.");
+        }
     }
 
     public async Task SendMessage(string username, string message)
     {
         try
         {
-            if(message.Length > 800)
+            if (message.Length > 800)
                 message = message[..800]; // TODO: Chars limit configurable
 
-            logger.LogDebug("Received message: '{Message}' from User: '{User}'.", message, username);
+            logger.LogDebug("Received message: '{Message}' from User: '{User}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
 
             if (await ChatCommands(username, message))
                 return;
 
             await Clients.All.SendAsync("ReceiveMessage", username, message);
 
-            var llmResponse = await lLMClient.QueryAsync(
-                new StringBuilder(message)
-                    .AppendHelpFindMoreInterests()
-                    .AppendSameLanguageResponse(),
-                200); // TODO: Limit can be configurable
-
-            await Clients.All.SendAsync("ReceiveMessage", "bot", llmResponse);
+            await RespondToMessage(message);
 
             await Task.Delay(10000); // TODO: Delay added because of requests limit for free models
 
-            var preferences = await preferenceService.ExtractPreferencesAsync(message);
-
-            foreach(var p in preferences)
-            {
-                await userPreferenceService.UpdateOrAddAsync(username, p);
-            }
-
-            var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
-
-            // TODO: for debug purposes, add config feature flag
-            await Clients.All.SendAsync("ReceiveMessage", "bot", newPreferencesMessage);
+            await UpdatePreferences(username, message);
         }
         catch (Exception ex){
-            logger.LogError(ex, "Exception in chat.");
+            logger.LogError(ex, "Exception in chat. ConnectionId: {connectionId}.", Context.ConnectionId);
+            await Clients.All.SendAsync("ReceiveMessage", "error", "Error processing message. Sorry.");
         }
+    }
+
+    private async Task RespondToMessage(string message)
+    {
+        logger.LogDebug("Responding to message, ConnectionId: {connectionId}.", Context.ConnectionId);
+
+        var llmResponse = await lLMClient.QueryAsync(
+            new StringBuilder(message)
+                .AppendHelpFindMoreInterests()
+                .AppendSameLanguageResponse(),
+            200); // TODO: Limit can be configurable
+
+        await Clients.All.SendAsync("ReceiveMessage", "bot", llmResponse);
+    }
+
+    private async Task UpdatePreferences(string username, string message)
+    {
+        logger.LogDebug("Updating preferences, ConnectionId: {connectionId}.", Context.ConnectionId);
+
+        var preferences = await preferenceService.ExtractPreferencesAsync(message);
+
+        foreach (var p in preferences)
+        {
+            await userPreferenceService.UpdateOrAddAsync(username, p);
+        }
+
+        await PreferencesMessageAsync(preferences);
     }
 
     private async Task<bool> ChatCommands(string username, string message)
@@ -67,19 +95,28 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
             case "p":
             case "P":
             case "preferences":
+                logger.LogDebug("Preferences command message, ConnectionId: {connectionId}.", Context.ConnectionId);
                 await UserPreferencesMessageAsync(username);
                 return true;
 
             case "m":
             case "M":
             case "matches":
+                logger.LogDebug("Matches command message, ConnectionId: {connectionId}.", Context.ConnectionId);
                 var matches = await userMatchingService.UserMatchesAsync(username);
                 await UserMatchesMessageAsync(matches);
                 return true;
 
             default:
+                logger.LogDebug("Non command message, ConnectionId: {connectionId}.", Context.ConnectionId);
                 return false;
         }
+    }
+
+    private async Task PreferencesMessageAsync(IEnumerable<Preference> preferences)
+    {
+        var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
+        await Clients.All.SendAsync("ReceiveMessage", "bot", newPreferencesMessage);
     }
 
     private async Task UserPreferencesMessageAsync(string username)
