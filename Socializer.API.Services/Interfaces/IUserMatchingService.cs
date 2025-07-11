@@ -1,9 +1,8 @@
 ﻿using Socializer.API.Services.Services;
 
-namespace Socializer.API.Services.Interfaces
+namespace Socializer.API.Services.Interfaces;
+
+public interface IUserMatchingService
 {
-    public interface IUserMatchingService
-    {
-        Task<IEnumerable<UserMatch>> UserMatchesAsync(string username);
-    }
+    Task<IEnumerable<UserMatch>> UserMatchesAsync(string username);
 }

@@ -1,31 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Socializer.Database.Models;
 
-namespace Socializer.Database
+namespace Socializer.Database;
+
+public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) : DbContext(options)
 {
-    public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) : DbContext(options)
+    public DbSet<User> Users { get; set; }
+    public DbSet<Preference> Preferences { get; set; }
+    public DbSet<UserPreference> UserPreferences { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Preference> Preferences { get; set; }
-        public DbSet<UserPreference> UserPreferences { get; set; }
+        modelBuilder.Entity<UserPreference>()
+            .HasOne(up => up.User)
+            .WithMany(u => u.UserPreferences)
+            .HasForeignKey(up => up.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserPreference>()
-                .HasOne(up => up.User)
-                .WithMany(u => u.UserPreferences)
-                .HasForeignKey(up => up.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<UserPreference>()
+            .HasOne(up => up.Preference)
+            .WithMany(p => p.UserPreferences)
+            .HasForeignKey(up => up.PreferenceId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<UserPreference>()
-                .HasOne(up => up.Preference)
-                .WithMany(p => p.UserPreferences)
-                .HasForeignKey(up => up.PreferenceId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserPreference>()
-                .HasIndex(up => new { up.UserId, up.PreferenceId })
-                .IsUnique();
-        }
+        modelBuilder.Entity<UserPreference>()
+            .HasIndex(up => new { up.UserId, up.PreferenceId })
+            .IsUnique();
     }
 }

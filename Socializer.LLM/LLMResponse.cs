@@ -1,8 +1,7 @@
-﻿namespace Socializer.LLM
+﻿namespace Socializer.LLM;
+
+public class LLMResponse
 {
-    public class LLMResponse
-    {
-        string? Message { get; set; }
-        string? Context { get; set; }
-    }
+    string? Message { get; set; }
+    string? Context { get; set; }
 }

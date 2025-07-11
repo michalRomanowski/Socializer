@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Socializer.Database.Models;
 
-namespace Socializer.Database
+namespace Socializer.Database;
+
+public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
-    public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : IdentityDbContext<ApplicationUser>(options)
-    {
-    }
 }
