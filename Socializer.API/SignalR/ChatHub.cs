@@ -28,19 +28,8 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
             logger.LogDebug("Received message: '{Message}' from User: '{User}'.", message, username);
 
-            if("p".Equals(message) || "preferences".Equals(message))
-            {
-                await UserPreferencesMessageAsync(username);
+            if (await ChatCommands(username, message))
                 return;
-            }
-
-            if ("m".Equals(message) || "matches".Equals(message))
-            {
-                var matches = await userMatchingService.UserMatchesAsync(username);
-
-                await UserMatchesMessageAsync(matches);
-                return;
-            }
 
             await Clients.All.SendAsync("ReceiveMessage", username, message);
 
@@ -68,6 +57,28 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         }
         catch (Exception ex){
             logger.LogError(ex, "Exception in chat.");
+        }
+    }
+
+    private async Task<bool> ChatCommands(string username, string message)
+    {
+        switch (message.ToLowerInvariant())
+        {
+            case "p":
+            case "P":
+            case "preferences":
+                await UserPreferencesMessageAsync(username);
+                return true;
+
+            case "m":
+            case "M":
+            case "matches":
+                var matches = await userMatchingService.UserMatchesAsync(username);
+                await UserMatchesMessageAsync(matches);
+                return true;
+
+            default:
+                return false;
         }
     }
 

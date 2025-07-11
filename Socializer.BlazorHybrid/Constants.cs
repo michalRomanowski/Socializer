@@ -7,4 +7,5 @@ internal class Constants
     /// TODO: Some extra security should be applied, like additional encoding
     /// </summary>
     public const string ConfigUrl = "https://api.socializerapi.eu" + "/Config";
+    //public const string ConfigUrl = "https://75cc6f37d42c.ngrok-free.app" + "/Config";
 }
