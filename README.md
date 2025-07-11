@@ -29,6 +29,10 @@ https://huggingface.co/chat/models/meta-llama/Llama-3.3-70B-Instruct
 DBPedia resource link:
 http://dbpedia.org/resource/<resource>
 
-# Create cert
+# Create dev cert
 dotnet dev-certs https -ep socializerEncryption.pfx -p yourpassword
 dotnet dev-certs https -ep socializerSignIn.pfx -p yourpassword
+
+# Publish testing app to GooglePlay
+
+https://learn.microsoft.com/en-us/dotnet/maui/android/deployment/publish-google-play?view=net-maui-8.0
