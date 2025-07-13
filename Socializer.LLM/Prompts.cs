@@ -1,5 +1,4 @@
-﻿using Socializer.Database.Models;
-using System.Text;
+﻿using System.Text;
 
 namespace Socializer.LLM;
 

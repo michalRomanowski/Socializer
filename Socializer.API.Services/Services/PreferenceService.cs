@@ -4,7 +4,6 @@ using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.LLM;
-using System.Linq;
 
 namespace Socializer.API.Services.Services;
 
