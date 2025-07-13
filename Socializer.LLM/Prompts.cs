@@ -5,8 +5,6 @@ namespace Socializer.LLM;
 
 public static class Prompts
 {
-    private static readonly string preferenceTypesText = string.Join(", ", Enum.GetNames(typeof(EPreferenceType)).Select(x => $"\"{x}\""));
-
     public static StringBuilder AppendHelpFindMoreInterests(this StringBuilder sb)
     {
         sb.AppendLine($"Help me to find more about interests mentioned in this message that I could share with other people. Encourage me to share more information.");
@@ -33,14 +31,14 @@ public static class Prompts
 
     public static StringBuilder PreferencesPrompt(string prompt, int tokenLimit)
     {
-        var sb = new StringBuilder("From this text:");
+        var sb = new StringBuilder("In this text:");
         sb.AppendLine($"\"{prompt}\"");
         sb.AppendSafetyCensorship();
-        sb.AppendLine($"Find http://dbpedia.org resources for up to 10 {preferenceTypesText} properties corresponding to text.");
-        sb.AppendLine($"Prioritize {EPreferenceType.Activity}.");
+        sb.AppendLine($"Find mentoined activities and interests.");
         sb.AppendLine("Return only list in form:");
-        sb.AppendLine($"type, resource");
-        sb.AppendLine($"Where type is value from list: {preferenceTypesText}. Resource is dbpedia resource uri without prefix 'http://dbpedia.org/resource/'");
+        sb.AppendLine($"RESOURCE1");
+        sb.AppendLine($"RESOURCE2");
+        sb.AppendLine($"Where RESOURCE is dbpedia resource uri without prefix 'http://dbpedia.org/resource/' corresponding to foun activity or interest");
         sb.AppendLine("and nothing else.");
         sb.AppendTokenLimit(tokenLimit); // TODO: Configurable
 

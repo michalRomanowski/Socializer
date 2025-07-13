@@ -80,10 +80,7 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
         var preferences = await preferenceService.ExtractPreferencesAsync(message);
 
-        foreach (var p in preferences)
-        {
-            await userPreferenceService.UpdateOrAddAsync(username, p);
-        }
+        await userPreferenceService.AddOrUpdateAsync(username, preferences);
 
         await PreferencesMessageAsync(preferences);
     }
@@ -115,14 +112,14 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
     private async Task PreferencesMessageAsync(IEnumerable<Preference> preferences)
     {
-        var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.PreferenceType} {x.DBPediaResource}"));
+        var newPreferencesMessage = string.Join("\r\n", preferences.Select(x => $"{x.DBPediaResource}"));
         await Clients.All.SendAsync("ReceiveMessage", "bot", newPreferencesMessage);
     }
 
     private async Task UserPreferencesMessageAsync(string username)
     {
         var userPreferences = await userPreferenceService.GetAsync(username);
-        var userPreferencesMessage = string.Join("\r\n", userPreferences.Select(x => $"{x.Preference.DBPediaResource} {x.Preference.PreferenceType} {x.Count} {x.Weight}"));
+        var userPreferencesMessage = string.Join("\r\n", userPreferences.Select(x => $"{x.Preference.DBPediaResource} {x.Count} {x.Weight}"));
 
         await Clients.All.SendAsync("ReceiveMessage", "bot", userPreferencesMessage);
     }

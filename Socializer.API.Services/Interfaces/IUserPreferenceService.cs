@@ -5,5 +5,5 @@ namespace Socializer.API.Services.Interfaces;
 public interface IUserPreferenceService
 {
     Task<IEnumerable<UserPreference>> GetAsync(string username);
-    Task<UserPreference> UpdateOrAddAsync(string username, Preference preference);
+    Task<IEnumerable<UserPreference>> AddOrUpdateAsync(string username, IEnumerable<Preference> preferences);
 }

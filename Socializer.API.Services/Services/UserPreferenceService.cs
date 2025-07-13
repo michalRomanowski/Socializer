@@ -6,7 +6,10 @@ using Socializer.Database.Models;
 
 namespace Socializer.API.Services.Services;
 
-public class UserPreferenceService(SocializerDbContext dbContext, IPreferenceService preferenceService, ILogger<UserPreferenceService> logger) : IUserPreferenceService
+public class UserPreferenceService(
+    SocializerDbContext dbContext,
+    IPreferenceService preferenceService,
+    ILogger<UserPreferenceService> logger) : IUserPreferenceService
 {
     public async Task<IEnumerable<UserPreference>> GetAsync(string username)
     {
@@ -20,39 +23,58 @@ public class UserPreferenceService(SocializerDbContext dbContext, IPreferenceSer
         return user.UserPreferences.OrderByDescending(x => x.Count);
     }
 
-    public async Task<UserPreference> UpdateOrAddAsync(string username, Preference preference)
+    public async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(string username, IEnumerable<Preference> preferences)
     {
-        logger.LogDebug("Adding preference {preference} to user {username}", preference.DBPediaResource, username);
+        logger.LogDebug("Adding {preferencesCount} preferences to user {username}", preferences.Count(), username);
 
-        preference = await preferenceService.GetOrAddAsync(preference);
+        var preferencesAddedToDb = await preferenceService.GetOrAddAsync(preferences);
 
         var user = await dbContext.Users.SingleAsync(x => x.Username == username);
 
-        var existingUserPreference =
-            await dbContext.UserPreferences.SingleOrDefaultAsync(x => x.UserId == user.Id && x.PreferenceId == preference.Id);
+        return await AddOrUpdateAsync(user, preferencesAddedToDb);
+    }
 
-        if (existingUserPreference != null)
+    /// <summary>
+    /// <param name="preferences">All preferences must already be present in db</param>
+    private async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(User user, IEnumerable<Preference> preferences)
+    {
+        var preferencesIds = preferences.Select(x => x.Id).ToHashSet();
+
+        var existingUserPreferences = await dbContext.UserPreferences
+            .Where(up => up.UserId == user.Id && preferencesIds.Contains(up.PreferenceId))
+            .ToListAsync();
+
+        logger.LogDebug("User already has {existingUserPreferencesCount} preferences. Increasing count.", existingUserPreferences.Count);
+
+        foreach (var eup in existingUserPreferences)
         {
-            existingUserPreference.Count++;
-            logger.LogDebug("UserPreference exists. Updating count to {userPreferenceCount}.", existingUserPreference.Count);
+            eup.Count++;
         }
-        else
-        {
-            logger.LogDebug("Creating new UserPreference.");
 
-            existingUserPreference = new UserPreference()
+        var preferencesToAddToUser = preferences.Where(p => !existingUserPreferences.Any(eup => eup.PreferenceId == p.Id));
+
+        logger.LogDebug("Adding {preferencesToAddToUserCount} new user preference.", preferencesToAddToUser.Count());
+
+        var addedUserPreferences = new HashSet<UserPreference>();
+
+        foreach (var np in preferencesToAddToUser)
+        {
+            var newUserPreference = new UserPreference()
             {
-                Preference = preference,
-                User = user,
+                PreferenceId = np.Id,
+                UserId = user.Id,
                 Count = 1,
                 Weight = 1.0f
             };
 
-            dbContext.Add(existingUserPreference);
+            addedUserPreferences.Add(newUserPreference);
+            dbContext.UserPreferences.Add(newUserPreference);
         }
 
+        // There is risk of UserPreferences corruption as there read and update db not wrapped in transaction.
+        // Chance is small and it is acceptable to miss increase of UserPreference therefore performance > consistency in this case.
         await dbContext.SaveChangesAsync();
 
-        return existingUserPreference;
+        return existingUserPreferences.Concat(addedUserPreferences);
     }
 }

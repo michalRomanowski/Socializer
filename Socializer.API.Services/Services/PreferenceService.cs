@@ -4,29 +4,36 @@ using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.LLM;
+using System.Linq;
 
 namespace Socializer.API.Services.Services;
 
 public class PreferenceService(ILLMClient llmClient, SocializerDbContext dbContext, ILogger<PreferenceService> logger) : IPreferenceService
 {
-    public async Task<Preference> GetOrAddAsync(Preference preference)
+    public async Task<IEnumerable<Preference>> GetOrAddAsync(IEnumerable<Preference> preferences)
     {
-        var existingPreference =
-            await dbContext.Preferences.SingleOrDefaultAsync(x => x.DBPediaResource == preference.DBPediaResource);
+        var resources = preferences.Select(x => x.DBPediaResource).ToHashSet();
 
-        if (existingPreference == null)
-        {
-            dbContext.Preferences.Add(preference);
-        }
-        else
-        {
-            preference = existingPreference;
-        }
+        var existingPreferences = await dbContext.Preferences
+            .Where(x => resources.Contains(x.DBPediaResource))
+            .AsNoTracking()
+            .ToListAsync();
 
-        dbContext.SaveChanges();
-        return preference;
+        var existingResources = existingPreferences.Select(x => x.DBPediaResource);
+
+        var preferencesToAdd = preferences.Where(x => !existingResources.Contains(x.DBPediaResource));
+
+        await dbContext.Preferences.AddRangeAsync(preferencesToAdd);
+
+        // Slight risk here on race conditions with adding duplicated Preference
+        // this will cause error but can live with that.
+        // Should be rare and can be handled by upper level retry.
+        await dbContext.SaveChangesAsync();
+
+        return existingPreferences.Concat(preferencesToAdd);
     }
 
+    // TODO: Move to new PreferencesExtractService
     public async Task<IEnumerable<Preference>> ExtractPreferencesAsync(string prompt)
     {
         var preferencesPrompt = Prompts.PreferencesPrompt(prompt, 100);
@@ -56,16 +63,12 @@ public class PreferenceService(ILLMClient llmClient, SocializerDbContext dbConte
 
             try
             {
-                var split = line.Split(',');
-
-                var type = (EPreferenceType)Enum.Parse(typeof(EPreferenceType), split[0], true);
-                var link = split[1];
+                var dbPediaResource = line.Trim().ToLower();
 
                 preferences.Add(
                     new Preference()
                     {
-                        PreferenceType = type,
-                        DBPediaResource = link,
+                        DBPediaResource = dbPediaResource,
                     });
             }
             catch(Exception ex) // Log and skip failed lines
