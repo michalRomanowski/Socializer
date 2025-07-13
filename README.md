@@ -14,7 +14,7 @@ NGROK Instruction:
 	https://dashboard.ngrok.com/get-started/setup/windows
 	
 To start NGROK tunneling:
-	ngrok http https://localhost:7063
+	ngrok http https://localhost:443
 	
 # Running on my Mobile
 In case of problems: adb devices
