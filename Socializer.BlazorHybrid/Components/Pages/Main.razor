@@ -1,0 +1,26 @@
+﻿@page "/main"
+
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+
+<button class="button-big" @onclick="Chat">Chat</button>
+<button class="button-big" @onclick="Matches">Matches</button>
+@* <button class="button-big" @onclick="MatchesMap">Matches map</button> *@
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        layoutState.Header = $"Main";
+    }
+
+    private void Chat()
+    {
+        navigation.NavigateTo("/chat");
+    }
+
+    private void Matches()
+    {
+        navigation.NavigateTo("/matches");
+    }
+}

@@ -35,6 +35,7 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         }
     }
 
+    // TODO: Should I send user Id instead of unsername? Possibly for security reasons
     public async Task SendMessage(string username, string message)
     {
         try
@@ -51,7 +52,9 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
 
             await RespondToMessage(message);
 
-            await Task.Delay(10000); // TODO: Delay added because of requests limit for free models
+            // TODO: Delay added because of requests limit for free models, generally updating preferences trigger will be different,
+            // no need to call it for each message (unless I want to use it for conversation context).
+            await Task.Delay(10000);
 
             await UpdatePreferences(username, message);
         }
