@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
 using Socializer.Database.Models;
 using Socializer.LLM;
+using Socializer.Shared.Dtos;
 using System.Text;
 
 namespace Socializer.API.SignalR;
@@ -101,7 +101,7 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
             case "matches":
                 logger.LogDebug("Matches command message, ConnectionId: {connectionId}.", Context.ConnectionId);
                 var matches = await userMatchingService.UserMatchesAsync(username);
-                await UserMatchesMessageAsync(matches);
+                await UserMatchesMessageAsync(matches.Result);
                 return true;
 
             default:
@@ -124,17 +124,17 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         await Clients.All.SendAsync("ReceiveMessage", "bot", userPreferencesMessage);
     }
 
-    private async Task UserMatchesMessageAsync(IEnumerable<UserMatch> matches)
+    private async Task UserMatchesMessageAsync(IEnumerable<UserMatchDto> matches)
     {
         var sb = new StringBuilder();
 
         foreach (var m in matches.OrderByDescending(x => x.MatchWeight))
         {
-            sb.AppendLine($"{m.User2.Username} {m.MatchWeight}");
+            sb.AppendLine($"{m.User2Name} {m.MatchWeight}");
 
             foreach(var pm in m.PreferenceMatches.OrderByDescending(x => x.MatchWeight))
             {
-                sb.AppendLine($"- {pm.User1Preference.Preference.DBPediaResource} {pm.MatchWeight}");
+                sb.AppendLine($"- {pm.PreferenceName} {pm.MatchWeight}");
             }
 
             sb.AppendLine();

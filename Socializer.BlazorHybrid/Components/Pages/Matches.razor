@@ -1,0 +1,41 @@
+﻿@page "/matches"
+
+@using Socializer.Client
+@using Socializer.Shared
+@using Socializer.Shared.Dtos
+
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+@inject StateContainer stateContainer
+
+<ul style="list-style-type:none; padding:0;">
+    @foreach (var userMatch in userMatches)
+    {
+        <li style="margin-bottom: 10px;">
+            <button @onclick="() => OnUserMatchClicked(userMatch)" style="width:100%; padding:10px;">
+                <strong>@userMatch.User2Name</strong> Shared Interests: @String.Join(", ", @userMatch.PreferenceMatches.OrderBy(x => x.MatchWeight).Select(x => x.PreferenceName))
+            </button>
+        </li>
+    }
+</ul>
+
+@code {
+    private IEnumerable<UserMatchDto> userMatches = [];
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        layoutState.Header = $"Matches";
+
+        var userMatchesResult = await socializerClient.GetMyUserMatchesAsync();
+
+        if (userMatchesResult.IsSuccess)
+            userMatches = userMatchesResult.Result;
+    }
+
+    private void OnUserMatchClicked(UserMatchDto userMatch)
+    {
+        
+    }
+}

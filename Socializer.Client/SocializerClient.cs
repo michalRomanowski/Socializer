@@ -34,4 +34,9 @@ public class SocializerClient(IClient client) : ISocializerClient
 
         return createUserResult;
     }
+
+    public async Task<OperationResult<IEnumerable<UserMatchDto>>> GetMyUserMatchesAsync()
+    {
+        return await client.GetAsync<IEnumerable<UserMatchDto>>("UserMatches/My");
+    }
 }

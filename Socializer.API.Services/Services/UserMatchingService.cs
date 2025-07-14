@@ -1,12 +1,27 @@
 ﻿using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Microsoft.EntityFrameworkCore;
+using Common.Utils;
+using Socializer.Shared.Dtos;
+using AutoMapper;
 
 namespace Socializer.API.Services.Services;
 
-public class UserMatchingService(SocializerDbContext dbContext) : IUserMatchingService
+public class UserMatchingService(SocializerDbContext dbContext, IMapper mapper) : IUserMatchingService
 {
-    public async Task<IEnumerable<UserMatch>> UserMatchesAsync(string username)
+    public async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Guid userId)
+    {
+        var user = await dbContext.Users
+            .Include(x => x.UserPreferences)
+            .ThenInclude(x => x.Preference)
+            .AsNoTracking()
+            .SingleAsync(x => x.Id == userId);
+
+        return await UserMatchesAsync(user);
+    }
+
+    // TODO: This might be removed in future, keeping for now as makes development easier
+    public async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(string username)
     {
         var user = await dbContext.Users
             .Include(x => x.UserPreferences)
@@ -14,6 +29,11 @@ public class UserMatchingService(SocializerDbContext dbContext) : IUserMatchingS
             .AsNoTracking()
             .SingleAsync(x => x.Username == username);
 
+        return await UserMatchesAsync(user);
+    }
+
+    private async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Database.Models.User user)
+    {
         var preferenceMatches = new List<PreferenceMatch>();
 
         foreach (var up1 in user.UserPreferences)
@@ -36,6 +56,8 @@ public class UserMatchingService(SocializerDbContext dbContext) : IUserMatchingS
             .GroupBy(x => x.User2Preference.User.Id)
             .Select(x => new UserMatch(user, x.First().User2Preference.User, x, x.Sum(x => x.MatchWeight)));
 
-        return userPreferencesMatches;
+        var mappedUserPreferencesMatches = mapper.Map<IEnumerable<UserMatchDto>>(userPreferencesMatches);
+
+        return OperationResult<IEnumerable<UserMatchDto>>.Success(mappedUserPreferencesMatches);
     }
 }

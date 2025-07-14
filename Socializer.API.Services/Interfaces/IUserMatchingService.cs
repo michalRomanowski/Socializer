@@ -1,8 +1,10 @@
-﻿using Socializer.API.Services.Services;
+﻿using Common.Utils;
+using Socializer.Shared.Dtos;
 
 namespace Socializer.API.Services.Interfaces;
 
 public interface IUserMatchingService
 {
-    Task<IEnumerable<UserMatch>> UserMatchesAsync(string username);
+    Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Guid userId);
+    Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(string username);
 }
