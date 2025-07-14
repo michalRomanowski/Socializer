@@ -62,7 +62,7 @@ public class PreferenceService(ILLMClient llmClient, SocializerDbContext dbConte
 
             try
             {
-                var dbPediaResource = line.Trim().ToLower();
+                var dbPediaResource = line.Trim();
 
                 preferences.Add(
                     new Preference()
