@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Socializer.Database;
 
@@ -11,9 +12,11 @@ using Socializer.Database;
 namespace Socializer.Database.Migrations.SocializerDb
 {
     [DbContext(typeof(SocializerDbContext))]
-    partial class SocializerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714170255_AddConnectionIdToChat")]
+    partial class AddConnectionIdToChat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +61,9 @@ namespace Socializer.Database.Migrations.SocializerDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Timestamp")

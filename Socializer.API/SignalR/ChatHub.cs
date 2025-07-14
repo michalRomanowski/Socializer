@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Socializer.API.Services.Interfaces;
+using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.LLM;
 using Socializer.Shared.Dtos;
@@ -8,9 +10,16 @@ using System.Text;
 
 namespace Socializer.API.SignalR;
 
+// TODO: This class has to be reconsidered due to many responsibilities. Split into some extra services probably.
 [Authorize(AuthenticationSchemes = "Bearer")]
-public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService, IUserPreferenceService userPreferenceService, 
-    IUserService userService, IUserMatchingService userMatchingService, ILogger<ChatHub> logger) : Hub
+public class ChatHub(
+    ILLMClient lLMClient, 
+    SocializerDbContext dbContext,
+    IPreferenceService preferenceService, 
+    IUserPreferenceService userPreferenceService, 
+    IUserService userService, 
+    IUserMatchingService userMatchingService, 
+    ILogger<ChatHub> logger) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -26,6 +35,17 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
                 throw new Exception(userResult.ErrorMessage);
             }
 
+            logger.LogDebug("Saving chat in db,  ConnectionId: {connectionId}.", Context.ConnectionId);
+
+            var chat = new Chat()
+            {
+                UserIds = [userResult.Result.Id],
+                ConnectionId = Context.ConnectionId
+            };
+
+            await dbContext.Chats.AddAsync(chat);
+            await dbContext.SaveChangesAsync();
+
             await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(userResult.Result.Username).ToString());
         }
         catch (Exception ex)
@@ -35,8 +55,9 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         }
     }
 
-    // TODO: Should I send user Id instead of unsername? Possibly for security reasons
-    public async Task SendMessage(string username, string message)
+    // TODO: Should I send only user Id instead of unsername? Possibly yes for security reasons
+    // Actualy Maybe I can read from identity like in controller, that would be safest.
+    public async Task SendMessage(Guid userId, string username, string message)
     {
         try
         {
@@ -57,6 +78,8 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
             await Task.Delay(10000);
 
             await UpdatePreferences(username, message);
+
+            await SaveToDb(userId, message);
         }
         catch (Exception ex){
             logger.LogError(ex, "Exception in chat. ConnectionId: {connectionId}.", Context.ConnectionId);
@@ -88,6 +111,22 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
         await PreferencesMessageAsync(preferences);
     }
 
+    private async Task SaveToDb(Guid userId, string message)
+    {
+        var chat = await dbContext.Chats.SingleAsync(x => x.ConnectionId.Equals(Context.ConnectionId));
+
+        var chatMessage = new ChatMessage()
+        {
+            ChatId = chat.Id,
+            SenderId = userId,
+            Message = message,
+            Timestamp = DateTime.UtcNow
+        };
+
+        await dbContext.ChatMessages.AddAsync(chatMessage);
+        await dbContext.SaveChangesAsync();
+    }
+
     private async Task<bool> ChatCommands(string username, string message)
     {
         switch (message.ToLowerInvariant())
@@ -106,6 +145,14 @@ public class ChatHub(ILLMClient lLMClient, IPreferenceService preferenceService,
                 var matches = await userMatchingService.UserMatchesAsync(username);
                 await UserMatchesMessageAsync(matches.Result);
                 return true;
+
+            //case "b":
+            //case "B":
+            //case "broadcast":
+            //    logger.LogDebug("Broadcast command message, ConnectionId: {connectionId}.", Context.ConnectionId);
+            //    var matchesToCheck = userMatchingService.UserMatchesAsync(username);
+
+            //    return true;
 
             default:
                 logger.LogDebug("Non command message, ConnectionId: {connectionId}.", Context.ConnectionId);

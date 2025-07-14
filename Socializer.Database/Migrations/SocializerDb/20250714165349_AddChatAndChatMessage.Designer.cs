@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Socializer.Database;
 
@@ -11,9 +12,11 @@ using Socializer.Database;
 namespace Socializer.Database.Migrations.SocializerDb
 {
     [DbContext(typeof(SocializerDbContext))]
-    partial class SocializerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714165349_AddChatAndChatMessage")]
+    partial class AddChatAndChatMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,18 +31,11 @@ namespace Socializer.Database.Migrations.SocializerDb
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserIds")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConnectionId")
-                        .IsUnique();
 
                     b.ToTable("Chats");
                 });
@@ -58,6 +54,9 @@ namespace Socializer.Database.Migrations.SocializerDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Timestamp")

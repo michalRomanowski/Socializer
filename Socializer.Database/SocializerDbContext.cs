@@ -8,6 +8,8 @@ public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) 
     public DbSet<User> Users { get; set; }
     public DbSet<Preference> Preferences { get; set; }
     public DbSet<UserPreference> UserPreferences { get; set; }
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
