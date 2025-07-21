@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Socializer.API.Services.Interfaces;
 using Socializer.Chat.Extensions;
 using Socializer.Chat.Interfaces;
-using Socializer.Database;
 using Socializer.LLM;
 using System.Text;
 
@@ -14,7 +13,6 @@ namespace Socializer.Chat;
 [Authorize(AuthenticationSchemes = "Bearer")]
 public class ChatHub(
     ILLMClient lLMClient, 
-    SocializerDbContext dbContext,
     IPreferenceService preferenceService, 
     IUserPreferenceService userPreferenceService, 
     IUserService userService, 
