@@ -5,7 +5,8 @@ using Socializer.API.Middleware;
 using Socializer.API.Services;
 using Socializer.API.Services.Interfaces;
 using Socializer.API.Services.Services;
-using Socializer.API.SignalR;
+using Socializer.Chat;
+using Socializer.Chat.Extensions;
 using Socializer.Database;
 using Socializer.LLM;
 
@@ -34,7 +35,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPreferenceService, PreferenceService>();
 builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 builder.Services.AddScoped<IUserMatchingService, UserMatchingService>();
-builder.Services.AddSignalR();
+builder.Services.AddChat();
 //builder.Services.AddTransient<ILLMClient, HuggingFaceClient>();
 builder.Services.AddTransient<ILLMClient, TogetherAISocializerClient>();
 

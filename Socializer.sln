@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.LLM", "Socialize
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API.Auth", "Socializer.API.Auth\Socializer.API.Auth.csproj", "{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.Chat", "Socializer.Chat\Socializer.Chat.csproj", "{52E32482-CA4D-4DE1-8227-E50382E8603B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D6D6BDD-FAD2-2D00-21E8-BC7253D372C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

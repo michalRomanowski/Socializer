@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>CS8602;CS8604</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Socializer.API.Auth\Socializer.API.Auth.csproj" />
+    <ProjectReference Include="..\Socializer.API.Services\Socializer.API.Services.csproj" />
+  </ItemGroup>
+
+</Project>
