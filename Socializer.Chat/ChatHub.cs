@@ -53,7 +53,7 @@ public class ChatHub(
             if (message.Length > 800)
                 message = message[..800]; // TODO: Chars limit configurable
 
-            var username = userService.GetUsernameAsync(userId);
+            var username = await userService.GetUsernameAsync(userId);
 
             logger.LogDebug("Received message: '{Message}' from User: '{userId}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
 
