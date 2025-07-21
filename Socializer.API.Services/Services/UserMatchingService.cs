@@ -7,7 +7,7 @@ using AutoMapper;
 
 namespace Socializer.API.Services.Services;
 
-public class UserMatchingService(SocializerDbContext dbContext, IMapper mapper) : IUserMatchingService
+internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper) : IUserMatchingService
 {
     public async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Guid userId)
     {

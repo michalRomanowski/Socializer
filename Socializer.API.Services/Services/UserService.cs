@@ -10,7 +10,7 @@ using Socializer.Shared.Dtos;
 
 namespace Socializer.API.Services.Services;
 
-public class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
+internal class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
 {
     public async Task<OperationResult<UserDto>> GetUserAsync(Guid userId)
     {

@@ -7,7 +7,7 @@ using Socializer.LLM;
 
 namespace Socializer.API.Services.Services;
 
-public class PreferenceService(ILLMClient llmClient, SocializerDbContext dbContext, ILogger<PreferenceService> logger) : IPreferenceService
+internal class PreferenceService(ILLMClient llmClient, SocializerDbContext dbContext, ILogger<PreferenceService> logger) : IPreferenceService
 {
     public async Task<IEnumerable<Preference>> GetOrAddAsync(IEnumerable<Preference> preferences)
     {

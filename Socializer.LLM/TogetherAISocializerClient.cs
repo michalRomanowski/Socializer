@@ -4,7 +4,7 @@ using Together.AI;
 
 namespace Socializer.LLM;
 
-public class TogetherAISocializerClient : ILLMClient
+internal class TogetherAISocializerClient : ILLMClient
 {
     private readonly TogetherAISettings settings;
     private readonly ILogger<TogetherAISocializerClient> logger;

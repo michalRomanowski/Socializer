@@ -6,7 +6,7 @@ using Socializer.Database.Models;
 
 namespace Socializer.API.Services.Services;
 
-public class UserPreferenceService(
+internal class UserPreferenceService(
     SocializerDbContext dbContext,
     IPreferenceService preferenceService,
     ILogger<UserPreferenceService> logger) : IUserPreferenceService

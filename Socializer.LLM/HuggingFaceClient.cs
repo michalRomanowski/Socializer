@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Socializer.LLM;
 
-public class HuggingFaceClient : ILLMClient
+internal class HuggingFaceClient : ILLMClient
 {
     private readonly HuggingFaceSettings settings;
     private readonly HttpClient httpClient;

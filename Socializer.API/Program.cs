@@ -3,8 +3,6 @@ using Socializer.API.Auth;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
 using Socializer.API.Services;
-using Socializer.API.Services.Interfaces;
-using Socializer.API.Services.Services;
 using Socializer.Chat;
 using Socializer.Chat.Extensions;
 using Socializer.Database;
@@ -31,13 +29,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPreferenceService, PreferenceService>();
-builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
-builder.Services.AddScoped<IUserMatchingService, UserMatchingService>();
+builder.Services.AddServices();
 builder.Services.AddChat();
-//builder.Services.AddTransient<ILLMClient, HuggingFaceClient>();
-builder.Services.AddTransient<ILLMClient, TogetherAISocializerClient>();
+builder.Services.AddLLM();
 
 var app = builder.Build();
 
