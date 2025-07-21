@@ -14,8 +14,6 @@ public class UserMatchesController(IUserMatchingService userMatchingService) : S
     {
         var result = await userMatchingService.UserMatchesAsync(UserId);
 
-        return result.IsSuccess ?
-            Ok(result.Result) :
-            BadRequest(result.Errors);
+        return Ok(result);
     }
 }

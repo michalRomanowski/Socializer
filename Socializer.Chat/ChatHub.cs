@@ -28,16 +28,13 @@ public class ChatHub(
             // TODO: Filter or other approach can be used for trackingId
             logger.LogDebug("Chat connection init,  ConnectionId: {connectionId}.", Context.ConnectionId);
 
-            var userResult = await userService.GetUserAsync(new Guid(Context.UserIdentifier));
+            var userId = new Guid(Context.UserIdentifier);
 
-            if(!userResult.IsSuccess)
-            {
-                throw new Exception(userResult.ErrorMessage);
-            }
+            var username = await userService.GetUsernameAsync(userId);
 
-            await chatService.AddChatAsync([userResult.Result.Id], Context.ConnectionId);
+            await chatService.AddChatAsync([userId], Context.ConnectionId);
 
-            await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(userResult.Result.Username).ToString());
+            await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
         }
         catch (Exception ex)
         {

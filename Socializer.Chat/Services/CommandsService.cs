@@ -28,7 +28,7 @@ internal class CommandsService(
             case "m":
                 logger.LogDebug("Matches command message, ConnectionId: {connectionId}.", connectionId);
                 var matches = await userMatchingService.UserMatchesAsync(userId);
-                await clientProxy.SendAsync("ReceiveMessage", "bot", matches.Result.ToMessage());
+                await clientProxy.SendAsync("ReceiveMessage", "bot", matches.ToMessage());
                 return true;
 
             default:

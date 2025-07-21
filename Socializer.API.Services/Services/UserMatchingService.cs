@@ -1,7 +1,6 @@
 ﻿using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Microsoft.EntityFrameworkCore;
-using Common.Utils;
 using Socializer.Shared.Dtos;
 using AutoMapper;
 
@@ -9,7 +8,7 @@ namespace Socializer.API.Services.Services;
 
 internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper) : IUserMatchingService
 {
-    public async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Guid userId)
+    public async Task<IEnumerable<UserMatchDto>> UserMatchesAsync(Guid userId)
     {
         var user = await dbContext.Users
             .Include(x => x.UserPreferences)
@@ -20,7 +19,7 @@ internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper
         return await UserMatchesAsync(user);
     }
 
-    private async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Database.Models.User user)
+    private async Task<IEnumerable<UserMatchDto>> UserMatchesAsync(Database.Models.User user)
     {
         var preferenceMatches = new List<PreferenceMatch>();
 
@@ -46,6 +45,6 @@ internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper
 
         var mappedUserPreferencesMatches = mapper.Map<IEnumerable<UserMatchDto>>(userPreferencesMatches);
 
-        return OperationResult<IEnumerable<UserMatchDto>>.Success(mappedUserPreferencesMatches);
+        return mappedUserPreferencesMatches;
     }
 }

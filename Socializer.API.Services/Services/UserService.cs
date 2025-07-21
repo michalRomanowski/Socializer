@@ -22,12 +22,12 @@ internal class UserService(ILogger<UserService> logger, SocializerDbContext dbCo
         return username;
     }
 
-    public async Task<OperationResult<UserDto>> GetUserAsync(Guid userId)
+    public async Task<UserDto> GetUserAsync(Guid userId)
     {
         var user = await dbContext.Users
             .SingleAsync(x => x.Id == userId);
 
-        return OperationResult<UserDto>.Success(mapper.Map<UserDto>(user));
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<OperationResult<CreateUserDto>> CreateUserAsync(CreateUserDto newUserDto)

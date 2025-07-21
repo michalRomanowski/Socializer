@@ -27,8 +27,6 @@ public class UsersController(IUserService userService) : SocializerControllerBas
     {
         var result = await userService.GetUserAsync(UserId);
 
-        return result.IsSuccess ?
-            Ok(result.Result) :
-            BadRequest(result.Errors);
+        return Ok(result);
     }
 }
