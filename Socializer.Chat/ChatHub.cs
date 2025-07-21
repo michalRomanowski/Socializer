@@ -68,7 +68,7 @@ public class ChatHub(
             // no need to call it for each message (unless I want to use it for conversation context).
             await Task.Delay(10000);
 
-            await UpdatePreferences(username, message);
+            await UpdatePreferences(userId, message);
 
             await chatMessageService.AddMessageAsync(userId, message, Context.ConnectionId);
         }
@@ -91,13 +91,13 @@ public class ChatHub(
         await Clients.All.SendAsync("ReceiveMessage", "bot", llmResponse);
     }
 
-    private async Task UpdatePreferences(string username, string message)
+    private async Task UpdatePreferences(Guid userId, string message)
     {
         logger.LogDebug("Updating preferences, ConnectionId: {connectionId}.", Context.ConnectionId);
 
         var preferences = await preferenceService.ExtractPreferencesAsync(message);
 
-        await userPreferenceService.AddOrUpdateAsync(username, preferences);
+        await userPreferenceService.AddOrUpdateAsync(userId, preferences);
 
         await Clients.All.SendAsync("ReceiveMessage", "bot", preferences.ToMessage());
     }

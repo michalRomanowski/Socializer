@@ -15,30 +15,31 @@ internal class UserPreferenceService(
     {
         logger.LogDebug("Getting preferences for user {userId}", userId);
 
-        var userPreferences = await dbContext.UserPreferences.Where(x => x.UserId == userId).AsNoTracking().ToListAsync();
+        var userPreferences = await dbContext
+            .UserPreferences.Include(x => x.Preference)
+            .Where(x => x.UserId == userId)
+            .AsNoTracking()
+            .ToListAsync();
 
         return userPreferences;
     }
 
-    public async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(string username, IEnumerable<Preference> preferences)
+    public async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(Guid userId, IEnumerable<Preference> preferences)
     {
-        logger.LogDebug("Adding {preferencesCount} preferences to user {username}", preferences.Count(), username);
+        logger.LogDebug("Adding {preferencesCount} preferences to user {userId}", preferences.Count(), userId);
 
         var preferencesAddedToDb = await preferenceService.GetOrAddAsync(preferences);
 
-        var user = await dbContext.Users.SingleAsync(x => x.Username == username);
-
-        return await AddOrUpdateAsync(user, preferencesAddedToDb);
+        return await AddOrUpdatePreferencesToUserAsync(userId, preferencesAddedToDb);
     }
 
-    /// <summary>
     /// <param name="preferences">All preferences must already be present in db</param>
-    private async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(User user, IEnumerable<Preference> preferences)
+    private async Task<IEnumerable<UserPreference>> AddOrUpdatePreferencesToUserAsync(Guid userId, IEnumerable<Preference> preferences)
     {
         var preferencesIds = preferences.Select(x => x.Id).ToHashSet();
 
         var existingUserPreferences = await dbContext.UserPreferences
-            .Where(up => up.UserId == user.Id && preferencesIds.Contains(up.PreferenceId))
+            .Where(up => up.UserId == userId && preferencesIds.Contains(up.PreferenceId))
             .ToListAsync();
 
         logger.LogDebug("User already has {existingUserPreferencesCount} preferences. Increasing count.", existingUserPreferences.Count);
@@ -59,7 +60,7 @@ internal class UserPreferenceService(
             var newUserPreference = new UserPreference()
             {
                 PreferenceId = np.Id,
-                UserId = user.Id,
+                UserId = userId,
                 Count = 1,
                 Weight = 1.0f
             };

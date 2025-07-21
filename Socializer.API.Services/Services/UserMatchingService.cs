@@ -20,18 +20,6 @@ internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper
         return await UserMatchesAsync(user);
     }
 
-    // TODO: This might be removed in future, keeping for now as makes development easier
-    public async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(string username)
-    {
-        var user = await dbContext.Users
-            .Include(x => x.UserPreferences)
-            .ThenInclude(x => x.Preference)
-            .AsNoTracking()
-            .SingleAsync(x => x.Username == username);
-
-        return await UserMatchesAsync(user);
-    }
-
     private async Task<OperationResult<IEnumerable<UserMatchDto>>> UserMatchesAsync(Database.Models.User user)
     {
         var preferenceMatches = new List<PreferenceMatch>();
