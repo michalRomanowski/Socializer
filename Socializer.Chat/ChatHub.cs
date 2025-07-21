@@ -46,16 +46,16 @@ public class ChatHub(
         }
     }
 
-    // TODO: Should I send only user Id instead of unsername? Possibly yes for security reasons
-    // Actualy Maybe I can read from identity like in controller, that would be safest.
-    public async Task SendMessage(Guid userId, string username, string message)
+    public async Task SendMessage(Guid userId, string message)
     {
         try
         {
             if (message.Length > 800)
                 message = message[..800]; // TODO: Chars limit configurable
 
-            logger.LogDebug("Received message: '{Message}' from User: '{User}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
+            var username = userService.GetUsernameAsync(userId);
+
+            logger.LogDebug("Received message: '{Message}' from User: '{userId}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
 
             if (await commandsService.HandleCommandAsync(userId, message, Clients.All, Context.ConnectionId))
                 return;

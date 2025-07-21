@@ -12,6 +12,16 @@ namespace Socializer.API.Services.Services;
 
 internal class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
 {
+    public async Task<string> GetUsernameAsync(Guid userId)
+    {
+        var username = await dbContext.Users
+            .Where(x => x.Id == userId)
+            .Select(x => x.Username)
+            .SingleAsync();
+
+        return username;
+    }
+
     public async Task<OperationResult<UserDto>> GetUserAsync(Guid userId)
     {
         var user = await dbContext.Users

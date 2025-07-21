@@ -5,6 +5,7 @@ namespace Socializer.API.Services.Interfaces;
 
 public interface IUserService
 {
+    Task<string> GetUsernameAsync(Guid userId);
     Task<OperationResult<UserDto>> GetUserAsync(Guid userId);
     Task<OperationResult<CreateUserDto>> CreateUserAsync(CreateUserDto createUserDto);
 }

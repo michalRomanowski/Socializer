@@ -57,7 +57,7 @@
         if (string.IsNullOrWhiteSpace(chatViewModel.NewMessage))
             return;
 
-        var result = await chatConnectionClient.SendMessageAsync(stateContainer.User.Id, stateContainer.User.Username, chatViewModel.NewMessage);
+        var result = await chatConnectionClient.SendMessageAsync(stateContainer.User.Id, chatViewModel.NewMessage);
 
         if (result.IsSuccess)
         {
