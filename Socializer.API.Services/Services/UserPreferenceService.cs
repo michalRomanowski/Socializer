@@ -11,16 +11,13 @@ public class UserPreferenceService(
     IPreferenceService preferenceService,
     ILogger<UserPreferenceService> logger) : IUserPreferenceService
 {
-    public async Task<IEnumerable<UserPreference>> GetAsync(string username)
+    public async Task<IEnumerable<UserPreference>> GetAsync(Guid userId)
     {
-        logger.LogDebug("Getting preferences for user {username}", username);
+        logger.LogDebug("Getting preferences for user {userId}", userId);
 
-        var user = await dbContext.Users
-            .Include(x => x.UserPreferences)
-            .ThenInclude(x => x.Preference)
-            .SingleAsync(x => x.Username == username);
+        var userPreferences = await dbContext.UserPreferences.Where(x => x.UserId == userId).AsNoTracking().ToListAsync();
 
-        return user.UserPreferences.OrderByDescending(x => x.Count);
+        return userPreferences;
     }
 
     public async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(string username, IEnumerable<Preference> preferences)
