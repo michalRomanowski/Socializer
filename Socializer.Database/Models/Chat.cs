@@ -6,7 +6,7 @@ namespace Socializer.Database.Models;
 public class Chat : Entity
 {
     public string ConnectionId { get; set; }
-    public List<Guid> UserIds { get; set; }
+    public List<ChatUser> ChatUsers { get; set; }
     //public Guid ChatContinuedFrom { get; set; } // TODO: Keep here to remember idea, might do it or remove later
     //public Guid ChatContinuedIn { get; set; }
 

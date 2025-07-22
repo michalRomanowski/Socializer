@@ -1,0 +1,40 @@
+﻿@page "/chats"
+
+@using Socializer.Client
+@using Socializer.Shared
+@using Socializer.Shared.Dtos
+
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject NavigationManager navigation
+@inject StateContainer stateContainer
+
+<ul style="list-style-type:none; padding:0;">
+    @foreach (var userChat in userChats)
+    {
+        <li style="margin-bottom: 10px;">
+            <button @onclick="() => OnUserChatClicked(userChat)" style="width:100%; padding:10px;">
+                Participants: @String.Join(", ", userChat.Usernames)
+            </button>
+        </li>
+    }
+</ul>
+
+@code {
+    private IEnumerable<ChatDto> userChats = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        layoutState.Header = $"Chats";
+
+        var chatsResult = await socializerClient.GetMyChatsAsync();
+
+        if (chatsResult.IsSuccess)
+            userChats = chatsResult.Result;
+    }
+
+    private void OnUserChatClicked(ChatDto userMatch)
+    {
+        
+    }
+}

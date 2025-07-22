@@ -9,6 +9,7 @@ public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) 
     public DbSet<Preference> Preferences { get; set; }
     public DbSet<UserPreference> UserPreferences { get; set; }
     public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatUser> ChatUsers { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +28,23 @@ public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) 
 
         modelBuilder.Entity<UserPreference>()
             .HasIndex(up => new { up.UserId, up.PreferenceId })
+            .IsUnique();
+
+
+        modelBuilder.Entity<ChatUser>()
+            .HasOne(cu => cu.User)
+            .WithMany(u => u.ChatUsers)
+            .HasForeignKey(up => up.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ChatUser>()
+            .HasOne(cu => cu.Chat)
+            .WithMany(c => c.ChatUsers)
+            .HasForeignKey(cu => cu.ChatId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ChatUser>()
+            .HasIndex(cu => new { cu.ChatId, cu.UserId })
             .IsUnique();
     }
 }

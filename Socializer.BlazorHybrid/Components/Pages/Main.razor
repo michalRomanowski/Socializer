@@ -4,6 +4,7 @@
 @inject NavigationManager navigation
 
 <button class="button-big" @onclick="Chat">Chat</button>
+<button class="button-big" @onclick="Chats">Chats</button>
 <button class="button-big" @onclick="Matches">Matches</button>
 @* <button class="button-big" @onclick="MatchesMap">Matches map</button> *@
 
@@ -17,6 +18,11 @@
     private void Chat()
     {
         navigation.NavigateTo("/chat");
+    }
+
+    private void Chats()
+    {
+        navigation.NavigateTo("/chats");
     }
 
     private void Matches()

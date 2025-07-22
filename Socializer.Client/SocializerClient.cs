@@ -39,4 +39,9 @@ public class SocializerClient(IClient client) : ISocializerClient
     {
         return await client.GetAsync<IEnumerable<UserMatchDto>>("UserMatches/My");
     }
+
+    public async Task<OperationResult<IEnumerable<ChatDto>>> GetMyChatsAsync()
+    {
+        return await client.GetAsync<IEnumerable<ChatDto>>("Chats/My");
+    }
 }

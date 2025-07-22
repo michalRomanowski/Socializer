@@ -9,4 +9,5 @@ public interface ISocializerClient
     Task<OperationResult<UserDto>> GetUserMeAsync();
     Task<OperationResult<CreateUserDto>> CreateUserAsync(CreateUserDto createUserDto);
     Task<OperationResult<IEnumerable<UserMatchDto>>> GetMyUserMatchesAsync();
+    Task<OperationResult<IEnumerable<ChatDto>>> GetMyChatsAsync();
 }
