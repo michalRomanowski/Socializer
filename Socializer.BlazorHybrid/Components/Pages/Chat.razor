@@ -19,6 +19,8 @@
     <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
         @foreach (var message in chatViewModel.Messages)
         {
+            @* Example of button inside chat message: *@
+            @* <div class="message @StyleClass(message.Author)">@message.Content.ToHtmlBreaks()<button class="button-big" @onclick="SendMessageAsync">Invite</button></div> *@
             <div class="message @StyleClass(message.Author)">@message.Content.ToHtmlBreaks()</div>
         }
     </div>
