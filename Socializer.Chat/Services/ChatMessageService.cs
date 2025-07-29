@@ -7,9 +7,9 @@ namespace Socializer.Chat.Services;
 
 internal class ChatMessageService(SocializerDbContext dbContext) : IChatMessageService
 {
-    public async Task<ChatMessage> AddMessageAsync(Guid userId, string message, string connectionId)
+    public async Task<ChatMessage> AddMessageAsync(Guid userId, string chatHash, string message)
     {
-        var chat = await dbContext.Chats.SingleAsync(x => x.ConnectionId.Equals(connectionId));
+        var chat = await dbContext.Chats.SingleAsync(x => x.ChatHash.Equals(chatHash));
 
         var chatMessage = new ChatMessage()
         {

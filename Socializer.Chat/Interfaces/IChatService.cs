@@ -6,5 +6,7 @@ public interface IChatService
 {
     Task<IEnumerable<ChatDto>> GetChatsAsync(Guid userId);
 
-    Task<Database.Models.Chat> AddChatAsync(IEnumerable<Guid> userIds, string connectionId);
+    Task<Database.Models.Chat> GetOrAddChatAsync(Guid userId);
+
+    Task<Database.Models.Chat> GetOrAddChatAsync(ISet<Guid> userIds);
 }

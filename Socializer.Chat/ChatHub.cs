@@ -32,9 +32,11 @@ public class ChatHub(
 
             var username = await userService.GetUsernameAsync(userId);
 
-            await chatService.AddChatAsync([userId], Context.ConnectionId);
+            var chat = await chatService.GetOrAddChatAsync(userId);
 
-            await Clients.All.SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, chat.ChatHash);
+
+            await Clients.Group(chat.ChatHash).SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
         }
         catch (Exception ex)
         {
@@ -43,7 +45,7 @@ public class ChatHub(
         }
     }
 
-    public async Task SendMessage(Guid userId, string message)
+    public async Task SendMessage(Guid userId, string chatHash, string message)
     {
         try
         {
@@ -57,25 +59,25 @@ public class ChatHub(
             if (await commandsService.HandleCommandAsync(userId, message, Clients.All, Context.ConnectionId))
                 return;
 
-            await Clients.All.SendAsync("ReceiveMessage", username, message);
+            await Clients.Group(chatHash).SendAsync("ReceiveMessage", username, message);
 
-            await RespondToMessage(message);
+            await RespondToMessage(chatHash, message);
 
             // TODO: Delay added because of requests limit for free models, generally updating preferences trigger will be different,
             // no need to call it for each message (unless I want to use it for conversation context).
             await Task.Delay(10000);
 
-            await UpdatePreferences(userId, message);
+            await UpdatePreferences(userId, chatHash, message);
 
-            await chatMessageService.AddMessageAsync(userId, message, Context.ConnectionId);
+            await chatMessageService.AddMessageAsync(userId, chatHash, message);
         }
         catch (Exception ex){
             logger.LogError(ex, "Exception in chat. ConnectionId: {connectionId}.", Context.ConnectionId);
-            await Clients.All.SendAsync("ReceiveMessage", "error", "Error processing message. Sorry.");
+            await Clients.Group(chatHash).SendAsync("ReceiveMessage", "error", "Error processing message. Sorry.");
         }
     }
 
-    private async Task RespondToMessage(string message)
+    private async Task RespondToMessage(string chatHash, string message)
     {
         logger.LogDebug("Responding to message, ConnectionId: {connectionId}.", Context.ConnectionId);
 
@@ -85,10 +87,10 @@ public class ChatHub(
                 .AppendSameLanguageResponse(),
             200); // TODO: Limit can be configurable
 
-        await Clients.All.SendAsync("ReceiveMessage", "bot", llmResponse);
+        await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", llmResponse);
     }
 
-    private async Task UpdatePreferences(Guid userId, string message)
+    private async Task UpdatePreferences(Guid userId, string chatHash, string message)
     {
         logger.LogDebug("Updating preferences, ConnectionId: {connectionId}.", Context.ConnectionId);
 
@@ -96,6 +98,6 @@ public class ChatHub(
 
         await userPreferenceService.AddOrUpdateAsync(userId, preferences);
 
-        await Clients.All.SendAsync("ReceiveMessage", "bot", preferences.ToMessage());
+        await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", preferences.ToMessage());
     }
 }

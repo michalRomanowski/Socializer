@@ -39,11 +39,11 @@ internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConne
         }
     }
 
-    public async Task<OperationResult<bool>> SendMessageAsync(Guid authorId, string content)
+    public async Task<OperationResult<bool>> SendMessageAsync(Guid authorId, string chatHash, string content)
     {
         try
         {
-            await hubConnection.SendAsync("SendMessage", authorId, content);
+            await hubConnection.SendAsync("SendMessage", authorId, chatHash, content);
             return OperationResult<bool>.Success(true);
         }
         catch (Exception ex)

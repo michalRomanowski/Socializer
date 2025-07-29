@@ -5,5 +5,5 @@ namespace Socializer.Client.ChatClient;
 public interface IChatConnectionClient : IAsyncDisposable
 {
     Task<OperationResult<bool>> InitAsync(Func<string, string, Task> onReceiveMessage);
-    Task<OperationResult<bool>> SendMessageAsync(Guid authorId, string content);
+    Task<OperationResult<bool>> SendMessageAsync(Guid authorId, string chatHash, string content);
 }
