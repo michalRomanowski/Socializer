@@ -1,4 +1,4 @@
-﻿@page "/chat"
+﻿@page "/chat/{ChatHash}"
 
 @using Microsoft.AspNetCore.SignalR.Client
 @using Socializer.BlazorHybrid.Extensions
@@ -10,8 +10,6 @@
 @inject IChatConnectionClient chatConnectionClient
 @inject IJSRuntime js
 @inject LayoutState layoutState
-@inject SharedSettings mobileAppSettings
-@inject NavigationManager navigation
 @inject StateContainer stateContainer
 
 @implements IAsyncDisposable
@@ -32,9 +30,10 @@
 </div>
 
 @code {
+    [Parameter] public string ChatHash { get; set; }
+
     private EditContext editContext;
     private ElementReference chatMessagesRef;
-    private string chatHash;
     private ChatViewModel chatViewModel = new();
 
     protected override async Task OnInitializedAsync()
@@ -43,7 +42,6 @@
         layoutState.Header = $"Chat";
 
         // Init chat
-        chatHash = stateContainer.User.Id.GenerateChatHash();
         await chatConnectionClient.InitAsync(OnReceiveMessageAsync);
 
         await Task.Delay(100);
@@ -62,7 +60,7 @@
         if (string.IsNullOrWhiteSpace(chatViewModel.NewMessage))
             return;
 
-        var result = await chatConnectionClient.SendMessageAsync(stateContainer.User.Id, chatHash, chatViewModel.NewMessage);
+        var result = await chatConnectionClient.SendMessageAsync(stateContainer.User.Id, ChatHash, chatViewModel.NewMessage);
 
         if (result.IsSuccess)
         {

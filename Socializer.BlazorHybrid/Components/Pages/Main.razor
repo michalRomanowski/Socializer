@@ -1,7 +1,10 @@
 ﻿@page "/main"
 
+@using Socializer.Shared.Extensions
+
 @inject LayoutState layoutState
 @inject NavigationManager navigation
+@inject StateContainer stateContainer
 
 <button class="button-big" @onclick="Chat">Chat</button>
 <button class="button-big" @onclick="Chats">Chats</button>
@@ -17,7 +20,8 @@
 
     private void Chat()
     {
-        navigation.NavigateTo("/chat");
+        var chatHash = stateContainer.User.Id.GenerateChatHash();
+        navigation.NavigateTo($"/chat/{chatHash}");
     }
 
     private void Chats()
