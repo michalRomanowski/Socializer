@@ -43,6 +43,7 @@
 
         // Init chat
         await chatConnectionClient.InitAsync(OnReceiveMessageAsync);
+        await chatConnectionClient.JoinGroupAsync(ChatHash);
 
         await Task.Delay(100);
         await ScrollToBottomAsync();

@@ -27,21 +27,32 @@ public class ChatHub(
         {
             // TODO: Filter or other approach can be used for trackingId
             logger.LogDebug("Chat connection init,  ConnectionId: {connectionId}.", Context.ConnectionId);
-
-            var userId = new Guid(Context.UserIdentifier);
-
-            var username = await userService.GetUsernameAsync(userId);
-
-            var chat = await chatService.GetOrAddChatAsync(userId);
-
-            await Groups.AddToGroupAsync(Context.ConnectionId, chat.ChatHash);
-
-            await Clients.Group(chat.ChatHash).SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Exception in chat connection initialization. ConnectionId: {connectionId}.", Context.ConnectionId);
             await Clients.All.SendAsync("ReceiveMessage", "error", "Error initializing chat connection. Sorry.");
+        }
+    }
+
+    public async Task JoinGroup(string chatHash)
+    {
+        try
+        {
+            logger.LogDebug("Adding to chat group {chatHash},  ConnectionId: {connectionId}.", chatHash, Context.ConnectionId);
+
+            var userId = new Guid(Context.UserIdentifier);
+            var username = await userService.GetUsernameAsync(userId);
+            await chatService.GetOrAddChatAsync(chatHash);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatHash);
+
+            await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Exception adding to chat group. ConnectionId: {connectionId}.", Context.ConnectionId);
+            await Clients.All.SendAsync("ReceiveMessage", "error", "Error initializing chat group. Sorry.");
         }
     }
 
@@ -71,7 +82,8 @@ public class ChatHub(
 
             await chatMessageService.AddMessageAsync(userId, chatHash, message);
         }
-        catch (Exception ex){
+        catch (Exception ex)
+        {
             logger.LogError(ex, "Exception in chat. ConnectionId: {connectionId}.", Context.ConnectionId);
             await Clients.Group(chatHash).SendAsync("ReceiveMessage", "error", "Error processing message. Sorry.");
         }

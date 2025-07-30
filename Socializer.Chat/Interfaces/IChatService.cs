@@ -8,5 +8,7 @@ public interface IChatService
 
     Task<Database.Models.Chat> GetOrAddChatAsync(Guid userId);
 
+    Task<Database.Models.Chat> GetOrAddChatAsync(string chatHash);
+
     Task<Database.Models.Chat> GetOrAddChatAsync(ISet<Guid> userIds);
 }

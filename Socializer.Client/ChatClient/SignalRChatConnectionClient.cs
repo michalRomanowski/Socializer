@@ -39,6 +39,19 @@ internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConne
         }
     }
 
+    public async Task<OperationResult<bool>> JoinGroupAsync(string chatHash)
+    {
+        try
+        {
+            await hubConnection.SendAsync("JoinGroup", chatHash);
+            return OperationResult<bool>.Success(true);
+        }
+        catch (Exception ex)
+        {
+            return OperationResult<bool>.Failure(ex);
+        }
+    }
+
     public async Task<OperationResult<bool>> SendMessageAsync(Guid authorId, string chatHash, string content)
     {
         try

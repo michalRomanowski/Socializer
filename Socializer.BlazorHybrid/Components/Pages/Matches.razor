@@ -3,6 +3,7 @@
 @using Socializer.Client
 @using Socializer.Shared
 @using Socializer.Shared.Dtos
+@using Socializer.Shared.Extensions
 
 @inject ISocializerClient socializerClient
 @inject LayoutState layoutState
@@ -36,6 +37,7 @@
 
     private void OnUserMatchClicked(UserMatchDto userMatch)
     {
-        
+        var chatHash = (new HashSet<Guid>() { stateContainer.User.Id, userMatch.User2Id }).GenerateChatHash();
+        navigation.NavigateTo($"/chat/{chatHash}");
     }
 }
