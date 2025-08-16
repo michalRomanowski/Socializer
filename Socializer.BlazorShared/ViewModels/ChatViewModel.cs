@@ -1,6 +1,6 @@
-﻿namespace Socializer.BlazorHybrid.ViewModels;
+﻿namespace Socializer.BlazorShared.ViewModels;
 
-internal class ChatViewModel
+public class ChatViewModel
 {
     public string NewMessage { get; set; } = string.Empty;
 

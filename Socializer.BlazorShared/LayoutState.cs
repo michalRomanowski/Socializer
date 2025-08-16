@@ -1,11 +1,11 @@
-﻿namespace Socializer.BlazorHybrid;
+﻿namespace Socializer.BlazorShared;
 
-internal class LayoutState
+public class LayoutState
 {
     public event Action? OnChange;
     private void NotifyStateChanged() => OnChange?.Invoke();
 
-    private string _errorMessage;
+    private string _errorMessage = string.Empty;
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
     public string ErrorMessage
     {
@@ -16,7 +16,7 @@ internal class LayoutState
         }
     }
 
-    private string _header;
+    private string _header = string.Empty;
     public string Header
     {
         get { return _header; }

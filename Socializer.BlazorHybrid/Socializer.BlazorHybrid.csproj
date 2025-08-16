@@ -67,6 +67,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Common\Common.Utils.csproj" />
+      <ProjectReference Include="..\Socializer.BlazorShared\Socializer.BlazorShared.csproj" />
       <ProjectReference Include="..\Socializer.Client\Socializer.Client.csproj" />
       <ProjectReference Include="..\Socializer.Shared\Socializer.Shared.csproj" />
     </ItemGroup>

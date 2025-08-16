@@ -1,9 +1,11 @@
 ﻿@page "/"
 
 @using Common.Client
+@using Common.Utils
 @using Socializer.Client
 
 @inject IClient client
+@inject ISecureStorage secureStorage
 @inject ISocializerClient socializerClient
 @inject LayoutState layoutState
 @inject NavigationManager navigation
@@ -17,7 +19,7 @@ Welcome to Socializer!
 		layoutState.Header = "Socializer Start";
 
 		// Used to simulate ap not used for long
-		SecureStorage.RemoveAll();
+		secureStorage.RemoveAll();
 
 		var loginAttempt = await client.LoginAsync();
 
@@ -33,7 +35,7 @@ Welcome to Socializer!
 		{
 			// Clean all login info. We don't want to continue in such case. A bit harsh as we force user to restart but for now OK.
 			// Better like that for error feedback.
-			SecureStorage.RemoveAll(); 
+			secureStorage.RemoveAll(); 
 
 			layoutState.ErrorMessage = getUserMeResult.ErrorMessage;
 
