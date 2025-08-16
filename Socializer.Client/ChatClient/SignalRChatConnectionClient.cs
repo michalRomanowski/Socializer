@@ -1,11 +1,10 @@
 ﻿using Common.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Maui.Storage;
 using Socializer.Shared;
 
 namespace Socializer.Client.ChatClient;
 
-internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConnectionClient
+internal class SignalRChatConnectionClient(ISecureStorage secureStorage, SharedSettings settings) : IChatConnectionClient
 {
     private HubConnection? hubConnection;
     private readonly string chatHubUrl = settings.SocializerApiUrl + "/chathub"; // TODO: Move to some const as also used in auth configuration, now hardcoded in both places
@@ -19,7 +18,7 @@ internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConne
                     {
                         options.AccessTokenProvider = async () =>
                         {
-                            return await SecureStorage.Default.GetAsync("access_token"); // TODO: Handle token refreshment/expiry
+                            return await secureStorage.GetAsync("access_token"); // TODO: Handle token refreshment/expiry
                         };
                     }
                 })
