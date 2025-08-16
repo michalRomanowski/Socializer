@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Socializer.API.Auth;
+using Socializer.API.Extensions;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
 using Socializer.API.Services;
@@ -32,6 +33,7 @@ builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddServices();
 builder.Services.AddChat();
 builder.Services.AddLLM();
+builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
 
@@ -54,8 +56,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<ChatHub>("/chathub");
-
 app.Services.MigrateDatabase(app.Logger);
+app.UseCors();
 
 // Seed db with single client
 using (var scope = app.Services.CreateScope())
