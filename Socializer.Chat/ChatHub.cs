@@ -94,7 +94,8 @@ public class ChatHub(
         logger.LogDebug("Responding to message, ConnectionId: {connectionId}.", Context.ConnectionId);
 
         var llmResponse = await lLMClient.QueryAsync(
-            new StringBuilder(message)
+            new StringBuilder()
+                .AppendLine(message)
                 .AppendHelpFindMoreInterests()
                 .AppendSameLanguageResponse(),
             200); // TODO: Limit can be configurable
