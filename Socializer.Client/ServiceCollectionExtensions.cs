@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSocializerClient(this IServiceCollection services, SharedSettings settings)
     {
-        services.AddScoped<ISocializerClient, SocializerClient>();
+        services.AddSingleton<ISocializerClient, SocializerClient>();
 
         // OpenIddict 
         services.AddOpenIddict()
