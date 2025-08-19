@@ -1,4 +1,5 @@
 ﻿using Common.Utils;
+using Microsoft.Maui.Storage;
 using OpenIddict.Client;
 using Socializer.Shared;
 using System.Globalization;
@@ -9,11 +10,7 @@ using static OpenIddict.Client.OpenIddictClientModels;
 
 namespace Common.Client;
 
-public class OpenIddictClient(
-    OpenIddictClientService clientService,
-    ISecureStorage secureStorage,
-    IHttpClientFactory httpClientFactory,
-    SharedSettings sharedSettings) : IClient
+public class OpenIddictClient(OpenIddictClientService clientService, IHttpClientFactory httpClientFactory, SharedSettings sharedSettings) : IClient
 {
     public async Task<OperationResult<TDto>> GetAsync<TDto>(string urlPath)
     {
@@ -58,9 +55,10 @@ public class OpenIddictClient(
         {
             var result = await clientService.AuthenticateWithPasswordAsync(new PasswordAuthenticationRequest() { Username = username, Password = password });
 
-            await secureStorage.SetAsync("access_token", result.AccessToken);
-            await secureStorage.SetAsync("refresh_token", result.RefreshToken);
-            await secureStorage.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
+            // TODO: MAUI Storage should not be in this project
+            await SecureStorage.Default.SetAsync("access_token", result.AccessToken);
+            await SecureStorage.Default.SetAsync("refresh_token", result.RefreshToken);
+            await SecureStorage.Default.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
 
             return OperationResult<bool>.Success(true);
         }
@@ -89,12 +87,12 @@ public class OpenIddictClient(
     {
         try
         {
-            var accessToken = await secureStorage.GetAsync("access_token");
+            var accessToken = await SecureStorage.Default.GetAsync("access_token");
 
             if (!await IsAccessTokenExpired())
                 return OperationResult<bool>.Success(true);
 
-            var refreshToken = await secureStorage.GetAsync("refresh_token");
+            var refreshToken = await SecureStorage.Default.GetAsync("refresh_token");
 
             var result = await clientService.AuthenticateWithRefreshTokenAsync(
                 new RefreshTokenAuthenticationRequest
@@ -102,9 +100,9 @@ public class OpenIddictClient(
                     RefreshToken = refreshToken
                 });
 
-            await secureStorage.SetAsync("access_token", result.AccessToken);
-            await secureStorage.SetAsync("refresh_token", result.RefreshToken);
-            await secureStorage.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
+            await SecureStorage.Default.SetAsync("access_token", result.AccessToken);
+            await SecureStorage.Default.SetAsync("refresh_token", result.RefreshToken);
+            await SecureStorage.Default.SetAsync("auth_access_token_expires_at", result.AccessTokenExpirationDate?.ToString("o")); // ISO 8601
 
             return OperationResult<bool>.Success(true);
         }
@@ -117,17 +115,17 @@ public class OpenIddictClient(
     private async Task<HttpClient> GetHttpClientAsync()
     {
         var httpClient = httpClientFactory.CreateClient(ClientNames.WithRetries);
-        var token = await secureStorage.GetAsync("access_token");
+        var token = await SecureStorage.Default.GetAsync("access_token");
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         return httpClient;
     }
 
-    private async Task<bool> IsAccessTokenExpired()
+    private static async Task<bool> IsAccessTokenExpired()
     {
         var expiry = DateTime.Parse(
-            await secureStorage.GetAsync("auth_access_token_expires_at"),
+            await SecureStorage.GetAsync("auth_access_token_expires_at"),
             null,
             DateTimeStyles.RoundtripKind); // DateTimeStyles.RoundtripKind corresponds to string format "o"
 
