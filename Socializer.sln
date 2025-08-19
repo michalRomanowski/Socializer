@@ -25,10 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.API.Auth", "Soci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.Chat", "Socializer.Chat\Socializer.Chat.csproj", "{52E32482-CA4D-4DE1-8227-E50382E8603B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.BlazorWebAssembly", "Socializer.BlazorWebAssembly\Socializer.BlazorWebAssembly.csproj", "{752792B1-023A-4C43-942F-FC8840292A77}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socializer.BlazorShared", "Socializer.BlazorShared\Socializer.BlazorShared.csproj", "{07B06A93-D45C-48C5-AA03-9B2E19C0EA92}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,14 +77,6 @@ Global
 		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52E32482-CA4D-4DE1-8227-E50382E8603B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{752792B1-023A-4C43-942F-FC8840292A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{752792B1-023A-4C43-942F-FC8840292A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{752792B1-023A-4C43-942F-FC8840292A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{752792B1-023A-4C43-942F-FC8840292A77}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07B06A93-D45C-48C5-AA03-9B2E19C0EA92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07B06A93-D45C-48C5-AA03-9B2E19C0EA92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07B06A93-D45C-48C5-AA03-9B2E19C0EA92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07B06A93-D45C-48C5-AA03-9B2E19C0EA92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
