@@ -38,51 +38,6 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-        <AndroidSigningKeyStore>socializer.keystore</AndroidSigningKeyStore>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-      <AndroidKeyStore>True</AndroidKeyStore>
-      <AndroidSigningStorePass>$(KEYSTORE_PASS)</AndroidSigningStorePass>
-      <AndroidUseAapt2>True</AndroidUseAapt2>
-      <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-      <AndroidPackageFormat>aab</AndroidPackageFormat>
-      <AndroidSigningKeyAlias>socializer.alias</AndroidSigningKeyAlias>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-      <AndroidPackageFormat>aab</AndroidPackageFormat>
-      <AndroidUseAapt2>True</AndroidUseAapt2>
-      <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-      <AndroidKeyStore>True</AndroidKeyStore>
-      <AndroidSigningStorePass>$(KEYSTORE_PASS)</AndroidSigningStorePass>
-      <AndroidSigningKeyAlias>socializer.alias</AndroidSigningKeyAlias>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
-      <ApplicationId>com.michal.romanowski.blazorhybrid</ApplicationId>
     </PropertyGroup>
 
     <ItemGroup>
