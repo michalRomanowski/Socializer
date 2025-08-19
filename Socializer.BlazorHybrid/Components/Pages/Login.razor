@@ -1,11 +1,8 @@
 ﻿@page "/login"
 
-@using Common.Utils
-@using Microsoft.AspNetCore.Components.Forms
-@using Socializer.BlazorShared.ViewModels
+@using Socializer.BlazorHybrid.ViewModels
 @using Socializer.Client
 
-@inject ISecureStorage secureStorage
 @inject ISocializerClient socializerClient
 @inject LayoutState layoutState
 @inject NavigationManager navigation
@@ -60,7 +57,7 @@
         {
             // Clean all login info. We don't want to continue in such case. A bit harsh as we force user to restart but for now OK.
             // Better like that for error feedback.
-            secureStorage.RemoveAll();
+            SecureStorage.RemoveAll();
 
             layoutState.ErrorMessage = getUserMeResult.ErrorMessage;
 
@@ -69,6 +66,7 @@
 
         stateContainer.User = getUserMeResult.Result;
         navigation.NavigateTo("/main");
+
     }
 
     private void SignUp()

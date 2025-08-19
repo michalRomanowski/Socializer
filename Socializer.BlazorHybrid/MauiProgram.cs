@@ -1,7 +1,7 @@
 ﻿using Common.Client;
 using Microsoft.Extensions.Logging;
 using Socializer.BlazorHybrid.Services;
-using Socializer.BlazorShared.Extensions;
+using Socializer.Client;
 
 namespace Socializer.BlazorHybrid
 {
@@ -18,15 +18,16 @@ namespace Socializer.BlazorHybrid
                 });
 
             // Only used in startup so no need to register MobileAppSettings yet, maybe in future if needed
-            var sharedSettings = ConfigClient.GetSharedSettings(Constants.ConfigUrl).Result;
+            var mobileAppSettings = ConfigClient.GetSharedSettings(Constants.ConfigUrl).Result;
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddScoped((services) => sharedSettings);
-
-            builder.Services.AddScoped<Common.Utils.ISecureStorage, MauiSecureStorage>();
+            builder.Services.AddScoped((services) => mobileAppSettings);
+            builder.Services.AddScoped<IClient, OpenIddictClient>();
+            builder.Services.AddSocializerClient(mobileAppSettings);
+            builder.Services.AddChatConnectionClient(mobileAppSettings);
+            builder.Services.AddScoped<LayoutState>();
+            builder.Services.AddScoped<StateContainer>();
             builder.Services.AddScoped<IGeoLocationService, GeoLocationService>();
-
-            builder.Services.AddBlazorShared(sharedSettings);
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

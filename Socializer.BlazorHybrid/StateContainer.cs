@@ -1,6 +1,6 @@
 ﻿using Socializer.Shared.Dtos;
 
-namespace Socializer.BlazorShared;
+namespace Socializer.BlazorHybrid;
 
 internal class StateContainer
 {

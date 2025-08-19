@@ -1,7 +1,7 @@
 ﻿using Socializer.Shared.Dtos;
 using System.ComponentModel.DataAnnotations;
 
-namespace Socializer.BlazorShared.ViewModels;
+namespace Socializer.BlazorHybrid.ViewModels;
 
 internal class LoginViewModel
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Socializer.BlazorShared.Extensions;
+namespace Socializer.BlazorHybrid.Extensions;
 
 internal static class MarkupStringExtensions
 {
