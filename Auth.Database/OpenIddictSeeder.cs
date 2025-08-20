@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 
-namespace Auth.API;
+namespace Auth.Database;
 
 public static class OpenIddictSeeder
 {
