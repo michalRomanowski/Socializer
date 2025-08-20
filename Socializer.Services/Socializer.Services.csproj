@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Socializer.Shared\Socializer.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="Socializer.Services.UnitTests" />
+  </ItemGroup>
+
+
 </Project>

@@ -14,7 +14,7 @@ namespace Socializer.Chat;
 [Authorize(AuthenticationSchemes = "Bearer")]
 public class ChatHub(
     ILLMClient lLMClient, 
-    IPreferenceService preferenceService, 
+    IExtractPreferencesService extractPreferencesService,
     IUserPreferenceService userPreferenceService, 
     IUserService userService, 
     IChatService chatService,
@@ -108,7 +108,7 @@ public class ChatHub(
     {
         logger.LogDebug("Updating preferences, ConnectionId: {connectionId}.", Context.ConnectionId);
 
-        var preferences = await preferenceService.ExtractPreferencesAsync(message);
+        var preferences = await extractPreferencesService.ExtractPreferencesAsync(message);
 
         await userPreferenceService.AddOrUpdateAsync(userId, preferences);
 
