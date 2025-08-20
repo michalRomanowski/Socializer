@@ -1,9 +1,9 @@
+using Auth.API;
+using Auth.Database;
 using Microsoft.EntityFrameworkCore;
-using Socializer.API.Auth;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
 using Socializer.API.Services;
-using Socializer.Auth.Database;
 using Socializer.Chat;
 using Socializer.Chat.Extensions;
 using Socializer.Database;

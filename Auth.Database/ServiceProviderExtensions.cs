@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Socializer.Auth.Database;
+namespace Auth.Database;
 
 public static class ServiceProviderExtensions
 {

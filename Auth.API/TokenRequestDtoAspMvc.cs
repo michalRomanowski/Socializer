@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Socializer.API.Auth;
+namespace Auth.API;
 
 public class TokenRequestDtoAspMvc
 {

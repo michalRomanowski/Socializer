@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Auth.Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Socializer.Auth.Database;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Socializer.API.Auth;
+namespace Auth.API;
 
 public static class ServiceCollectionExtensions
 {
