@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using Socializer.API.Auth;
-using Socializer.Database.Models;
 
 namespace Socializer.API.Controllers;
 
 [Controller]
 [Route("connect/token")]
-public class AuthTokenController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration) : ControllerBase
+public class AuthTokenController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration) : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost]

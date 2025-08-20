@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Socializer.Database\Socializer.Database.csproj" />
+    <ProjectReference Include="..\Auth.Database\Auth.Database.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,7 +10,7 @@ using Socializer.Shared.Dtos;
 
 namespace Socializer.API.Services.Services;
 
-internal class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper) : IUserService
+internal class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<IdentityUser> userManager, IMapper mapper) : IUserService
 {
     public async Task<string> GetUsernameAsync(Guid userId)
     {
@@ -50,7 +50,7 @@ internal class UserService(ILogger<UserService> logger, SocializerDbContext dbCo
 
         logger.LogInformation("Creating new user in Identity with username: {Username} and email: {Email}", newUserDto.Username, newUserDto.Email);
 
-        var applicationUser = new ApplicationUser
+        var applicationUser = new IdentityUser
         {
             UserName = newUserDto.Username,
             Email = newUserDto.Email

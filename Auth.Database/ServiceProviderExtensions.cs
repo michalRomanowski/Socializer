@@ -2,19 +2,20 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Socializer.Database;
+namespace Socializer.Auth.Database;
 
 public static class ServiceProviderExtensions
 {
-    public static IServiceProvider MigrateSocializerDatabase(this IServiceProvider serviceProvider, ILogger logger)
+    public static IServiceProvider MigrateAuthDatabase(this IServiceProvider serviceProvider, ILogger logger)
     {
         try
         {
             using var scope = serviceProvider.CreateScope();
 
-            var socializerDbContext = scope.ServiceProvider.GetRequiredService<SocializerDbContext>();
-            socializerDbContext.Database.Migrate();
-            logger.LogInformation("Socializer Database migrated successfully.");
+            var identityDbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+            identityDbContext.Database.Migrate();
+            logger.LogInformation("Identity Database migrated successfully.");
+
 
             return serviceProvider;
         }

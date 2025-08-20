@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Socializer.Database;
-using Socializer.Database.Models;
+using Socializer.Auth.Database;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Socializer.API.Auth;
@@ -20,7 +19,7 @@ public static class ServiceCollectionExtensions
             options.UseOpenIddict();
         });
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<IdentityDbContext>()
             .AddDefaultTokenProviders();
 

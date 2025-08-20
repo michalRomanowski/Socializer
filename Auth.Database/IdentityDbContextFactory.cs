@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Socializer.Database;
+namespace Socializer.Auth.Database;
 
 public class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
 {

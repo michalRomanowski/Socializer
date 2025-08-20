@@ -14,6 +14,8 @@ public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("soc");
+
         modelBuilder.Entity<UserPreference>()
             .HasOne(up => up.User)
             .WithMany(u => u.UserPreferences)

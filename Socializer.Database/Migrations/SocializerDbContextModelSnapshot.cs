@@ -3,23 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Socializer.Database;
 
 #nullable disable
 
-namespace Socializer.Database.Migrations.SocializerDb
+namespace Socializer.Database.Migrations
 {
     [DbContext(typeof(SocializerDbContext))]
-    [Migration("20250729105422_ChatHash")]
-    partial class ChatHash
+    partial class SocializerDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("soc")
                 .HasAnnotation("ProductVersion", "8.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -40,7 +38,7 @@ namespace Socializer.Database.Migrations.SocializerDb
                     b.HasIndex("ChatHash")
                         .IsUnique();
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chats", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.ChatMessage", b =>
@@ -70,7 +68,7 @@ namespace Socializer.Database.Migrations.SocializerDb
 
                     b.HasIndex("Timestamp");
 
-                    b.ToTable("ChatMessages");
+                    b.ToTable("ChatMessages", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.ChatUser", b =>
@@ -92,7 +90,7 @@ namespace Socializer.Database.Migrations.SocializerDb
                     b.HasIndex("ChatId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("ChatUsers");
+                    b.ToTable("ChatUsers", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.Preference", b =>
@@ -110,7 +108,7 @@ namespace Socializer.Database.Migrations.SocializerDb
                     b.HasIndex("DBPediaResource")
                         .IsUnique();
 
-                    b.ToTable("Preferences");
+                    b.ToTable("Preferences", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.User", b =>
@@ -132,7 +130,7 @@ namespace Socializer.Database.Migrations.SocializerDb
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.UserPreference", b =>
@@ -160,7 +158,7 @@ namespace Socializer.Database.Migrations.SocializerDb
                     b.HasIndex("UserId", "PreferenceId")
                         .IsUnique();
 
-                    b.ToTable("UserPreferences");
+                    b.ToTable("UserPreferences", "soc");
                 });
 
             modelBuilder.Entity("Socializer.Database.Models.ChatMessage", b =>

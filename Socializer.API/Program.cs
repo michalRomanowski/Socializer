@@ -3,6 +3,7 @@ using Socializer.API.Auth;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
 using Socializer.API.Services;
+using Socializer.Auth.Database;
 using Socializer.Chat;
 using Socializer.Chat.Extensions;
 using Socializer.Database;
@@ -55,7 +56,9 @@ app.MapControllers();
 
 app.MapHub<ChatHub>("/chathub");
 
-app.Services.MigrateDatabase(app.Logger);
+app.Services.MigrateSocializerDatabase(app.Logger);
+
+app.Services.MigrateAuthDatabase(app.Logger);
 
 // Seed db with single client
 using (var scope = app.Services.CreateScope())
