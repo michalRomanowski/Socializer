@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPreferenceService, PreferenceService>();
         services.AddScoped<IExtractPreferencesService, ExtractPreferencesService>();
+        services.AddScoped<IReadPreferencesService, ReadPreferencesService>();
         services.AddScoped<IUserPreferenceService, UserPreferenceService>();
         services.AddScoped<IUserMatchingService, UserMatchingService>();
 
