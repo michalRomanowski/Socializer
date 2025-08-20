@@ -37,7 +37,7 @@ public static class Prompts
         sb.AppendLine("Return only list in form:");
         sb.AppendLine($"RESOURCE1");
         sb.AppendLine($"RESOURCE2");
-        sb.AppendLine($"Where RESOURCE is dbpedia resource uri without prefix 'http://dbpedia.org/resource/' corresponding to foun activity or interest");
+        sb.AppendLine($"Where RESOURCE is dbpedia resource uri without prefix 'http://dbpedia.org/resource/' corresponding to found activity or interest");
         sb.AppendLine("and nothing else.");
         sb.AppendTokenLimit(tokenLimit); // TODO: Configurable
 
