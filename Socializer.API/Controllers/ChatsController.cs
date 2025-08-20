@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Socializer.Chat.Interfaces;
+using Socializer.API.Services.Interfaces.Chat;
 
 namespace Socializer.API.Controllers;
 

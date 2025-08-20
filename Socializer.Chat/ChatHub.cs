@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Socializer.API.Services.Interfaces;
+using Socializer.API.Services.Interfaces.Chat;
 using Socializer.Chat.Extensions;
 using Socializer.Chat.Interfaces;
 using Socializer.LLM;

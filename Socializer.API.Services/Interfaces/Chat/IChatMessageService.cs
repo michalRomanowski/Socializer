@@ -1,6 +1,6 @@
 ﻿using Socializer.Database.Models;
 
-namespace Socializer.Chat.Interfaces;
+namespace Socializer.API.Services.Interfaces.Chat;
 
 public interface IChatMessageService
 {

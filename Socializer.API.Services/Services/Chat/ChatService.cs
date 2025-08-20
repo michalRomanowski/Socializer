@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Socializer.Chat.Interfaces;
+using Socializer.API.Services.Interfaces.Chat;
 using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.Shared.Dtos;
 using Socializer.Shared.Extensions;
 
-namespace Socializer.Chat.Services;
+namespace Socializer.API.Services.Services.Chat;
 
 // TODO: For now accept crappy approach to chat hash as this will be re-created for sake of noSql approach in future anyway
-internal class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService
+public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService
 {
     public async Task<IEnumerable<ChatDto>> GetChatsAsync(Guid userId)
     {
@@ -58,7 +58,7 @@ internal class ChatService(SocializerDbContext dbContext, ILogger<ChatService> l
             var foundIds = users.Select(x => x.Id).ToHashSet();
             var notFoundIds = userIds.Where(x => !foundIds.Contains(x));
 
-            throw new KeyNotFoundException($"Not found UserIds: {String.Join(' ', notFoundIds)}.");
+            throw new KeyNotFoundException($"Not found UserIds: {string.Join(' ', notFoundIds)}.");
         }
 
         var chatUsers = userIds.Select(x => new ChatUser() { UserId = x }).ToList();

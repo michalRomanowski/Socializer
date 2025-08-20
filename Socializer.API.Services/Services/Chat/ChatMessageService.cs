@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Socializer.Chat.Interfaces;
+using Socializer.API.Services.Interfaces.Chat;
 using Socializer.Database;
 using Socializer.Database.Models;
 
-namespace Socializer.Chat.Services;
+namespace Socializer.API.Services.Services.Chat;
 
-internal class ChatMessageService(SocializerDbContext dbContext) : IChatMessageService
+public class ChatMessageService(SocializerDbContext dbContext) : IChatMessageService
 {
     public async Task<ChatMessage> AddMessageAsync(Guid userId, string chatHash, string message)
     {

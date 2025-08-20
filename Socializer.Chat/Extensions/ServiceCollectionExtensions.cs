@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Socializer.API.Services.Interfaces.Chat;
+using Socializer.API.Services.Services.Chat;
 using Socializer.Chat.Interfaces;
 using Socializer.Chat.Services;
 
