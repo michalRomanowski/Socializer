@@ -3,11 +3,11 @@ using Auth.Database;
 using Microsoft.EntityFrameworkCore;
 using Socializer.API.Filters;
 using Socializer.API.Middleware;
-using Socializer.API.Services;
 using Socializer.Chat;
 using Socializer.Chat.Extensions;
 using Socializer.Database;
 using Socializer.LLM;
+using Socializer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

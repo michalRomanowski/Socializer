@@ -3,12 +3,12 @@ using Common.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Socializer.Database.Models;
+using Socializer.Services.Interfaces;
 using Socializer.Shared.Dtos;
 
-namespace Socializer.API.Services.Services;
+namespace Socializer.Services.Services;
 
 internal class UserService(ILogger<UserService> logger, SocializerDbContext dbContext, UserManager<IdentityUser> userManager, IMapper mapper) : IUserService
 {

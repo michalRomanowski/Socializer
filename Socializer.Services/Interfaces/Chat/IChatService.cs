@@ -1,6 +1,6 @@
 ﻿using Socializer.Shared.Dtos;
 
-namespace Socializer.API.Services.Interfaces.Chat;
+namespace Socializer.Services.Interfaces.Chat;
 
 public interface IChatService
 {

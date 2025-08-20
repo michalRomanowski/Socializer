@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Socializer.API.Services.Interfaces;
 using Socializer.Database;
 using Socializer.Database.Models;
+using Socializer.Services.Interfaces;
 
-namespace Socializer.API.Services.Services;
+namespace Socializer.Services.Services;
 
 internal class UserPreferenceService(
     SocializerDbContext dbContext,

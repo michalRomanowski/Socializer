@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Socializer.API.Services.Interfaces;
-using Socializer.API.Services.Services;
+using Socializer.Services.Interfaces;
+using Socializer.Services.Services;
 
-namespace Socializer.API.Services;
+namespace Socializer.Services;
 
 public static class ServiceCollectionExtensions
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Socializer.API.Services.Interfaces.Chat;
 using Socializer.Database;
 using Socializer.Database.Models;
+using Socializer.Services.Interfaces.Chat;
 
-namespace Socializer.API.Services.Services.Chat;
+namespace Socializer.Services.Services.Chat;
 
 public class ChatMessageService(SocializerDbContext dbContext) : IChatMessageService
 {

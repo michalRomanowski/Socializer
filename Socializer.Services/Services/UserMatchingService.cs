@@ -1,10 +1,10 @@
-﻿using Socializer.API.Services.Interfaces;
-using Socializer.Database;
+﻿using Socializer.Database;
 using Microsoft.EntityFrameworkCore;
 using Socializer.Shared.Dtos;
 using AutoMapper;
+using Socializer.Services.Interfaces;
 
-namespace Socializer.API.Services.Services;
+namespace Socializer.Services.Services;
 
 internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper) : IUserMatchingService
 {

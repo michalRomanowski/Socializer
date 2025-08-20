@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Socializer.API.Services.Interfaces.Chat;
 using Socializer.Database;
 using Socializer.Database.Models;
+using Socializer.Services.Interfaces.Chat;
 using Socializer.Shared.Dtos;
 using Socializer.Shared.Extensions;
 
-namespace Socializer.API.Services.Services.Chat;
+namespace Socializer.Services.Services.Chat;
 
 // TODO: For now accept crappy approach to chat hash as this will be re-created for sake of noSql approach in future anyway
 public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService

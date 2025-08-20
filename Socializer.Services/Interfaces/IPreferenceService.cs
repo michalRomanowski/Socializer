@@ -1,6 +1,6 @@
 ﻿using Socializer.Database.Models;
 
-namespace Socializer.API.Services.Interfaces;
+namespace Socializer.Services.Interfaces;
 
 public interface IPreferenceService
 {

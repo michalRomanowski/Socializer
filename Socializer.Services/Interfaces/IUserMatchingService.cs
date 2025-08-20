@@ -1,6 +1,6 @@
 ﻿using Socializer.Shared.Dtos;
 
-namespace Socializer.API.Services.Interfaces;
+namespace Socializer.Services.Interfaces;
 
 public interface IUserMatchingService
 {

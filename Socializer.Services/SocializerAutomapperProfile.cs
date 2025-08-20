@@ -2,7 +2,7 @@
 using Socializer.Database.Models;
 using Socializer.Shared.Dtos;
 
-namespace Socializer.API.Services;
+namespace Socializer.Services;
 
 public class SocializerAutomapperProfile : Profile
 {
