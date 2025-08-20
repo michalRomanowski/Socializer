@@ -1,5 +1,4 @@
 ﻿using Auth.Database;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -78,23 +77,7 @@ public static class ServiceCollectionExtensions
                     ValidAudience = configuration["AuthSettings:ResourceServerName"]
                 };
 
-                options.Events = new JwtBearerEvents
-                {
-                    // Config for SignalR chat
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access_token"];
-
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) &&
-                            path.StartsWithSegments("/chathub")) // TODO: Move to some const as also used in auth configuration, now hardcoded in both places
-                        {
-                            context.Token = accessToken;
-                        }
-
-                        return Task.CompletedTask;
-                    }
-                };
+                options.AddSignalROptions();
 
                 // UNCOMMENT FOR AUTH DEBUGGING
                 //options.Events = new JwtBearerEvents
