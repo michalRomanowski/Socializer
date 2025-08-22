@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace Socializer.LLM;
 
@@ -8,7 +8,7 @@ internal class HuggingFaceClient : ILLMClient
 {
     private readonly HuggingFaceSettings settings;
     private readonly HttpClient httpClient;
-    
+
     public HuggingFaceClient(HuggingFaceSettings settings)
     {
         this.settings = settings;

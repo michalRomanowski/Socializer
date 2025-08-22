@@ -13,10 +13,10 @@ namespace Socializer.Chat;
 // TODO: This class has to be reconsidered due to many responsibilities. Split into some extra services probably.
 [Authorize(AuthenticationSchemes = "Bearer")]
 public class ChatHub(
-    ILLMClient lLMClient, 
+    ILLMClient lLMClient,
     IExtractPreferencesService extractPreferencesService,
-    IUserPreferenceService userPreferenceService, 
-    IUserService userService, 
+    IUserPreferenceService userPreferenceService,
+    IUserService userService,
     IChatService chatService,
     ICommandsService commandsService,
     IChatMessageService chatMessageService,

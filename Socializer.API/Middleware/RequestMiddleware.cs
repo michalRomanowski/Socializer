@@ -10,7 +10,7 @@ public class RequestMiddleware(RequestDelegate next, ILogger<RequestMiddleware> 
             var path = context.Request.Path;
 
             // TODO: Tracking Id should be attached to every log. This is doable.
-             
+
             logger.LogInformation(
                     "Request: {Path} received. TrackingId {trackingId}.",
                     path, context.TraceIdentifier);
@@ -22,13 +22,13 @@ public class RequestMiddleware(RequestDelegate next, ILogger<RequestMiddleware> 
             if (statusCode >= 200 && statusCode <= 299)
             {
                 logger.LogInformation(
-                    "Request: {Path} completed successfully. StatusCode: {StatusCode}. TrackingId {trackingId}.", 
+                    "Request: {Path} completed successfully. StatusCode: {StatusCode}. TrackingId {trackingId}.",
                     path, statusCode, context.TraceIdentifier);
             }
             else
             {
                 logger.LogWarning(
-                    "Request: {Path} FAILED. StatusCode: {StatusCode}. TrackingId {trackingId}.", 
+                    "Request: {Path} FAILED. StatusCode: {StatusCode}. TrackingId {trackingId}.",
                     path, statusCode, context.TraceIdentifier);
             }
         }

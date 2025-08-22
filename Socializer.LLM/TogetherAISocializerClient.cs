@@ -23,7 +23,7 @@ internal class TogetherAISocializerClient : ILLMClient
 
     public async Task<string> QueryAsync(StringBuilder prompt, int tokenLimit, string? context)
     {
-        if(tokenLimit != default)
+        if (tokenLimit != default)
             prompt.AppendTokenLimit(tokenLimit);
 
         logger.LogInformation("Sending prompt to Together.AI: {prompt}.", prompt);

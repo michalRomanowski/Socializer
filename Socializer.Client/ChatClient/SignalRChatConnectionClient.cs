@@ -15,7 +15,8 @@ internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConne
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl(chatHubUrl, options => {
+                .WithUrl(chatHubUrl, options =>
+                {
                     {
                         options.AccessTokenProvider = async () =>
                         {

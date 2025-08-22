@@ -40,7 +40,8 @@ public static class ServiceCollectionExtensions
                     .WaitAndRetryAsync(
                         3,
                         retryAttempt => TimeSpan.FromSeconds(5 + Math.Pow(2, retryAttempt)), // exponential backoff;
-                        (result, delay, retryCount, context) => {
+                        (result, delay, retryCount, context) =>
+                        {
                             Console.WriteLine($"Retry {retryCount} in {delay.TotalSeconds}s due to {result.Exception?.Message ?? result.Result?.StatusCode.ToString()}");
                         }));
 
