@@ -25,6 +25,7 @@ internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper
 
         foreach (var up1 in user.UserPreferences)
         {
+            // This will have to be optimized for more users
             var otherUsersSharedPreferences = await dbContext.UserPreferences
                 .Include(x => x.User)
                 .Where(x => x.PreferenceId == up1.PreferenceId && x.UserId != user.Id)
