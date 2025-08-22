@@ -28,8 +28,23 @@ namespace Socializer.Services.UnitTests.Services
         public static IEnumerable<object[]> PreferencesData =>
             [
                 [
-                    "resource1", // string parameter
-                    new Preference[] { new() { DBPediaResource = "resource1" } } // array parameter
+                    "Single_resource",
+                    new Preference[] { new() { DBPediaResource = "Single_resource" } }
+                ],
+                [
+                    " should_trim ",
+                    new Preference[] { new() { DBPediaResource = "should_trim" } }
+                ],
+                [
+                    "\nres1\n\nres2\n", // Few resources with empty lines
+                    new Preference[] { 
+                        new() { DBPediaResource = "res1" },
+                        new() { DBPediaResource = "res2" }}
+                ],
+                [
+                    "res1\nres1", // Duplicated resource
+                    new Preference[] {
+                        new() { DBPediaResource = "res1" } }
                 ]
             ];
     }

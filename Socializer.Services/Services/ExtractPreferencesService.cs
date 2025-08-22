@@ -7,9 +7,9 @@ namespace Socializer.Services.Services;
 
 internal class ExtractPreferencesService(ILLMClient llmClient, IReadPreferencesService preferencesReaderService, ILogger<ExtractPreferencesService> logger) : IExtractPreferencesService
 {
-    public async Task<IEnumerable<Preference>> ExtractPreferencesAsync(string prompt)
+    public async Task<IEnumerable<Preference>> ExtractPreferencesAsync(string message)
     {
-        var preferencesPrompt = Prompts.PreferencesPrompt(prompt, 100);
+        var preferencesPrompt = Prompts.PreferencesPrompt(message, 100);
 
         logger.LogDebug("Preferences prompt: {PreferencesPrompt}", preferencesPrompt);
 

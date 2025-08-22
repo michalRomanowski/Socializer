@@ -10,9 +10,9 @@ internal class ReadPreferencesService(ILogger<ReadPreferencesService> logger) : 
     {
         var preferences = new List<Preference>();
 
-        var lines = text.Split('\n');
+        var lines = text.Split('\n').Where(x => !string.IsNullOrEmpty(x)).Distinct();
 
-        logger.LogDebug("Extracted {LinesCount} lines.", lines.Length);
+        logger.LogDebug("Extracted {LinesCount} lines.", lines.Count());
 
         foreach (var line in lines)
         {
