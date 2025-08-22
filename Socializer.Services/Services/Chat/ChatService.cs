@@ -53,7 +53,7 @@ public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> log
 
         var users = await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
 
-        if(users.Count != userIds.Count)
+        if (users.Count != userIds.Count)
         {
             var foundIds = users.Select(x => x.Id).ToHashSet();
             var notFoundIds = userIds.Where(x => !foundIds.Contains(x));

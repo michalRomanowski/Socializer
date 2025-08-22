@@ -1,8 +1,8 @@
-﻿using Socializer.Database;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Socializer.Shared.Dtos;
-using AutoMapper;
+using Socializer.Database;
 using Socializer.Services.Interfaces;
+using Socializer.Shared.Dtos;
 
 namespace Socializer.Services.Services;
 
