@@ -2,10 +2,7 @@ using Auth.API;
 using Auth.Database;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Socializer.API.Filters;
 using Socializer.API.Middleware;
-using Socializer.Chat;
-using Socializer.Chat.Extensions;
 using Socializer.Database;
 using Socializer.LLM;
 using Socializer.Services;
@@ -16,8 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SocializerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SocializerConnectionString")));
 
-//builder.Services.AddSingleton(
-//    builder.Configuration.GetSection(nameof(HuggingFaceSettings)).Get<HuggingFaceSettings>());
+builder.Services.AddControllers();
 
 builder.Services.AddSingleton(
     builder.Configuration.GetSection(nameof(TogetherAISettings)).Get<TogetherAISettings>());
@@ -39,8 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-if (!app.Environment.IsDevelopment())
-    app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseRouting();
 
