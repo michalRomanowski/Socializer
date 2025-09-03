@@ -22,18 +22,12 @@ builder.Services.AddDbContext<SocializerDbContext>(options =>
 builder.Services.AddSingleton(
     builder.Configuration.GetSection(nameof(TogetherAISettings)).Get<TogetherAISettings>());
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<FailureLoggingFilter>();
-});
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
-builder.Services.AddServices();
-builder.Services.AddChat();
 builder.Services.AddLLM();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -60,10 +54,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatHub>("/chathub");
-
 app.Services.MigrateSocializerDatabase(app.Logger);
-
 app.Services.MigrateAuthDatabase(app.Logger);
 
 // Seed db with single client
