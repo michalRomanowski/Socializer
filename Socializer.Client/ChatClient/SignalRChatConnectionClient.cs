@@ -8,7 +8,7 @@ namespace Socializer.Client.ChatClient;
 internal class SignalRChatConnectionClient(SharedSettings settings) : IChatConnectionClient
 {
     private HubConnection? hubConnection;
-    private readonly string chatHubUrl = settings.SocializerApiUrl + "/chathub"; // TODO: Move to some const as also used in auth configuration, now hardcoded in both places
+    private readonly string chatHubUrl = settings.SocializerChatApiUrl + "/chathub"; // TODO: Move to some const as also used in auth configuration, now hardcoded in both places
 
     public async Task<OperationResult<bool>> InitAsync(Func<string, string, Task> onReceiveMessage)
     {
