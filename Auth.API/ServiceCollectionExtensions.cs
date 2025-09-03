@@ -32,6 +32,8 @@ public static class ServiceCollectionExtensions
             })
             .AddServer(options =>
             {
+                options.SetIssuer(configuration["SharedSettings:SocializerApiUrl"]);
+
                 options.SetTokenEndpointUris("/connect/token");
                 options.AllowPasswordFlow();
                 options.AllowRefreshTokenFlow();
