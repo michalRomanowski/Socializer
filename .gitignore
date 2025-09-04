@@ -73,8 +73,7 @@ build/
 *.log
 
 ## Appsettings
-/Socializer.API/appsettings.json
-/Socializer.API/appsettings.Development.json
+*.Development.json
 
 ## Certificates
 *.pfx
