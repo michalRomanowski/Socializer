@@ -75,8 +75,12 @@ build/
 ## Appsettings
 *.Development.json
 
+## Constant with config endpoint url hardcoded
+/Socializer.BlazorHybrid/Constants.cs
+
 ## Certificates
 *.pfx
 
-## Secret nstructions
+## Secret instructions
 README.SECRET.md
+
