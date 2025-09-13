@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Socializer.Database.NoSql\Socializer.Database.NoSql.csproj" />
     <ProjectReference Include="..\Socializer.Services\Socializer.Services.csproj" />
   </ItemGroup>
 
