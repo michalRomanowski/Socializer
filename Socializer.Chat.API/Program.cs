@@ -9,6 +9,7 @@ using Socializer.Database;
 using Socializer.Database.NoSql;
 using Socializer.Database.NoSql.Extensions;
 using Socializer.LLM;
+using Socializer.Repository;
 using Socializer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,7 @@ builder.Services.AddChat();
 builder.Services.AddLLM();
 builder.Services.AddServices();
 builder.Services.AddTableServiceClient(builder.Configuration);
+builder.Services.AddRepositories();
 builder.Services.AddSingleton<TableStorageInitializer>();
 
 var app = builder.Build();

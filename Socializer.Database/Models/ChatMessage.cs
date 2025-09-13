@@ -13,7 +13,5 @@ namespace Socializer.Database.Models
 
         public string Message { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-
-        //public IEnumerable<Guid> UserReceivedIds { get; set; } = []; // TODO: Possibly remove in future if unused
     }
 }
