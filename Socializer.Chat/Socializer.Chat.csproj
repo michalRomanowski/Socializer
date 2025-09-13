@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Socializer.Repository\Socializer.Repository.csproj" />
     <ProjectReference Include="..\Socializer.Services\Socializer.Services.csproj" />
   </ItemGroup>
 

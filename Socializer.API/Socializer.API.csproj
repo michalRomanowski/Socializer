@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth.API\Auth.API.csproj" />
-    <ProjectReference Include="..\Auth.Database\Auth.Database.csproj" />
     <ProjectReference Include="..\Socializer.Services\Socializer.Services.csproj" />
   </ItemGroup>
 

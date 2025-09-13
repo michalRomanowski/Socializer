@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.Utils.csproj" />
-    <ProjectReference Include="..\Socializer.Database\Socializer.Database.csproj" />
     <ProjectReference Include="..\Socializer.LLM\Socializer.LLM.csproj" />
+    <ProjectReference Include="..\Socializer.Repository\Socializer.Repository.csproj" />
     <ProjectReference Include="..\Socializer.Shared\Socializer.Shared.csproj" />
   </ItemGroup>
 
