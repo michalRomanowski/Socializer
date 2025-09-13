@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Socializer.Chat.Extensions;
 using Socializer.Chat.Interfaces;
 using Socializer.LLM;
+using Socializer.Repository.Interfaces;
 using Socializer.Services.Interfaces;
 using Socializer.Services.Interfaces.Chat;
 using System.Text;
@@ -19,9 +20,11 @@ public class ChatHub(
     IUserService userService,
     IChatService chatService,
     ICommandsService commandsService,
-    IChatMessageService chatMessageService,
+    IChatMessageRepository chatMessageRepository,
     ILogger<ChatHub> logger) : Hub
 {
+    private readonly static Guid botId = new("00000000-0000-0000-0000-000000000001");
+
     public override async Task OnConnectedAsync()
     {
         try
@@ -68,20 +71,20 @@ public class ChatHub(
 
             logger.LogDebug("Received message: '{Message}' from User: '{userId}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
 
+            await chatMessageRepository.AddAsync(userId, chatHash, message);
+
             if (await commandsService.HandleCommandAsync(userId, message, Clients.All, Context.ConnectionId))
                 return;
 
             await Clients.Group(chatHash).SendAsync("ReceiveMessage", username, message);
 
             await RespondToMessage(chatHash, message);
-
+            
             // TODO: Delay added because of requests limit for free models, generally updating preferences trigger will be different,
             // no need to call it for each message (unless I want to use it for conversation context).
             await Task.Delay(10000);
 
             await UpdatePreferences(userId, chatHash, message);
-
-            await chatMessageService.AddMessageAsync(userId, chatHash, message);
         }
         catch (Exception ex)
         {
@@ -102,6 +105,8 @@ public class ChatHub(
             200); // TODO: Limit can be configurable
 
         await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", llmResponse);
+        await chatMessageRepository.AddAsync(botId, chatHash, llmResponse);
+
     }
 
     private async Task UpdatePreferences(Guid userId, string chatHash, string message)

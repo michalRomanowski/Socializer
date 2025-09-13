@@ -1,5 +1,4 @@
 ﻿using Azure.Data.Tables;
-using Socializer.Database.Models;
 using Socializer.Database.NoSql.Models;
 using Socializer.Repository.Interfaces;
 
@@ -7,11 +6,11 @@ namespace Socializer.Repository.Repositories;
 
 internal class ChatMessageRepository(TableServiceClient serviceClient) : IChatMessageRepository
 {
-    public async Task AddAsync(string chatHash, ChatMessage chatMessage)
+    public async Task AddAsync(Guid senderId, string chatHash, string message)
     {
         var tableClient = serviceClient.GetTableClient("Chats");
 
-        var chatMessageEntity = new ChatMessageEntity(chatHash, chatMessage.Id, chatMessage.SenderId, chatMessage.Message);
+        var chatMessageEntity = new ChatMessageEntity(chatHash, Guid.NewGuid(), senderId, message);
 
         await tableClient.AddEntityAsync(chatMessageEntity);
     }

@@ -12,7 +12,6 @@ public static class ServiceCollectionExtensions
     {
         services.AddSignalR();
 
-        services.AddScoped<IChatMessageService, ChatMessageService>();
         services.AddScoped<IChatService, ChatService>();
         services.AddScoped<ICommandsService, CommandsService>();
 
