@@ -6,7 +6,7 @@ namespace Socializer.Repository.Repositories;
 
 internal class ChatMessageRepository(TableServiceClient serviceClient) : IChatMessageRepository
 {
-    public async Task AddAsync(Guid senderId, string chatHash, string message)
+    public async Task AddChatMessageAsync(Guid senderId, string chatHash, string message)
     {
         var tableClient = serviceClient.GetTableClient("Chats");
 

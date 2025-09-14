@@ -71,7 +71,7 @@ public class ChatHub(
 
             logger.LogDebug("Received message: '{Message}' from User: '{userId}', ConnectionId: {connectionId}.", message, username, Context.ConnectionId);
 
-            await chatMessageRepository.AddAsync(userId, chatHash, message);
+            await chatMessageRepository.AddChatMessageAsync(userId, chatHash, message);
 
             if (await commandsService.HandleCommandAsync(userId, message, Clients.All, Context.ConnectionId))
                 return;
@@ -105,7 +105,7 @@ public class ChatHub(
             200); // TODO: Limit can be configurable
 
         await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", llmResponse);
-        await chatMessageRepository.AddAsync(botId, chatHash, llmResponse);
+        await chatMessageRepository.AddChatMessageAsync(botId, chatHash, llmResponse);
 
     }
 

@@ -2,5 +2,5 @@
 
 public interface IChatMessageRepository
 {
-    Task AddAsync(Guid senderId, string chatHash, string message);
+    Task AddChatMessageAsync(Guid senderId, string chatHash, string message);
 }
