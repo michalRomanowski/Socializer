@@ -6,7 +6,6 @@ using Socializer.Chat.Interfaces;
 using Socializer.LLM;
 using Socializer.Repository.Interfaces;
 using Socializer.Services.Interfaces;
-using Socializer.Services.Interfaces.Chat;
 using System.Text;
 
 namespace Socializer.Chat;

@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Socializer.Database;
 using Socializer.Database.Models;
-using Socializer.Services.Interfaces.Chat;
+using Socializer.Services.Interfaces;
 using Socializer.Shared.Dtos;
 using Socializer.Shared.Extensions;
 
-namespace Socializer.Services.Services.Chat;
+namespace Socializer.Services.Services;
 
 public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService
 {
@@ -29,22 +29,22 @@ public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> log
         return chatDtos;
     }
 
-    public async Task<Database.Models.Chat> GetOrAddChatAsync(Guid userId)
+    public async Task<Chat> GetOrAddChatAsync(Guid userId)
     {
         return await GetOrAddChatAsync(userId.GenerateChatHash(), new HashSet<Guid>() { userId });
     }
 
-    public async Task<Database.Models.Chat> GetOrAddChatAsync(string chatHash)
+    public async Task<Chat> GetOrAddChatAsync(string chatHash)
     {
         return await GetOrAddChatAsync(chatHash, chatHash.SplitChatHash());
     }
 
-    public async Task<Database.Models.Chat> GetOrAddChatAsync(ISet<Guid> userIds)
+    public async Task<Chat> GetOrAddChatAsync(ISet<Guid> userIds)
     {
         return await GetOrAddChatAsync(userIds.GenerateChatHash(), userIds);
     }
 
-    private async Task<Database.Models.Chat> GetOrAddChatAsync(string chatHash, ISet<Guid> userIds)
+    private async Task<Chat> GetOrAddChatAsync(string chatHash, ISet<Guid> userIds)
     {
         var existingChat = await dbContext.Chats.SingleOrDefaultAsync(x => x.ChatHash == chatHash);
 
@@ -68,7 +68,7 @@ public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> log
 
         var chatUsers = userIds.Select(x => new ChatUser() { UserId = x }).ToList();
 
-        var chat = new Database.Models.Chat()
+        var chat = new Chat()
         {
             ChatUsers = chatUsers,
             ChatHash = chatHash
