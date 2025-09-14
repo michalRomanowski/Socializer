@@ -1,0 +1,34 @@
+﻿@page "/preferences"
+
+@using Socializer.Client
+@using Socializer.Shared
+@using Socializer.Shared.Dtos
+@using Socializer.Shared.Extensions
+
+@inject ISocializerClient socializerClient
+@inject LayoutState layoutState
+@inject StateContainer stateContainer
+
+<ul style="list-style-type:none; padding:0;">
+    @foreach (var preference in userPreferences)
+    {
+        <li style="margin-bottom: 10px;">
+            preference: @preference.DBPediaResource count: @preference.Count weight: @preference.Weight
+        </li>
+    }
+</ul>
+
+@code 
+{
+    private IEnumerable<PreferenceDto> userPreferences = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        layoutState.Header = $"Preferences";
+
+        var userPreferencesResult = await socializerClient.GetMyPreferencesAsync();
+
+        if (userPreferencesResult.IsSuccess)
+            userPreferences = userPreferencesResult.Result;
+    }
+}

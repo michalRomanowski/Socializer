@@ -44,4 +44,9 @@ public class SocializerClient(IClient client) : ISocializerClient
     {
         return await client.GetAsync<IEnumerable<ChatDto>>("Chats/My");
     }
+
+    public async Task<OperationResult<IEnumerable<PreferenceDto>>> GetMyPreferencesAsync()
+    {
+        return await client.GetAsync<IEnumerable<PreferenceDto>>("Preferences/My");
+    }
 }

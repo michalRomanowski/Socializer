@@ -9,6 +9,7 @@
 <button class="button-big" @onclick="Chat">Chat</button>
 <button class="button-big" @onclick="Chats">Chats</button>
 <button class="button-big" @onclick="Matches">Matches</button>
+<button class="button-big" @onclick="Preferences">Preferences</button>
 @* <button class="button-big" @onclick="MatchesMap">Matches map</button> *@
 
 @code {
@@ -32,5 +33,10 @@
     private void Matches()
     {
         navigation.NavigateTo("/matches");
+    }
+
+    private void Preferences()
+    {
+        navigation.NavigateTo("/preferences");
     }
 }
