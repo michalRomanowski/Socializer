@@ -2,5 +2,6 @@
 
 public class ChatDto : Dto
 {
-    public List<string> Usernames { get; set; }
+    public string ChatHash { get; set; }
+    public IEnumerable<string> Usernames { get; set; }
 }

@@ -14,13 +14,19 @@ public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> log
     {
         logger.LogDebug("Getting chats for user {userId}.", userId);
 
-        var chatUsers = await dbContext.ChatUsers
+        var chatDtos = await dbContext.ChatUsers
             .Where(cu => cu.UserId == userId)
-            .GroupBy(cu => cu.ChatId)
-            .Select(cug => new { ChatId = cug.Key, Usernames = cug.Select(x => x.User.Username) })
+            .Select(cu => cu.Chat)
+            .Select(c => new ChatDto
+            {
+                Id = c.Id,
+                ChatHash = c.ChatHash,
+                Usernames = c.ChatUsers.Select(cu => cu.User.Username)
+            })
+            .AsNoTracking()
             .ToListAsync();
 
-        return chatUsers.Select(x => new ChatDto() { Id = x.ChatId, Usernames = [.. x.Usernames] });
+        return chatDtos;
     }
 
     public async Task<Database.Models.Chat> GetOrAddChatAsync(Guid userId)
