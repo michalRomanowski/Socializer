@@ -10,7 +10,7 @@
 @inject StateContainer stateContainer
 
 <ul style="list-style-type:none; padding:0;">
-    @foreach (var userChat in userChats)
+    @foreach (var userChat in chats)
     {
         <li style="margin-bottom: 10px;">
             <button @onclick="() => OnUserChatClicked(userChat)" style="width:100%; padding:10px;">
@@ -21,7 +21,7 @@
 </ul>
 
 @code {
-    private IEnumerable<ChatDto> userChats = [];
+    private IEnumerable<ChatDto> chats = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,11 +30,11 @@
         var chatsResult = await socializerClient.GetMyChatsAsync();
 
         if (chatsResult.IsSuccess)
-            userChats = chatsResult.Result;
+            chats = chatsResult.Result;
     }
 
-    private void OnUserChatClicked(ChatDto userMatch)
+    private void OnUserChatClicked(ChatDto chat)
     {
-        
+        navigation.NavigateTo($"/chat/{chat.ChatHash}");
     }
 }

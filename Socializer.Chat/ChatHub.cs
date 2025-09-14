@@ -51,6 +51,8 @@ public class ChatHub(
 
             await Groups.AddToGroupAsync(Context.ConnectionId, chatHash);
 
+            await InitChatHistory(chatHash);
+
             await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", Messages.HelloMessage(username).ToString());
         }
         catch (Exception ex)
@@ -118,5 +120,16 @@ public class ChatHub(
         await userPreferenceService.AddOrUpdateAsync(userId, preferences);
 
         await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", preferences.ToMessage());
+    }
+
+    private async Task InitChatHistory(string chatHash)
+    {
+        var messages = await chatMessageRepository.GetChatMessagesAsync(chatHash);
+
+        foreach (var m in messages)
+        {
+            var username = m.SenderId == botId ? "bot" : await userService.GetUsernameAsync(m.SenderId);
+            await Clients.Group(chatHash).SendAsync("ReceiveMessage", username, m.Message);
+        }
     }
 }

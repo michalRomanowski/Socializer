@@ -17,7 +17,7 @@ public class ChatMessageEntity : ITableEntity
     public ETag ETag { get; set; } = ETag.All;
     public DateTimeOffset? Timestamp { get; set; }
 
-    //public ChatMessageEntity() { }
+    public ChatMessageEntity() { }
 
     public ChatMessageEntity(string chatHash, Guid messageId, Guid senderId, string message)
     {
