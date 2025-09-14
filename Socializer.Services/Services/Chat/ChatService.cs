@@ -8,7 +8,6 @@ using Socializer.Shared.Extensions;
 
 namespace Socializer.Services.Services.Chat;
 
-// TODO: For now accept crappy approach to chat hash as this will be re-created for sake of noSql approach in future anyway
 public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService
 {
     public async Task<IEnumerable<ChatDto>> GetChatsAsync(Guid userId)
