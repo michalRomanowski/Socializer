@@ -49,7 +49,8 @@ internal class UserPreferenceService(
             eup.Count++;
         }
 
-        var preferencesToAddToUser = preferences.Where(p => !existingUserPreferences.Any(eup => eup.PreferenceId == p.Id));
+        var existingIds = existingUserPreferences.Select(eup => eup.PreferenceId).ToHashSet();
+        var preferencesToAddToUser = preferences.Where(p => !existingIds.Contains(p.Id));
 
         logger.LogDebug("Adding {preferencesToAddToUserCount} new user preference.", preferencesToAddToUser.Count());
 

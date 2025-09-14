@@ -1,3 +1,3 @@
-﻿namespace Socializer.Repository.Models;
+﻿namespace Socializer.Repository;
 
 public record ChatMessage(Guid SenderId, string Message, DateTimeOffset? Timestamp);

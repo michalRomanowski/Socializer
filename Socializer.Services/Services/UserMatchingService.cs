@@ -25,7 +25,7 @@ internal class UserMatchingService(SocializerDbContext dbContext, IMapper mapper
 
         foreach (var up1 in user.UserPreferences)
         {
-            // This will have to be optimized for more users:
+            // TODO: This will have to be optimized for more users:
             // Filter users by distance or ignore non essential preferences.
             var otherUsersSharedPreferences = await dbContext.UserPreferences
                 .Include(x => x.User)

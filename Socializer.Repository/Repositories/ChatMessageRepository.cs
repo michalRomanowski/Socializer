@@ -1,7 +1,6 @@
 ﻿using Azure.Data.Tables;
 using Socializer.Database.NoSql.Models;
 using Socializer.Repository.Interfaces;
-using Socializer.Repository.Models;
 
 namespace Socializer.Repository.Repositories;
 
