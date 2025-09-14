@@ -6,11 +6,13 @@ namespace Socializer.Services.Services;
 
 internal class ReadPreferencesService(ILogger<ReadPreferencesService> logger) : IReadPreferencesService
 {
+    private readonly static StringSplitOptions stringSplitOptions = StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
+
     public IEnumerable<Preference> ReadPreferences(string text)
     {
         var preferences = new List<Preference>();
 
-        var lines = text.Split('\n').Where(x => !string.IsNullOrEmpty(x)).Distinct();
+        var lines = text.Split('\n', stringSplitOptions).Distinct();
 
         logger.LogDebug("Extracted {LinesCount} lines.", lines.Count());
 
@@ -20,12 +22,10 @@ internal class ReadPreferencesService(ILogger<ReadPreferencesService> logger) : 
 
             try
             {
-                var dbPediaResource = line.Trim();
-
                 preferences.Add(
                     new Preference()
                     {
-                        DBPediaResource = dbPediaResource,
+                        DBPediaResource = line,
                     });
             }
             catch (Exception ex) // Log and skip failed lines
