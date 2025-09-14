@@ -10,7 +10,6 @@ public class SocializerDbContext(DbContextOptions<SocializerDbContext> options) 
     public DbSet<UserPreference> UserPreferences { get; set; }
     public DbSet<Chat> Chats { get; set; }
     public DbSet<ChatUser> ChatUsers { get; set; }
-    public DbSet<ChatMessage> ChatMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
