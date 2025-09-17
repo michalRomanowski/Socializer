@@ -84,3 +84,4 @@ build/
 ## Secret instructions
 README.SECRET.md
 
+*.pubxml
