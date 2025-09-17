@@ -48,7 +48,8 @@ internal class TogetherAISocializerClient : ILLMClient
         // Getting result
         var result = await client.GetChatCompletionsAsync(chatArgs);
 
-        logger.LogInformation("Received response from Together AI with CompletionTokens: {CompletionTokens} TotalTokens: {TotalTokens} MaxTokens: {}.", result.Usage.CompletionTokens, result.Usage.TotalTokens, tokenLimit);
+        logger.LogInformation("Received response from Together AI with completionTokens: {CompletionTokens} totalTokens: {TotalTokens} tokenLimit: {tokenLimit}.", 
+            result.Usage.CompletionTokens, result.Usage.TotalTokens, tokenLimit);
 
         return result?.Choices?.FirstOrDefault()?.Message?.Content ?? throw new NotImplementedException(); // TODO: Some better exception
     }
