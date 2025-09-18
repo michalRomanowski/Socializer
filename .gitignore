@@ -85,3 +85,6 @@ build/
 README.SECRET.md
 
 *.pubxml
+
+## Prod settings
+*appsettings.Production.json
