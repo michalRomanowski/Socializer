@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
                 options.AcceptAnonymousClients(); // For public clients like MAUI
 
                 var signInCert = new X509Certificate2(
-                    "C:\\Certs\\SocializerOpenIddictSignInCert.pfx",
+                    Path.Combine(AppContext.BaseDirectory, "Certs", "SocializerOpenIddictSignInCert.pfx"),
                     Environment.GetEnvironmentVariable("SocializerOpenIddictSignInCert_PASSWORD"));
 
                 options.AddSigningCertificate(signInCert);
@@ -48,7 +48,7 @@ public static class ServiceCollectionExtensions
                 options.DisableAccessTokenEncryption(); // Disable only for Access token
 
                 var encryptionCert = new X509Certificate2(
-                    "C:\\Certs\\SocializerOpenIddictEncryptionCert.pfx",
+                    Path.Combine(AppContext.BaseDirectory, "Certs", "SocializerOpenIddictEncryptionCert.pfx"),
                     Environment.GetEnvironmentVariable("SocializerOpenIddictEncryptionCert_PASSWORD"));
 
                 options.AddEncryptionCertificate(encryptionCert);
