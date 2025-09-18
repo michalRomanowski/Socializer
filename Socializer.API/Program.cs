@@ -2,6 +2,7 @@ using Auth.API;
 using Auth.Database;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Socializer.API.Middleware;
 using Socializer.Database;
 using Socializer.LLM;
@@ -24,6 +25,13 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddLLM();
 builder.Services.AddServices();
+
+// Configure and use Serilog to file
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

@@ -2,6 +2,7 @@ using Auth.API;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Serilog;
 using Socializer.Chat;
 using Socializer.Chat.API.Filters;
 using Socializer.Chat.Extensions;
@@ -35,6 +36,13 @@ builder.Services.AddServices();
 builder.Services.AddTableServiceClient(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddSingleton<TableStorageInitializer>();
+
+// Configure and use Serilog to file
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
