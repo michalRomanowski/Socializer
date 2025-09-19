@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Azure;
+﻿using Azure.Identity;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddAzureClients(clientBuilder =>
         {
-            clientBuilder.AddTableServiceClient(configuration["ChatAzureStorageConnectionString:tableServiceUri"]);
+            clientBuilder
+                .AddTableServiceClient(new Uri(configuration["ChatAzureStorage:TableServiceUri"]))
+                .WithCredential(new DefaultAzureCredential());
         });
 
         return services;
