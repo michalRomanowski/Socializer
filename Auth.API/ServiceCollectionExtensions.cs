@@ -1,4 +1,6 @@
 ﻿using Auth.Database;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,9 @@ namespace Auth.API;
 
 public static class ServiceCollectionExtensions
 {
+    private const string SignInCertPasswordEnvVar = "SocializerOpenIddictSignInCert_PASSWORD";
+    private const string EncryptionCertPasswordEnvVar = "SocializerOpenIddictEncryptionCert_PASSWORD";
+
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<IdentityDbContext>(options =>
@@ -39,19 +44,9 @@ public static class ServiceCollectionExtensions
                 options.AllowRefreshTokenFlow();
                 options.AcceptAnonymousClients(); // For public clients like MAUI
 
-                var signInCert = new X509Certificate2(
-                    "C:\\Certs\\SocializerOpenIddictSignInCert.pfx",
-                    Environment.GetEnvironmentVariable("SocializerOpenIddictSignInCert_PASSWORD"));
-
-                options.AddSigningCertificate(signInCert);
+                options.AddCertificates(configuration);
 
                 options.DisableAccessTokenEncryption(); // Disable only for Access token
-
-                var encryptionCert = new X509Certificate2(
-                    "C:\\Certs\\SocializerOpenIddictEncryptionCert.pfx",
-                    Environment.GetEnvironmentVariable("SocializerOpenIddictEncryptionCert_PASSWORD"));
-
-                options.AddEncryptionCertificate(encryptionCert);
 
                 options.UseAspNetCore()
                        .EnableTokenEndpointPassthrough()
@@ -113,5 +108,56 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         return services;
+    }
+
+    private static void AddCertificates(this OpenIddictServerBuilder options, IConfiguration configuration)
+    {
+        // Determine if running locally or in Azure Web App
+        var isAzureWebApp = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+
+        X509Certificate2 signInCert;
+        X509Certificate2 encryptionCert;
+
+        if (isAzureWebApp)
+        {
+            signInCert = LoadCertificateFromAzureKeyVault(
+                configuration,
+                "SocializerOpenIddictSignInCert",
+                Environment.GetEnvironmentVariable(SignInCertPasswordEnvVar)!);
+
+            encryptionCert = LoadCertificateFromAzureKeyVault(
+                configuration,
+                "SocializerOpenIddictEncryptionCert",
+                Environment.GetEnvironmentVariable(EncryptionCertPasswordEnvVar)!);
+        }
+        else
+        {
+            signInCert = new X509Certificate2(
+                "C:\\Certs\\SocializerOpenIddictSignInCert.pfx",
+                Environment.GetEnvironmentVariable(SignInCertPasswordEnvVar));
+
+            encryptionCert = new X509Certificate2(
+                "C:\\Certs\\SocializerOpenIddictEncryptionCert.pfx",
+                Environment.GetEnvironmentVariable(EncryptionCertPasswordEnvVar));
+        }
+
+        options.AddSigningCertificate(signInCert);
+        options.AddEncryptionCertificate(encryptionCert);
+    }
+
+    private static X509Certificate2 LoadCertificateFromAzureKeyVault(IConfiguration configuration, string secretName, string password)
+    {
+        var secretClient = new SecretClient(new Uri(configuration["AuthSettings:KeyVaultUri"]!), new DefaultAzureCredential());
+
+        // Get the certificate with private key as a secret
+        var certificateWithPrivateKey = secretClient.GetSecret(secretName);
+        var privateKeyBytesSignIn = Convert.FromBase64String(certificateWithPrivateKey.Value.Value);
+
+        var cert = new X509Certificate2(
+            privateKeyBytesSignIn, 
+            Environment.GetEnvironmentVariable(password), 
+            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
+
+        return cert;
     }
 }

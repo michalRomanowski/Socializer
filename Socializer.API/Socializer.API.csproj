@@ -24,13 +24,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Certs\SocializerOpenIddictEncryptionCert.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Certs\SocializerOpenIddictSignInCert.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
