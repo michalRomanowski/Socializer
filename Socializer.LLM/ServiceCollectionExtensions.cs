@@ -6,10 +6,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddLLM(this IServiceCollection services)
     {
-        //services.AddTransient<ILLMClient, HuggingFaceClient>();
-        //services.AddTransient<ILLMClient, TogetherAISocializerClient>();
-
-
         services.AddTransient<ILLMClient, OpenAISocializerClient>();
 
         return services;

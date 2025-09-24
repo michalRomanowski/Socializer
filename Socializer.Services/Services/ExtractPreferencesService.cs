@@ -13,7 +13,7 @@ internal class ExtractPreferencesService(ILLMClient llmClient, IReadPreferencesS
 
         logger.LogDebug("Preferences prompt: {PreferencesPrompt}", preferencesPrompt);
 
-        var response = await llmClient.QueryAsync(preferencesPrompt, 700);
+        var response = await llmClient.QueryAsync(preferencesPrompt);
 
         var preferences = preferencesReaderService.ReadPreferences(response);
 

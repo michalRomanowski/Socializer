@@ -7,7 +7,7 @@ namespace Socializer.LLM;
 
 internal class OpenAISocializerClient(OpenAISettings settings, ILogger<OpenAISocializerClient> logger) : ILLMClient
 {
-    public async Task<string> QueryAsync(StringBuilder prompt, int tokenLimit = 100, string? context = null)
+    public async Task<string> QueryAsync(StringBuilder prompt, string? context = null)
     {
         logger.LogInformation("Sending prompt to OpenAI: {prompt}.", prompt);
 

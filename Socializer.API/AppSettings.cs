@@ -9,7 +9,7 @@ public class AppSettings
     public ConnectionStrings ConnectionStrings { get; set; } = new();
     public AuthSettings Auth { get; set; } = new();
     public SharedSettings SharedSettings { get; set; } = new();
-    public HuggingFaceSettings LLMSettings { get; set; } = new();
+    public OpenAISettings OpenAISettings { get; set; } = new();
 }
 
 public class LoggingSettings
