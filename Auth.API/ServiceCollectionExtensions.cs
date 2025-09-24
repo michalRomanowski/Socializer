@@ -148,7 +148,9 @@ public static class ServiceCollectionExtensions
 
     private static X509Certificate2 LoadCertificateFromAzureKeyVault(IConfiguration configuration, string secretName, string password)
     {
-        var secretClient = new SecretClient(new Uri(configuration["AuthSettings:KeyVaultUri"]!), new DefaultAzureCredential());
+        var secretClient = new SecretClient(
+            new Uri(configuration["AuthSettings:KeyVaultUri"]!),
+            new ManagedIdentityCredential());
 
         // Get the certificate with private key as a secret
         var certificateWithPrivateKey = secretClient.GetSecret(secretName);

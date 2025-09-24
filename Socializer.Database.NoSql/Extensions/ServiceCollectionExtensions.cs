@@ -12,8 +12,8 @@ public static class ServiceCollectionExtensions
         services.AddAzureClients(clientBuilder =>
         {
             clientBuilder
-                .AddTableServiceClient(new Uri(configuration["ChatAzureStorage:TableServiceUri"]))
-                .WithCredential(new DefaultAzureCredential());
+                .AddTableServiceClient(configuration["ChatAzureStorage:TableServiceUri"])
+                .WithCredential(new ManagedIdentityCredential());
         });
 
         return services;
