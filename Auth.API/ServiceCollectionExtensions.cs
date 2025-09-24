@@ -18,10 +18,11 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<IdentityDbContext>(options =>
-        {
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"));
-            options.UseOpenIddict();
-        });
+            options
+                .UseSqlServer(
+                    configuration.GetConnectionString("IdentityConnectionString"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure())
+                .UseOpenIddict());
 
         services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<IdentityDbContext>()

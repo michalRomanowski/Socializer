@@ -17,7 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SocializerDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SocializerConnectionString")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SocializerConnectionString"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddSingleton(
     builder.Configuration.GetSection(nameof(TogetherAISettings)).Get<TogetherAISettings>());
