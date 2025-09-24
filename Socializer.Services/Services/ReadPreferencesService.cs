@@ -10,6 +10,9 @@ internal class ReadPreferencesService(ILogger<ReadPreferencesService> logger) : 
 
     public IEnumerable<Preference> ReadPreferences(string text)
     {
+        if (string.IsNullOrEmpty(text))
+            return [];
+
         var preferences = new List<Preference>();
 
         var lines = text.Split('\n', stringSplitOptions).Distinct();
