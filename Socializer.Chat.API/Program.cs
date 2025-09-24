@@ -22,7 +22,7 @@ builder.Services.AddDbContext<SocializerDbContext>(options =>
         sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddSingleton(
-    builder.Configuration.GetSection(nameof(TogetherAISettings)).Get<TogetherAISettings>());
+    builder.Configuration.GetSection(nameof(OpenAISettings)).Get<OpenAISettings>());
 
 builder.Services.AddControllers(options =>
 {

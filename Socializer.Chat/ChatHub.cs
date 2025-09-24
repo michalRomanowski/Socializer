@@ -81,10 +81,6 @@ public class ChatHub(
 
             await RespondToMessage(chatHash, message);
             
-            // TODO: Delay added because of requests limit for free models, generally updating preferences trigger will be different,
-            // no need to call it for each message (unless I want to use it for conversation context).
-            await Task.Delay(10000);
-
             await UpdatePreferences(userId, chatHash, message);
         }
         catch (Exception ex)
@@ -99,15 +95,14 @@ public class ChatHub(
         logger.LogDebug("Responding to message, ConnectionId: {connectionId}.", Context.ConnectionId);
 
         var llmResponse = await lLMClient.QueryAsync(
-            new StringBuilder()
-                .AppendLine(message)
+            new StringBuilder() // TODO: Move to prompt extension
+                .AppendMessage(message)
                 .AppendHelpFindMoreInterests()
-                .AppendSameLanguageResponse(),
-            200); // TODO: Limit can be configurable
+                .AppendSameLanguageResponse()
+                .AppendResponseCharsLimit(200));
 
         await Clients.Group(chatHash).SendAsync("ReceiveMessage", "bot", llmResponse);
         await chatMessageRepository.AddChatMessageAsync(botId, chatHash, llmResponse);
-
     }
 
     private async Task UpdatePreferences(Guid userId, string chatHash, string message)
