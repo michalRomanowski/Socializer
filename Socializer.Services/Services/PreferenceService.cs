@@ -3,26 +3,11 @@ using Microsoft.Extensions.Logging;
 using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.Services.Interfaces;
-using Socializer.Shared.Dtos;
 
 namespace Socializer.Services.Services;
 
 internal class PreferenceService(SocializerDbContext dbContext, ILogger<PreferenceService> logger) : IPreferenceService
 {
-    public async Task<IEnumerable<PreferenceDto>> GetAsync(Guid userId)
-    {
-        logger.LogDebug("Getting preferences for user {userId}", userId);
-
-        var userPreferences = await dbContext.UserPreferences
-            .Include(x => x.Preference)
-            .Where(x => x.UserId == userId)
-            .Select(x => new PreferenceDto() { Count = x.Count, DBPediaResource = x.Preference.DBPediaResource, Weight = x.Weight })
-            .AsNoTracking()
-            .ToListAsync();
-
-        return userPreferences;
-    }
-
     public async Task<IEnumerable<Preference>> GetOrAddAsync(IEnumerable<Preference> preferences)
     {
         logger.LogDebug("Getting or adding {preferencesCount} preferences", preferences.Count());

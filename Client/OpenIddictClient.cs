@@ -49,6 +49,19 @@ public class OpenIddictClient(OpenIddictClientService clientService, IHttpClient
         }
     }
 
+    public async Task DeleteAsync(string urlPath)
+    {
+        using var httpClient = await GetHttpClientAsync();
+        await RefreshTokenAsync();
+
+        var response = await httpClient.DeleteAsync($"{sharedSettings.SocializerApiUrl}/{urlPath}");
+
+        if(!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Failed to delete {urlPath}. Status code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
+        }
+    }
+
     public async Task<OperationResult<bool>> LoginAsync(string username, string password)
     {
         try

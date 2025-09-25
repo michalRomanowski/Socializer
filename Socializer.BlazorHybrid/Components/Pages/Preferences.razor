@@ -14,13 +14,14 @@
     {
         <li style="margin-bottom: 10px;">
             preference: @preference.DBPediaResource count: @preference.Count weight: @preference.Weight
+            <button class="button-light" @onclick="() => DeletePreferenceAsync(preference.Id)">Remove</button>
         </li>
     }
 </ul>
 
 @code 
 {
-    private IEnumerable<PreferenceDto> userPreferences = [];
+    private IEnumerable<UserPreferenceDto> userPreferences = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,7 +29,21 @@
 
         var userPreferencesResult = await socializerClient.GetMyPreferencesAsync();
 
-        if (userPreferencesResult.IsSuccess)
+ User       if (userPreferencesResult.IsSuccess)
             userPreferences = userPreferencesResult.Result;
+    }
+
+    private async Task DeletePreferenceAsync(Guid preferenceId)
+    {
+        try
+        {
+            await socializerClient.DeleteMyPreferenceAsync(preferenceId);
+            userPreferences = userPreferences.Where(p => p.Id != preferenceId).ToList();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            layoutState.ErrorMessage = ex.Message;
+        }
     }
 }

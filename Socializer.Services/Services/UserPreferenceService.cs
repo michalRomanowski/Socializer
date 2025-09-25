@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Socializer.Database;
 using Socializer.Database.Models;
 using Socializer.Services.Interfaces;
+using Socializer.Shared.Dtos;
 
 namespace Socializer.Services.Services;
 
@@ -11,17 +12,30 @@ internal class UserPreferenceService(
     IPreferenceService preferenceService,
     ILogger<UserPreferenceService> logger) : IUserPreferenceService
 {
-    public async Task<IEnumerable<UserPreference>> GetAsync(Guid userId)
+    public async Task<IEnumerable<UserPreferenceDto>> GetAsync(Guid userId)
     {
         logger.LogDebug("Getting preferences for user {userId}", userId);
 
-        var userPreferences = await dbContext
-            .UserPreferences.Include(x => x.Preference)
+        var userPreferences = await dbContext.UserPreferences
+            .Include(x => x.Preference)
             .Where(x => x.UserId == userId)
+            .Select(x => new UserPreferenceDto() { Id = x.Id, Count = x.Count, DBPediaResource = x.Preference.DBPediaResource, Weight = x.Weight }) // TODO: Can be done with automapper
             .AsNoTracking()
             .ToListAsync();
 
         return userPreferences;
+    }
+
+    public async Task DeleteAsync(Guid userId, Guid userPreferenceId)
+    {
+        logger.LogDebug("Deleting user preference {userPreferenceId} for user {userId}", userPreferenceId, userId);
+
+        var userPreference = await dbContext.UserPreferences
+            .Where(x => x.UserId == userId && x.Id == userPreferenceId)
+            .SingleAsync();
+
+        dbContext.Remove(userPreference);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<UserPreference>> AddOrUpdateAsync(Guid userId, IEnumerable<Preference> preferences)

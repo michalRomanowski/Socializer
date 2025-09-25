@@ -12,9 +12,9 @@ internal static class ChatMessagesExtensions
         return message;
     }
 
-    public static string ToMessage(this IEnumerable<UserPreference> userPreferences)
+    public static string ToMessage(this IEnumerable<UserPreferenceDto> userPreferences)
     {
-        var message = string.Join("\r\n", userPreferences.Select(x => $"{x.Preference.DBPediaResource} {x.Count} {x.Weight}"));
+        var message = string.Join("\r\n", userPreferences.Select(x => $"{x.DBPediaResource} {x.Count} {x.Weight}"));
         return message;
     }
 
