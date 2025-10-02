@@ -91,7 +91,6 @@ public class ChatService(SocializerDbContext dbContext, IChatRepository chatRepo
 
         await strategy.ExecuteAsync(async () =>
         {
-
             using var transaction = dbContext.Database.BeginTransaction();
 
             try
@@ -100,7 +99,12 @@ public class ChatService(SocializerDbContext dbContext, IChatRepository chatRepo
                     .Where(c => c.ChatUsers.Any(cu => cu.UserId == userId) && c.Id == chatId)
                     .SingleAsync();
 
+                var chatUsers = dbContext.ChatUsers
+                    .Where(cu => cu.ChatId == chat.Id);
+
+                dbContext.RemoveRange(chatUsers);
                 dbContext.Remove(chat);
+
                 await dbContext.SaveChangesAsync();
 
                 await chatRepository.DeleteChatAsync(chat.ChatHash);
