@@ -6,6 +6,7 @@ using Serilog;
 using Socializer.API.Middleware;
 using Socializer.Database;
 using Socializer.LLM;
+using Socializer.Repository;
 using Socializer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddLLM();
+builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddServices();
 
 // Configure and use Serilog to file

@@ -7,15 +7,15 @@
 @inject ISocializerClient socializerClient
 @inject LayoutState layoutState
 @inject NavigationManager navigation
-@inject StateContainer stateContainer
 
 <ul style="list-style-type:none; padding:0;">
-    @foreach (var userChat in chats)
+    @foreach (var chat in chats)
     {
         <li style="margin-bottom: 10px;">
-            <button @onclick="() => OnUserChatClicked(userChat)" style="width:100%; padding:10px;">
-                Participants: @String.Join(", ", userChat.Usernames)
+            <button @onclick="() => OnUserChatClicked(chat)" style="width:100%; padding:10px;">
+                Participants: @String.Join(", ", chat.Usernames)
             </button>
+            <button class="button-light" @onclick="() => DeleteChatAsync(chat.Id)">Remove</button>
         </li>
     }
 </ul>
@@ -36,5 +36,10 @@
     private void OnUserChatClicked(ChatDto chat)
     {
         navigation.NavigateTo($"/chat/{chat.ChatHash}");
+    }
+
+    private async Task DeleteChatAsync(Guid chatId)
+    {
+        await socializerClient.DeleteMyChatAsync(chatId);
     }
 }

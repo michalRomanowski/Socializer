@@ -45,6 +45,11 @@ public class SocializerClient(IClient client) : ISocializerClient
         return await client.GetAsync<IEnumerable<ChatDto>>("Chats/My");
     }
 
+    public async Task DeleteMyChatAsync(Guid chatId)
+    {
+        await client.DeleteAsync($"Chats/My/{chatId}");
+    }
+
     public async Task<OperationResult<IEnumerable<UserPreferenceDto>>> GetMyUserPreferencesAsync()
     {
         return await client.GetAsync<IEnumerable<UserPreferenceDto>>("UserPreferences/My");

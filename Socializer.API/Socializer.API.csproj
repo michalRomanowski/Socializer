@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth.API\Auth.API.csproj" />
+    <ProjectReference Include="..\Socializer.Repository\Socializer.Repository.csproj" />
     <ProjectReference Include="..\Socializer.Services\Socializer.Services.csproj" />
   </ItemGroup>
 

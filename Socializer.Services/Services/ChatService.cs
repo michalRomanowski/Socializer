@@ -2,13 +2,14 @@
 using Microsoft.Extensions.Logging;
 using Socializer.Database;
 using Socializer.Database.Models;
+using Socializer.Repository.Interfaces;
 using Socializer.Services.Interfaces;
 using Socializer.Shared.Dtos;
 using Socializer.Shared.Extensions;
 
 namespace Socializer.Services.Services;
 
-public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> logger) : IChatService
+public class ChatService(SocializerDbContext dbContext, IChatRepository chatRepository, ILogger<ChatService> logger) : IChatService
 {
     public async Task<IEnumerable<ChatDto>> GetChatsAsync(Guid userId)
     {
@@ -78,5 +79,39 @@ public class ChatService(SocializerDbContext dbContext, ILogger<ChatService> log
         await dbContext.SaveChangesAsync();
 
         return chat;
+    }
+
+    public async Task DeleteChatAsync(Guid userId, Guid chatId)
+    {
+        logger.LogDebug("Deleting chat {chatId} for user {userId}", chatId, userId);
+
+        // Execution strategy necessary for manual transactionas as sql configured for retries
+        // it relies on transactions already which causes conflict when manually trying to use one here
+        var strategy = dbContext.Database.CreateExecutionStrategy();
+
+        await strategy.ExecuteAsync(async () =>
+        {
+
+            using var transaction = dbContext.Database.BeginTransaction();
+
+            try
+            {
+                var chat = await dbContext.Chats
+                    .Where(c => c.ChatUsers.Any(cu => cu.UserId == userId) && c.Id == chatId)
+                    .SingleAsync();
+
+                dbContext.Remove(chat);
+                await dbContext.SaveChangesAsync();
+
+                await chatRepository.DeleteChatAsync(chat.ChatHash);
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting chat {chatId} for user {userId}. Rolling back transaction.", chatId, userId);
+                transaction.Rollback();
+            }
+        });
     }
 }

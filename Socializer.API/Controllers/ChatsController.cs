@@ -16,4 +16,13 @@ public class ChatsController(IChatService chatService) : SocializerControllerBas
 
         return Ok(result);
     }
+
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [HttpDelete("My/{chatId}")]
+    public async Task<IActionResult> DeleteChat(Guid chatId)
+    {
+        await chatService.DeleteChatAsync(UserId, chatId);
+
+        return Ok();
+    }
 }

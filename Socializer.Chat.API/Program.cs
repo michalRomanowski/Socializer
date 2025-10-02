@@ -1,14 +1,12 @@
 using Auth.API;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
 using Serilog;
 using Socializer.Chat;
 using Socializer.Chat.API.Filters;
 using Socializer.Chat.Extensions;
 using Socializer.Database;
 using Socializer.Database.NoSql;
-using Socializer.Database.NoSql.Extensions;
 using Socializer.LLM;
 using Socializer.Repository;
 using Socializer.Services;
@@ -35,8 +33,7 @@ builder.Services.AddAutoMapper(typeof(SocializerAutomapperProfile));
 builder.Services.AddChat();
 builder.Services.AddLLM();
 builder.Services.AddServices();
-builder.Services.AddTableServiceClient(builder.Configuration);
-builder.Services.AddRepositories();
+builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddSingleton<TableStorageInitializer>();
 
 // Configure and use Serilog to file
