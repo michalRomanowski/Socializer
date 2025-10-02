@@ -27,9 +27,10 @@
     {
         layoutState.Header = $"Preferences";
 
-        var userPreferencesResult = await socializerClient.GetMyPreferencesAsync();
+        var userPreferencesResult = await socializerClient.GetMyUserPreferencesAsync();
 
- User       if (userPreferencesResult.IsSuccess)
+        if (userPreferencesResult.IsSuccess)
+        if (userPreferencesResult.IsSuccess)
             userPreferences = userPreferencesResult.Result;
     }
 
@@ -37,7 +38,7 @@
     {
         try
         {
-            await socializerClient.DeleteMyPreferenceAsync(preferenceId);
+            await socializerClient.DeleteMyUserPreferenceAsync(preferenceId);
             userPreferences = userPreferences.Where(p => p.Id != preferenceId).ToList();
             StateHasChanged();
         }
