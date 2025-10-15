@@ -15,7 +15,7 @@
             <button @onclick="() => OnUserChatClicked(chat)" style="width:100%; padding:10px;">
                 Participants: @String.Join(", ", chat.Usernames)
             </button>
-            <button class="button-light" @onclick="() => DeleteChatAsync(chat.Id)">Remove</button>
+            <button class="btn btn-primary w-100 mb-2" @onclick="() => DeleteChatAsync(chat.Id)">Remove</button>
         </li>
     }
 </ul>

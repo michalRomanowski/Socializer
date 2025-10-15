@@ -7,26 +7,34 @@
 @inject LayoutState layoutState
 @inject NavigationManager navigation
 
-<EditForm EditContext="@editContext" OnValidSubmit="CreateUserAsync" class="form-section">
+<EditForm EditContext="@editContext" OnValidSubmit="CreateUserAsync">
     <DataAnnotationsValidator />
 
-    <label>Name</label>
-    <InputText class="input-field" @bind-Value="createUserUI.Username" title="Choose a unique name" />
-    <ValidationMessage For="@(() => createUserUI.Username)" />
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <InputText class="form-control" @bind-Value="createUserUI.Username" title="Choose a unique name" />
+        <ValidationMessage For="@(() => createUserUI.Username)" />
+    </div>
 
-    <label>Email</label>
-    <InputText class="input-field" @bind-Value="createUserUI.Email" title="Choose a unique email" />
-    <ValidationMessage For="@(() => createUserUI.Email)" />
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <InputText class="form-control" @bind-Value="createUserUI.Email" title="Choose a unique email" />
+        <ValidationMessage For="@(() => createUserUI.Email)" />
+    </div>
 
-    <label>Password</label>
-    <InputText class="input-field" type="password" @bind-Value="createUserUI.Password" title="Choose strong password" />
-    <ValidationMessage For="@(() => createUserUI.Password)" />
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <InputText class="form-control" type="password" @bind-Value="createUserUI.Password" title="Choose strong password" />
+        <ValidationMessage For="@(() => createUserUI.Password)" />
+    </div>
 
-    <label>Confirm Password</label>
-    <InputText class="input-field" type="password" @bind-Value="createUserUI.ConfirmPassword" title="Confirm password" />
-    <ValidationMessage For="@(() => createUserUI.ConfirmPassword)" />
+    <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <InputText class="form-control" type="password" @bind-Value="createUserUI.ConfirmPassword" title="Confirm password" />
+        <ValidationMessage For="@(() => createUserUI.ConfirmPassword)" />
+    </div>
 
-    <button class="button-big" type="submit">Create</button>
+    <button class="btn btn-primary w-100 mb-2" type="submit">Create</button>
 </EditForm>
 
 @code {

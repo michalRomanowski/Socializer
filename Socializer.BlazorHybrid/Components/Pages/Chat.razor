@@ -14,20 +14,21 @@
 
 @implements IAsyncDisposable
 
-<div class="chat-container">
-    <div id="chat-messages" @ref="chatMessagesRef" class="chat-messages">
-        @foreach (var message in chatViewModel.Messages)
-        {
-            @* Example of button inside chat message: *@
-            @* <div class="message @StyleClass(message.Author)">@message.Content.ToHtmlBreaks()<button class="button-big" @onclick="SendMessageAsync">Invite</button></div> *@
-            <div class="message @StyleClass(message.Author)">@message.Content.ToHtmlBreaks()</div>
-        }
-    </div>
-
-    <InputText class="input-field" maxlength="500" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
-
-    <button class="button-big" @onclick="SendMessageAsync">Send</button>
+<div id="chat-messages" class="card-body overflow-auto d-flex flex-column">
+    @foreach (var message in chatViewModel.Messages)
+    {
+        <div class="d-flex @MessageAlignClass(message.Author) mb-2">
+            <div class="@MessageStyleClass(message.Author) p-2 rounded-3" style="max-width: 95%;">
+                @message.Content.ToHtmlBreaks()
+            </div>
+        </div>
+    }
 </div>
+
+<InputText class="form-control input-field mb-2" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
+
+<button class="btn btn-primary w-100 mb-2" @onclick="SendMessageAsync">Send</button>
+
 
 @code {
     [Parameter] public string ChatHash { get; set; }
@@ -69,18 +70,21 @@
         }
     }
 
-    private string StyleClass(string author)
+    private string MessageStyleClass(string author)
     {
-        if(stateContainer.User.Username.Equals(author, StringComparison.InvariantCultureIgnoreCase))
-            return "user-self";
+        return author switch
+        {
+            var a when 
+                stateContainer.User.Username.Equals(a, StringComparison.InvariantCultureIgnoreCase) => "bg-info-subtle",
+                "bot" => "bg-primary-subtle",
+                "error" => "bg-danger-subtle",
+                _ => "bg-secondary-subtle"
+        };
+    }
 
-        if ("bot".Equals(author, StringComparison.InvariantCultureIgnoreCase))
-            return "user-bot";
-
-        if ("error".Equals(author, StringComparison.InvariantCultureIgnoreCase))
-            return "user-error";
-
-        return "user-other";
+    private string MessageAlignClass(string author)
+    {
+        return stateContainer.User.Username.Equals(author, StringComparison.InvariantCultureIgnoreCase) ? "justify-content-start" : "justify-content-end";
     }
 
     public async ValueTask DisposeAsync()
@@ -94,7 +98,6 @@
         await js.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
     }
 
-    // TODO: Kill me for this func name
     private async Task ScrollToBottomIfBottomAsync()
     {
         if (await js.InvokeAsync<bool>("isScrollAtBottom", chatMessagesRef))

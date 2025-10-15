@@ -8,26 +8,24 @@
 @inject NavigationManager navigation
 @inject StateContainer stateContainer
 
-@if (!string.IsNullOrEmpty(error))
-{
-    <div class="error-message">@error</div>
-}
-
-<EditForm EditContext="@editContext" OnValidSubmit="LoginAsync" class="form-section">
+<EditForm EditContext="@editContext" OnValidSubmit="LoginAsync" class="container mt-5">
     <DataAnnotationsValidator />
 
-    <label>Username</label>
-    <InputText class="input-field" @bind-Value="model.Username" title="Provide Username" />
-    <ValidationMessage For="@(() => model.Username)" />
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <InputText class="form-control" @bind-Value="model.Username" title="Provide Username" />
+        <ValidationMessage For="@(() => model.Username)" class="text-danger" />
+    </div>
 
-    <label>Password</label>
-    <InputText class="input-field" type="password" @bind-Value="model.Password" title="Provide password" />
-    <ValidationMessage For="@(() => model.Password)" />
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <InputText class="form-control" type="password" @bind-Value="model.Password" title="Provide password" />
+        <ValidationMessage For="@(() => model.Password)" class="text-danger" />
+    </div>
 
-    <button class="button-big" type="submit">Login</button>
+    <button class="btn btn-primary w-100 mb-2" type="submit">Login</button>
+    <button class="btn btn-secondary w-100" @onclick="SignUp">Sign Up</button>
 </EditForm>
-
-<button class="button-big" @onclick="SignUp">Sing Up</button>
 
 
 @code {
