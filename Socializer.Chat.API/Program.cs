@@ -45,8 +45,8 @@ builder.Host.UseSerilog();
 
 var app = builder.Build();
 
-//if (!app.Environment.IsDevelopment())
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 
 app.UseRouting();
 
