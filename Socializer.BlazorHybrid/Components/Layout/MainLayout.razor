@@ -2,22 +2,10 @@
 
 @inject LayoutState layoutState
 
-<div class="container py-4">
-	<div class="card">
-		<div class="card-header">
-			<h2 class="mb-0">@layoutState.Header</h2>
-		</div>
-		<div class="card-body">
-			@if (layoutState.HasError)
-			{
-				<div class="alert alert-danger" role="alert">@layoutState.ErrorMessage</div>
-			}
-
-			<main>
-				@Body
-			</main>
-		</div>
-	</div>
+<div class="container">
+	<main>
+		@Body
+	</main>
 </div>
 
 @code {
