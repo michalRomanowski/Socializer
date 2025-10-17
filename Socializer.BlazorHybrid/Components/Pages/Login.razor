@@ -8,40 +8,62 @@
 @inject NavigationManager navigation
 @inject StateContainer stateContainer
 
-<EditForm EditContext="@editContext" OnValidSubmit="LoginAsync" class="container mt-5">
-    <DataAnnotationsValidator />
-
-    <div class="mb-3">
-        <label class="form-label">Username</label>
-        <InputText class="form-control" @bind-Value="model.Username" title="Provide Username" />
-        <ValidationMessage For="@(() => model.Username)" class="text-danger" />
+<div class="card">
+    <div class="card-header">
+        <h2 class="mb-0">@layoutState.Header</h2>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <InputText class="form-control" type="password" @bind-Value="model.Password" title="Provide password" />
-        <ValidationMessage For="@(() => model.Password)" class="text-danger" />
+    <div class="card-body">
+        @if (layoutState.HasError)
+        {
+            <div class="alert alert-danger" role="alert">@layoutState.ErrorMessage</div>
+        }
+
+        <EditForm EditContext="@editContext" OnValidSubmit="LoginAsync" class="container mt-5">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <InputText class="form-control" @bind-Value="model.Username" title="Provide Username" />
+                <ValidationMessage For="@(() => model.Username)" class="text-danger" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <InputText class="form-control" type="password" @bind-Value="model.Password" title="Provide password" />
+                <ValidationMessage For="@(() => model.Password)" class="text-danger" />
+            </div>
+
+            <button class="btn btn-primary w-100 mb-2" type="submit">Login</button>
+            <button class="btn btn-secondary w-100" @onclick="SignUp">Sign Up</button>
+        </EditForm>
     </div>
-
-    <button class="btn btn-primary w-100 mb-2" type="submit">Login</button>
-    <button class="btn btn-secondary w-100" @onclick="SignUp">Sign Up</button>
-</EditForm>
-
+</div>
 
 @code {
     private LoginViewModel model = new();
     private EditContext editContext;
     private string error = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         layoutState.Header = "Login";
         editContext = new EditContext(model);
+
+        if (Constants.DevLogin)
+        {
+            await LoginAsync(Constants.DevLoginUserame, Constants.DevLoginPass);
+        }
     }
 
     private async Task LoginAsync()
     {
-        var loginResult = await socializerClient.LoginAsync(model.Username, model.Password);
+        await LoginAsync(model.Username, model.Password);
+    }
+
+    private async Task LoginAsync(string username, string password)
+    {
+        var loginResult = await socializerClient.LoginAsync(username, password);
 
         if (loginResult.IsSuccess == false)
         {
@@ -64,7 +86,6 @@
 
         stateContainer.User = getUserMeResult.Result;
         navigation.NavigateTo("/main");
-
     }
 
     private void SignUp()
