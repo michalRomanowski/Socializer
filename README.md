@@ -36,3 +36,20 @@ dotnet dev-certs https -ep socializerSignIn.pfx -p yourpassword
 # Publish testing app to GooglePlay
 
 https://learn.microsoft.com/en-us/dotnet/maui/android/deployment/publish-google-play?view=net-maui-8.0
+
+# Debug Profiles
+In C:\git\Socializer\Socializer.BlazorHybrid\Socializer.BlazorHybrid.csproj.user
+
+Emulator:
+    <ActiveDebugProfile>Pixel 7 - API 34 (Android 14.0 - API 34)</ActiveDebugProfile>
+    <ActiveDebugFramework>net8.0-android</ActiveDebugFramework>
+    <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
+    <SelectedPlatformGroup>Emulator</SelectedPlatformGroup>
+    <DefaultDevice>pixel_7_-_api_34</DefaultDevice>
+Windows:
+    <ActiveDebugProfile>Windows Machine</ActiveDebugProfile>
+    <ActiveDebugFramework>net8.0-windows10.0.19041.0</ActiveDebugFramework>
+    <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
+    <SelectedPlatformGroup>Emulator</SelectedPlatformGroup>
+    <DefaultDevice>pixel_7_-_api_34</DefaultDevice>
+
