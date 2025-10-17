@@ -14,21 +14,28 @@
 
 @implements IAsyncDisposable
 
-<div id="chat-messages" class="card-body overflow-auto d-flex flex-column">
-    @foreach (var message in chatViewModel.Messages)
-    {
-        <div class="d-flex @MessageAlignClass(message.Author) mb-2">
-            <div class="@MessageStyleClass(message.Author) p-2 rounded-3" style="max-width: 95%;">
-                @message.Content.ToHtmlBreaks()
+
+<div class="d-flex flex-column vh-100">
+    <h2 class="flex-shrink-0">
+        @layoutState.Header
+    </h2>
+
+    <div id="chat-messages" @ref="chatMessagesRef" class="flex-grow-1 overflow-auto">
+        @foreach (var message in chatViewModel.Messages)
+        {
+            <div class="d-flex @MessageAlignClass(message.Author) mb-2">
+                <div class="@MessageStyleClass(message.Author) p-2 rounded-3" style="max-width: 95%;">
+                    @message.Content.ToHtmlBreaks()
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+
+    <div class="flex-shrink-0 input-group m-1">
+        <InputText class="form-control input-field m-1" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
+        <button class="btn btn-primary w-100 m-1" style="padding-bottom: env(safe-area-inset-bottom, 1rem);" @onclick="SendMessageAsync">Send</button>
+    </div>
 </div>
-
-<InputText class="form-control input-field mb-2" @bind-Value="chatViewModel.NewMessage" @onfocus="@ScrollToBottomIfBottomAsync" title="Type message .." />
-
-<button class="btn btn-primary w-100 mb-2" @onclick="SendMessageAsync">Send</button>
-
 
 @code {
     [Parameter] public string ChatHash { get; set; }
@@ -68,6 +75,8 @@
         {
             chatViewModel.NewMessage = string.Empty;
         }
+
+        await ScrollToBottomAsync();
     }
 
     private string MessageStyleClass(string author)
